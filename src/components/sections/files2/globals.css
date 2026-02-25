@@ -1,0 +1,330 @@
+/* app/globals.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Bebas+Neue&display=swap');
+
+@import "tailwindcss";
+
+/* ─── Tailwind v4: @theme block ─────────────────────────────────────────────
+   All tokens → CSS variables + Tailwind utility classes.
+─────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Backgrounds ─────────────────────────────────────────────────────── */
+  --color-obsidian:   #080a0f;
+  --color-obsidian-2: #0d1118;
+  --color-obsidian-3: #12161f;
+  --color-obsidian-4: #181d28;
+
+  /* ── Gold palette ────────────────────────────────────────────────────── */
+  --color-gold:       #c9a84c;
+  --color-gold-light: #e8c97e;
+  --color-gold-pale:  #f5e6c0;
+  --color-gold-dim:   rgba(201, 168, 76, 0.10);
+  --color-gold-glow:  rgba(201, 168, 76, 0.22);
+
+  /* ── Accents ─────────────────────────────────────────────────────────── */
+  --color-cyan:       #00d4ff;
+  --color-cyan-dim:   rgba(0, 212, 255, 0.08);
+  --color-green:      #00e5a0;
+  --color-green-dim:  rgba(0, 229, 160, 0.08);
+
+  /* ── Text ────────────────────────────────────────────────────────────── */
+  --color-ivory:        #f0ede6;
+  --color-ivory-dim:    rgba(240, 237, 230, 0.55);
+  --color-ivory-muted:  rgba(240, 237, 230, 0.28);
+
+  /* ── Border shades ───────────────────────────────────────────────────── */
+  --color-border:     rgba(201, 168, 76, 0.14);
+  --color-border-mid: rgba(201, 168, 76, 0.30);
+  --color-border-hi:  rgba(201, 168, 76, 0.55);
+
+  /* ── Fonts ───────────────────────────────────────────────────────────── */
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-bebas:     'Bebas Neue', sans-serif;
+  --font-dm:        'DM Sans', sans-serif;
+  --font-sans:      'DM Sans', sans-serif;
+
+  /* ── Backdrop blur ───────────────────────────────────────────────────── */
+  --blur-xs: 2px;
+
+  /* ── Animation shorthands → animate-* utility classes ───────────────── */
+
+  /* CategoriesSection */
+  --animate-cat-reveal:         catReveal 0.6s ease both;
+
+  /* Shared */
+  --animate-orb-float:          orbFloat 14s ease-in-out infinite;
+  --animate-fade-down:          fadeDown 0.8s ease both;
+  --animate-fade-up:            fadeUp 0.9s ease both;
+  --animate-marquee-left:       marqueeLeft 32s linear infinite;
+  --animate-marquee-right:      marqueeRight 32s linear infinite;
+
+  /* SpeakersSection */
+  --animate-spin-slow:          spinSlow 20s linear infinite;
+  --animate-spin-slow-reverse:  spinSlowReverse 35s linear infinite;
+  --animate-roster-reveal:      rosterReveal 0.5s ease both;
+  --animate-tag-marquee:        tagMarquee 30s linear infinite;
+
+  /* WebinarDiscovery */
+  --animate-card-reveal:        cardReveal 0.5s ease both;
+
+  /* ── Keyframes ───────────────────────────────────────────────────────── */
+
+  /* CategoriesSection: vertical card entrance */
+  @keyframes catReveal {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* WebinarDiscovery: card entrance (slightly shorter Y) */
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Shared float / fade */
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%       { transform: translateY(-36px) scale(1.04); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Horizontal marquee scrolls */
+  @keyframes marqueeLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes marqueeRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  @keyframes tagMarquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* SpeakersSection: orbital portrait rings */
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes spinSlowReverse {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+
+  /* SpeakersSection: roster row slide-in */
+  @keyframes rosterReveal {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Status dots (ping + pulse) */
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+  }
+}
+
+/* ─── Raw CSS variables (for inline style / var() access in TSX) ─────────── */
+:root {
+  --obsidian:     #080a0f;
+  --obsidian-2:   #0d1118;
+  --obsidian-3:   #12161f;
+  --obsidian-4:   #181d28;
+
+  --gold:         #c9a84c;
+  --gold-light:   #e8c97e;
+  --gold-pale:    #f5e6c0;
+  --gold-dim:     rgba(201, 168, 76, 0.10);
+  --gold-glow:    rgba(201, 168, 76, 0.22);
+
+  --cyan:         #00d4ff;
+  --cyan-dim:     rgba(0, 212, 255, 0.08);
+  --green:        #00e5a0;
+  --green-dim:    rgba(0, 229, 160, 0.08);
+
+  --ivory:        #f0ede6;
+  --ivory-dim:    rgba(240, 237, 230, 0.55);
+  --ivory-muted:  rgba(240, 237, 230, 0.28);
+
+  --border:       rgba(201, 168, 76, 0.14);
+  --border-mid:   rgba(201, 168, 76, 0.30);
+  --border-hi:    rgba(201, 168, 76, 0.55);
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-bebas:   'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+/* ─── Base resets ───────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--obsidian);
+    color: var(--ivory);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: var(--obsidian-2); }
+  ::-webkit-scrollbar-thumb  { background: var(--border-mid); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  ::selection {
+    background: rgba(201, 168, 76, 0.25);
+    color: var(--ivory);
+  }
+}
+
+/* ─── Custom utilities (plain CSS — no @apply) ──────────────────────────────── */
+
+/* Clip corners */
+.clip-corner-sm {
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.clip-corner-md {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.clip-corner-lg {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+.clip-corner-xl {
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+
+/* Bevel clips (used in buttons and pagination) */
+.clip-bevel-xs {
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+}
+.clip-bevel-sm {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.clip-bevel-md {
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+.clip-bevel-lg {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.clip-bevel-xl {
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+
+/* Gold gradient text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #c9a84c, #e8c97e, #f5e6c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Noise texture */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* Blueprint grid — used in WebinarDiscovery section background */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(201, 168, 76, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 168, 76, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Gold rule */
+.border-gold-rule {
+  border-image: linear-gradient(90deg, transparent, #c9a84c, transparent) 1;
+}
+.gold-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent);
+}
+
+/* Font helpers */
+.font-display { font-family: var(--font-display); }
+.font-bebas   { font-family: var(--font-bebas); }
+.font-body    { font-family: var(--font-body); }
+
+/* Tabular numbers */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Eyebrow label ──────────────────────────────────────────────────────────── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #c9a84c);
+}
+.eyebrow-text {
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #c9a84c;
+}
+
+/* ─── Status dot (animated ping) ─────────────────────────────────────────────── */
+.status-dot {
+  position: relative;
+  display: flex;
+  height: 5px;
+  width: 5px;
+  flex-shrink: 0;
+}
+.status-dot::before {
+  content: '';
+  position: absolute;
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  opacity: 0.6;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.status-dot::after {
+  content: '';
+  position: relative;
+  display: inline-flex;
+  border-radius: 9999px;
+  height: 5px;
+  width: 5px;
+}
+.status-dot.live::before,  .status-dot.live::after  { background-color: #00e5a0; }
+.status-dot.open::before,  .status-dot.open::after  { background-color: #00d4ff; }
+.status-dot.gold::before,  .status-dot.gold::after  { background-color: #c9a84c; }
