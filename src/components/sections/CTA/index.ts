@@ -1,0 +1,12 @@
+// export { default } from "./CTAAndFooter";
+// export { default as CTASection } from "./CTASection";
+// export { default as Footer } from "./Footer";
+// export { default as RegistrationForm } from "./RegistrationForm";
+// export { default as SocialProofStrip } from "./SocialProofStrip";
+// export { default as CountUp } from "./CountUp";
+// export { default as FooterBrandCol } from "./FooterBrandCol";
+// export { default as FooterNavCol } from "./FooterNavCol";
+// export { default as FooterMidNewsletter } from "../../layout/FooterMidNewsletter";
+// export { default as FooterBottom } from "../../layout/FooterBottom";
+// export * from "./constants";
+// export type * from "./types";
