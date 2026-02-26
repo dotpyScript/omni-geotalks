@@ -1,0 +1,19 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADD THIS KEYFRAME TO YOUR globals.css @theme block
+   (alongside orbFloat, fadeDown, fadeUp, etc.)
+
+   It was previously only defined inside the CTAAndFooter inline <style> block.
+   Moving it here makes it available as a Tailwind utility: animate-diamond-float
+─────────────────────────────────────────────────────────────────────────────── */
+
+/*
+  Inside your existing @theme { ... } block, add:
+
+  --animate-diamond-float: diamondFloat 8s ease-in-out infinite;
+
+  @keyframes diamondFloat {
+    0%,  100% { transform: rotate(45deg) translateY(0);     opacity: 0.15; }
+    50%        { transform: rotate(45deg) translateY(-14px); opacity: 0.3;  }
+  }
+
+─────────────────────────────────────────────────────────────────────────────── */

@@ -29,11 +29,11 @@ export interface NavbarProps {
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
 const DEFAULT_LINKS: NavLink[] = [
+  { label: 'Home', href: '/' },
+  // { label: 'Categories', href: '/categories' },
+  // { label: 'Speakers', href: '/speakers' },
   { label: 'Webinars', href: '/webinars' },
-  { label: 'Categories', href: '/categories' },
-  { label: 'Speakers', href: '/speakers' },
-  { label: 'Recordings', href: '/recordings' },
-  { label: 'About', href: '/about' },
+  // { label: 'About', href: '/about' },
 ];
 
 // ─── Motion variants ──────────────────────────────────────────────────────────

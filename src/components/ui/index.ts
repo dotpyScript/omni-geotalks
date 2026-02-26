@@ -18,7 +18,7 @@ export {
   SpeakerAvatarGroup,
   PlatformChip,
   SpotlightBar,
-} from './Card';
+} from '../sections/heroSection/Card';
 export type {
   CardProps,
   EventCardProps,
@@ -27,24 +27,31 @@ export type {
   CardStatus,
   SpeakerAvatarProps,
   SpeakerAvatarGroupProps,
-} from './Card';
+} from '../sections/heroSection/Card';
 
-export { StatCounter, StatsGrid, HeroStats } from './StatCounter';
+export {
+  StatCounter,
+  StatsGrid,
+  HeroStats,
+} from '../sections/heroSection/StatCounter';
 export type {
   StatCounterProps,
   StatsGridProps,
   HeroStatsProps,
   StatItem,
   StatVariant,
-} from './StatCounter';
+} from '../sections/heroSection/StatCounter';
 
-export { Countdown } from './Countdown';
-export type { CountdownProps, CountdownVariant } from './Countdown';
+export { Countdown } from '../sections/heroSection/Countdown';
+export type {
+  CountdownProps,
+  CountdownVariant,
+} from '../sections/heroSection/Countdown';
 
-export { Marquee, IEGS_TICKER_ITEMS } from './Marquee';
+export { Marquee, IEGS_TICKER_ITEMS } from '../sections/heroSection/Marquee';
 export type {
   MarqueeProps,
   MarqueeItem,
   MarqueeVariant,
   MarqueeDirection,
-} from './Marquee';
+} from '../sections/heroSection/Marquee';

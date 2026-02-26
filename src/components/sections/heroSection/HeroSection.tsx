@@ -7,27 +7,34 @@ import { ArrowRight, Play } from 'lucide-react';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 import { Button } from '@/components/ui/Button';
-import { HeroRightPanel } from './HeroRightPanel';
+import {
+  EventCard,
+  type EventCardProps,
+} from '@/components/sections/heroSection/Card';
 import {
   HeroStats,
   type StatItem,
 } from '@/components/sections/heroSection/StatCounter';
+import { Countdown } from '@/components/sections/heroSection/Countdown';
 import {
   Marquee,
   IEGS_TICKER_ITEMS,
 } from '@/components/sections/heroSection/Marquee';
-import { cn, fadeUp, staggerContainer, FONTS } from '@/lib/utils';
-import type { EventCardProps } from '@/components/sections/heroSection/Card';
+import { cn, fadeUp, fadeLeft, staggerContainer, FONTS } from '@/lib/utils';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface HeroSectionProps {
+  /** Override the default stats */
   stats?: StatItem[];
+  /** Override featured webinar cards */
   webinars?: Omit<EventCardProps, 'onAction'>[];
+  /** ISO string for the countdown target */
   nextWebinarDate?: string;
+  /** Countdown label */
   countdownLabel?: string;
 }
 
-// ─── Particle canvas (unchanged) ─────────────────────────────────────────────
+// ─── Particle canvas ──────────────────────────────────────────────────────────
 function ParticleCanvas() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -57,6 +64,7 @@ function ParticleCanvas() {
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
     };
+
     resize();
     window.addEventListener('resize', resize);
 
@@ -72,9 +80,11 @@ function ParticleCanvas() {
 
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
+
       for (const p of particles) {
         p.x = (p.x + p.vx + W) % W;
         p.y = (p.y + p.vy + H) % H;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.gold
@@ -82,6 +92,8 @@ function ParticleCanvas() {
           : `rgba(0,212,255,${p.alpha * 0.5})`;
         ctx.fill();
       }
+
+      // Connecting lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i]!.x - particles[j]!.x;
@@ -97,10 +109,12 @@ function ParticleCanvas() {
           }
         }
       }
+
       raf = requestAnimationFrame(draw);
     };
 
     draw();
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
@@ -175,7 +189,7 @@ const DEFAULT_WEBINARS: Omit<EventCardProps, 'onAction'>[] = [
   },
 ];
 
-// ─── Hero left column (unchanged) ────────────────────────────────────────────
+// ─── Hero left column ─────────────────────────────────────────────────────────
 function HeroLeft({ stats }: { stats: StatItem[] }) {
   return (
     <motion.div
@@ -255,6 +269,7 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
         <Button variant='primary' size='lg' rightIcon={ArrowRight} clipped>
           Browse Webinars
         </Button>
+
         <Button variant='ghost' size='lg' leftIcon={Play} clipped={false}>
           Watch Recordings
         </Button>
@@ -292,11 +307,83 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
   );
 }
 
+// ─── Hero right column ────────────────────────────────────────────────────────
+function HeroRight({
+  webinars,
+  nextWebinarDate,
+  countdownLabel,
+}: {
+  webinars: Omit<EventCardProps, 'onAction'>[];
+  nextWebinarDate: string;
+  countdownLabel: string;
+}) {
+  return (
+    <motion.div
+      variants={fadeLeft}
+      custom={0.3}
+      initial='hidden'
+      animate='visible'
+      className={cn(
+        'flex flex-col gap-4 py-[70px] pl-14 lg:pl-[56px]',
+        'border-l border-[rgba(201,168,76,0.14)]',
+      )}
+    >
+      {/* Webinar cards */}
+      {webinars.map((w, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            delay: 0.4 + i * 0.12,
+            duration: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <EventCard
+            {...w}
+            onAction={() => {
+              // navigate to webinar detail page
+              console.log('Navigate to webinar:', w.title);
+            }}
+          />
+        </motion.div>
+      ))}
+
+      {/* Countdown */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.7, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Countdown
+          targetDate={nextWebinarDate}
+          variant='card'
+          label={countdownLabel}
+          showSeconds
+        />
+      </motion.div>
+
+      {/* Note */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.85 }}
+        className='flex items-center gap-2 text-[0.62rem] tracking-[0.06em] text-[rgba(240,237,230,0.25)]'
+      >
+        <span className='text-[#c9a84c] text-[0.65rem]'>◈</span>
+        All webinars are free. Registration takes under 60 seconds — no account
+        or password required.
+      </motion.p>
+    </motion.div>
+  );
+}
+
 // ─── Main HeroSection ─────────────────────────────────────────────────────────
 export function HeroSection({
   stats = DEFAULT_STATS,
   webinars = DEFAULT_WEBINARS,
-  nextWebinarDate = '2025-05-22T13:00:00Z',
+  nextWebinarDate = '2025-05-22T13:00:00Z', // UTC — next published webinar
   countdownLabel = 'Next Session Begins In',
 }: HeroSectionProps) {
   return (
@@ -316,7 +403,7 @@ export function HeroSection({
 
       {/* Gold orbs */}
       <div
-        className='absolute -top-36 -right-24 w-[560px] h-[560px] rounded-full pointer-events-none blur-[90px] z-0'
+        className='absolute -top-36 -right-24 w-[560px] h-[560px] rounded-full bg-radial-gold pointer-events-none blur-[90px] opacity-100 z-0'
         style={{
           background:
             'radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%)',
@@ -333,21 +420,19 @@ export function HeroSection({
       />
 
       {/* Gold horizontal rules */}
-      {/* <div
+      <div
         className='absolute top-[86px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.18)] to-transparent pointer-events-none z-[1]'
         aria-hidden
       />
       <div
         className='absolute bottom-[110px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.18)] to-transparent pointer-events-none z-[1]'
         aria-hidden
-      /> */}
+      />
 
       {/* ── Content ── */}
       <div className='relative z-[5] flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 px-6 lg:px-[60px]'>
         <HeroLeft stats={stats} />
-
-        {/* ── NEW right panel ── */}
-        <HeroRightPanel
+        <HeroRight
           webinars={webinars}
           nextWebinarDate={nextWebinarDate}
           countdownLabel={countdownLabel}
@@ -368,4 +453,5 @@ export function HeroSection({
   );
 }
 
+// Default export for page-level use
 export default HeroSection;
