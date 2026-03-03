@@ -11,7 +11,7 @@ export default function CTASection() {
     /*
      * .cta-section — bg-obsidian-2, overflow-hidden, font-dm
      */
-    <section className="relative overflow-hidden font-dm" style={{ background: 'linear-gradient(180deg, #100c15 0%, #120e18 50%, #0f0c14 100%)' }}>
+    <section className="relative overflow-hidden font-dm" style={{ background: 'linear-gradient(180deg, var(--obsidian-4) 0%, var(--obsidian-3) 50%, var(--obsidian-4) 100%)' }}>
 
       {/* ── Top gold rule (.cta-section__rule) ─────────────────────────
            1px full-width gradient line */}

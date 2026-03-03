@@ -45,7 +45,7 @@ export default function HowItWorksSection() {
     <section
       ref={sectionRef}
       className="relative font-dm text-ivory overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #0e1624 0%, #111a28 50%, #0d1422 100%)' }}
+      style={{ background: 'linear-gradient(180deg, var(--obsidian-2) 0%, var(--obsidian-3) 50%, var(--obsidian-2) 100%)' }}
     >
       {/* ── Blueprint grid overlay (.hiw::before) ───────────────────────
            bg-grid is a global utility defined in globals.css */}

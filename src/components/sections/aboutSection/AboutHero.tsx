@@ -39,9 +39,9 @@ export function AboutHero() {
         >
           <span
             aria-hidden='true'
-            className='w-8 h-px bg-gradient-to-r from-transparent to-[#c9a84c]'
+            className='w-8 h-px bg-gradient-to-r from-transparent to-(--gold)'
           />
-          <span className='text-[0.68rem] tracking-[0.35em] uppercase text-[#c9a84c]'>
+          <span className='text-[0.68rem] tracking-[0.35em] uppercase text-(--gold)'>
             Who We Are
           </span>
         </div>
@@ -57,11 +57,11 @@ export function AboutHero() {
           <h2
             className={[
               "font-['Cormorant_Garamond',serif] font-light leading-[1.06]",
-              'text-[#f0ede6]',
+              'text-(--ivory)',
               // clamp(2.4rem, 4vw, 3.8rem)
               'text-[clamp(2.4rem,4vw,3.8rem)]',
               // Italic parts styled gold via [&_em] selector
-              '[&_em]:italic [&_em]:text-[#e8c97e] [&_em]:not-italic',
+              '[&_em]:italic [&_em]:text-(--gold-light)',
             ].join(' ')}
           >
             The <em>Intelligence Hub</em> for Africa’s Geospatial Renaissance.
@@ -80,7 +80,7 @@ export function AboutHero() {
         {/* Short intro paragraph */}
         <p
           className={[
-            'text-[0.85rem] leading-[1.75] text-[rgba(240,237,230,0.55)] font-light',
+            'text-[0.85rem] leading-[1.75] text-(--ivory-dim) font-light',
             'max-w-[420px] mb-12',
             'transition-[opacity,transform] duration-700 delay-200',
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
@@ -97,7 +97,6 @@ export function AboutHero() {
       <div
         className={[
           'relative flex flex-col justify-center items-center',
-          'bg-gradient-to-br from-[#0d1118] to-[#080a0f]',
           'overflow-hidden min-h-[460px]',
           // 'px-[70px] py-20',
           // 'border-r border-[rgba(201,168,76,0.14)] max-lg:border-r-0 max-lg:border-b',
@@ -105,6 +104,7 @@ export function AboutHero() {
           'transition-[opacity] duration-1000 delay-200',
           inView ? 'opacity-100' : 'opacity-0',
         ].join(' ')}
+        style={{ background: 'linear-gradient(to bottom right, var(--obsidian-2), var(--obsidian))' }}
       >
         {/* Large faint "IEGS" word mark */}
         <div

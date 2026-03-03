@@ -36,44 +36,43 @@ export interface ButtonProps extends Omit<
 // ─── Variant styles ───────────────────────────────────────────────────────────
 const variantStyles: Record<ButtonVariant, string> = {
   primary: [
-    'bg-gradient-to-br from-[#c9a84c] to-[#e8c97e]',
-    'text-[#080a0f] font-medium',
+    'bg-gradient-to-br from-(--gold) to-(--gold-light)',
+    'text-(--obsidian) font-medium',
     'border border-transparent',
     'shadow-[0_4px_24px_rgba(201,168,76,0.25)]',
-    'hover:from-[#e8c97e] hover:to-[#f5e6c0]',
+    'hover:from-(--gold-light) hover:to-(--gold-pale)',
     'hover:shadow-[0_8px_36px_rgba(201,168,76,0.4)]',
-    'disabled:from-[#c9a84c]/40 disabled:to-[#e8c97e]/40',
   ].join(' '),
 
   ghost: [
     'bg-transparent',
-    'text-[rgba(240,237,230,0.55)]',
-    'border border-[rgba(201,168,76,0.16)]',
-    'hover:border-[rgba(201,168,76,0.4)]',
-    'hover:text-[#f0ede6]',
-    'hover:bg-[rgba(201,168,76,0.06)]',
+    'text-(--ivory-dim)',
+    'border border-(--border)',
+    'hover:border-(--border-mid)',
+    'hover:text-(--ivory)',
+    'hover:bg-(--gold-dim)',
   ].join(' '),
 
   outline: [
     'bg-transparent',
-    'text-[rgba(240,237,230,0.55)]',
-    'border border-[rgba(240,237,230,0.2)]',
-    'hover:border-[rgba(240,237,230,0.45)]',
-    'hover:text-[#f0ede6]',
-    'hover:bg-[rgba(240,237,230,0.04)]',
+    'text-(--ivory-dim)',
+    'border border-(--border)',
+    'hover:border-(--border-mid)',
+    'hover:text-(--ivory)',
+    'hover:bg-(--gold-dim)',
   ].join(' '),
 
   cyan: [
-    'bg-[rgba(0,212,255,0.1)]',
-    'text-[#00d4ff]',
-    'border border-[rgba(0,212,255,0.25)]',
+    'bg-(--cyan-dim)',
+    'text-(--cyan)',
+    'border border-(--cyan-dim)',
     'hover:bg-[rgba(0,212,255,0.18)]',
     'hover:border-[rgba(0,212,255,0.5)]',
     'hover:shadow-[0_4px_20px_rgba(0,212,255,0.2)]',
   ].join(' '),
 
   green: [
-    'bg-gradient-to-br from-[#00e5a0] to-[#00c882]',
+    'bg-gradient-to-br from-(--green) to-[#00c882]',
     'text-[#001a10] font-medium',
     'border border-transparent',
     'hover:from-[#00c882] hover:to-[#00b070]',
@@ -90,12 +89,12 @@ const variantStyles: Record<ButtonVariant, string> = {
   ].join(' '),
 
   dark: [
-    'bg-[#12161f]',
-    'text-[rgba(240,237,230,0.55)]',
-    'border border-[rgba(201,168,76,0.14)]',
-    'hover:border-[rgba(201,168,76,0.3)]',
-    'hover:text-[#f0ede6]',
-    'hover:bg-[#181d28]',
+    'bg-(--obsidian-3)',
+    'text-(--ivory-dim)',
+    'border border-(--border)',
+    'hover:border-(--border-mid)',
+    'hover:text-(--ivory)',
+    'hover:bg-(--obsidian-4)',
   ].join(' '),
 };
 
@@ -164,7 +163,7 @@ export function Button({
         "font-['DM_Sans'] uppercase font-medium",
         'transition-all duration-250 ease-out',
         'select-none cursor-pointer',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a84c]/50',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)/50',
         'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
         // Variant
         variantStyles[variant],
@@ -179,7 +178,7 @@ export function Button({
       {/* Shimmer overlay on primary */}
       {variant === 'primary' && (
         <motion.span
-          className='absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0'
+          className='absolute inset-0 bg-linear-to-r from-white/0 via-white/15 to-white/0'
           initial={{ x: '-100%' }}
           whileHover={{ x: '100%' }}
           transition={{ duration: 0.55, ease: 'easeInOut' }}
@@ -262,7 +261,7 @@ export function IconButton({
       className={cn(
         'inline-flex items-center justify-center',
         'transition-all duration-200',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a84c]/50',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)/50',
         'disabled:opacity-40 disabled:cursor-not-allowed',
         variantStyles[variant],
         padding[size],

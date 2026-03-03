@@ -57,6 +57,29 @@
   --animate-marquee-right: marqueeRight 32s linear infinite;
   --animate-cat-reveal: catReveal 0.6s ease both;
 
+  /* ── Speaker section animations ──────────────────────────────────────── */
+  --animate-spin-slow: spinSlow 20s linear infinite;
+  --animate-spin-slow-reverse: spinSlowReverse 35s linear infinite;
+  --animate-roster-reveal: rosterReveal 0.5s ease both;
+  --animate-tag-marquee: tagMarquee 30s linear infinite;
+
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes spinSlowReverse {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+  @keyframes rosterReveal {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes tagMarquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
   @keyframes orbFloat {
     0%,
     100% {
@@ -121,35 +144,95 @@
   }
 }
 
-/* ─── Raw CSS variables (for direct var() use in component inline styles) ── */
+/* ─── Raw CSS variables — DARK MODE (default) ───────────────────────────────
+   These are the semantic tokens used throughout all components via var().
+   Light mode overrides them inside [data-theme="light"] below.
+─────────────────────────────────────────────────────────────────────────── */
 :root {
+  color-scheme: dark;
+
+  /* Backgrounds */
   --obsidian: #080a0f;
   --obsidian-2: #0d1118;
   --obsidian-3: #12161f;
   --obsidian-4: #181d28;
 
+  /* Gold */
   --gold: #c9a84c;
   --gold-light: #e8c97e;
   --gold-pale: #f5e6c0;
   --gold-dim: rgba(201, 168, 76, 0.1);
   --gold-glow: rgba(201, 168, 76, 0.22);
 
+  /* Accents */
   --cyan: #00d4ff;
   --cyan-dim: rgba(0, 212, 255, 0.08);
   --green: #00e5a0;
   --green-dim: rgba(0, 229, 160, 0.08);
 
+  /* Text */
   --ivory: #f0ede6;
   --ivory-dim: rgba(240, 237, 230, 0.55);
   --ivory-muted: rgba(240, 237, 230, 0.28);
 
+  /* Borders */
   --border: rgba(201, 168, 76, 0.14);
   --border-mid: rgba(201, 168, 76, 0.3);
   --border-hi: rgba(201, 168, 76, 0.55);
 
+  /* Typography */
   --font-display: 'Cormorant Garamond', serif;
   --font-bebas: 'Bebas Neue', sans-serif;
   --font-body: 'DM Sans', sans-serif;
+
+  /* Navbar frosted background */
+  --nav-bg: rgba(8, 10, 15, 0.92);
+  /* Floating badge / card frosted surface */
+  --surface-haze: rgba(8, 10, 15, 0.94);
+}
+
+/* ─── Light Mode token overrides ────────────────────────────────────────────
+   Philosophy: "Aged cartographic paper meets modern precision."
+   Warm parchment backgrounds, deep ink text, darkened gold for contrast.
+   Toggle by setting data-theme="light" on <html>.
+   No component changes needed — all var() references cascade automatically.
+─────────────────────────────────────────────────────────────────────────── */
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* ── Backgrounds: warm parchment/survey-paper tones ──────────────────── */
+  --obsidian: #f5f2eb; /* Base page bg — warm parchment                */
+  --obsidian-2: #ede9df; /* Subtle section bg                             */
+  --obsidian-3: #e4dfd3; /* Card / panel surfaces                         */
+  --obsidian-4: #d9d3c5; /* Deepest surface, input fields, hover states   */
+
+  /* ── Gold: deepened for WCAG contrast on light surfaces ─────────────── */
+  --gold: #a8751e; /* Primary gold — darkened from #c9a84c          */
+  --gold-light: #c9a84c; /* Original gold becomes "light" variant         */
+  --gold-pale: #7a5512; /* Deepest gold, used for emphasis / headings    */
+  --gold-dim: rgba(168, 117, 30, 0.1);
+  --gold-glow: rgba(168, 117, 30, 0.16);
+
+  /* ── Accents: richer, non-neon equivalents ───────────────────────────── */
+  --cyan: #0077aa; /* Deep teal-blue (replaces #00d4ff neon)        */
+  --cyan-dim: rgba(0, 119, 170, 0.1);
+  --green: #007a54; /* Forest green (replaces #00e5a0 neon)          */
+  --green-dim: rgba(0, 122, 84, 0.1);
+
+  /* ── Text: warm near-black ink tones ────────────────────────────────── */
+  --ivory: #1c1a14; /* Primary text — warm near-black   */
+  --ivory-dim: rgba(28, 26, 20, 0.6); /* Secondary / body copy           */
+  --ivory-muted: rgba(28, 26, 20, 0.38); /* Placeholders, captions, labels  */
+
+  /* ── Borders ─────────────────────────────────────────────────────────── */
+  --border: rgba(168, 117, 30, 0.18);
+  --border-mid: rgba(168, 117, 30, 0.35);
+  --border-hi: rgba(168, 117, 30, 0.6);
+
+  /* Navbar frosted background */
+  --nav-bg: rgba(245, 242, 235, 0.92);
+  /* Floating badge / card frosted surface */
+  --surface-haze: rgba(245, 242, 235, 0.94);
 }
 
 /* ─── Base resets ───────────────────────────────────────────────────────────── */
@@ -176,6 +259,10 @@
     font-weight: 300;
     line-height: 1.6;
     overflow-x: hidden;
+    /* Smooth colour transition when toggling themes */
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   ::-webkit-scrollbar {
@@ -307,6 +394,14 @@
   background-clip: text;
 }
 
+/* Light mode: gold gradient shifts darker for contrast */
+[data-theme='light'] .text-gold-gradient {
+  background: linear-gradient(135deg, #7a5512, #a8751e, #c9a84c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Noise texture overlay */
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
@@ -321,6 +416,14 @@
   background-size: 48px 48px;
 }
 
+/* Light mode: slightly stronger grid lines to show on parchment */
+[data-theme='light'] .bg-grid {
+  background-image:
+    linear-gradient(rgba(168, 117, 30, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 117, 30, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
 /* Gold rule */
 .border-gold-rule {
   border-image: linear-gradient(90deg, transparent, #c9a84c, transparent) 1;
@@ -332,6 +435,15 @@
     to right,
     transparent,
     rgba(201, 168, 76, 0.2),
+    transparent
+  );
+}
+
+[data-theme='light'] .gold-rule {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(168, 117, 30, 0.35),
     transparent
   );
 }
@@ -382,6 +494,14 @@
   color: #c9a84c;
 }
 
+/* Light mode eyebrow: darker gold for legibility */
+[data-theme='light'] .eyebrow::before {
+  background: linear-gradient(to right, transparent, #a8751e);
+}
+[data-theme='light'] .eyebrow-text {
+  color: #a8751e;
+}
+
 /* ─── Status dot (animated ping) ─────────────────────────────────────────────── */
 .status-dot {
   position: relative;
@@ -419,4 +539,18 @@
 .status-dot.gold::before,
 .status-dot.gold::after {
   background-color: #c9a84c;
+}
+
+/* Light mode status dots: richer colours for parchment backgrounds */
+[data-theme='light'] .status-dot.live::before,
+[data-theme='light'] .status-dot.live::after {
+  background-color: #007a54;
+}
+[data-theme='light'] .status-dot.open::before,
+[data-theme='light'] .status-dot.open::after {
+  background-color: #0077aa;
+}
+[data-theme='light'] .status-dot.gold::before,
+[data-theme='light'] .status-dot.gold::after {
+  background-color: #a8751e;
 }

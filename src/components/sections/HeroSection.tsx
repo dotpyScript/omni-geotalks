@@ -71,6 +71,11 @@ function ParticleCanvas() {
     }));
 
     const draw = () => {
+      const isLight =
+        document.documentElement.getAttribute('data-theme') === 'light';
+      const goldRgb = isLight ? '168,117,30' : '201,168,76';
+      const cyanRgb = isLight ? '0,119,170' : '0,212,255';
+
       ctx.clearRect(0, 0, W, H);
       for (const p of particles) {
         p.x = (p.x + p.vx + W) % W;
@@ -78,8 +83,8 @@ function ParticleCanvas() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.gold
-          ? `rgba(201,168,76,${p.alpha})`
-          : `rgba(0,212,255,${p.alpha * 0.5})`;
+          ? `rgba(${goldRgb},${p.alpha})`
+          : `rgba(${cyanRgb},${p.alpha * 0.5})`;
         ctx.fill();
       }
       for (let i = 0; i < particles.length; i++) {
@@ -89,7 +94,7 @@ function ParticleCanvas() {
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < 90) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(201,168,76,${0.032 * (1 - d / 90)})`;
+            ctx.strokeStyle = `rgba(${goldRgb},${0.032 * (1 - d / 90)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i]!.x, particles[i]!.y);
             ctx.lineTo(particles[j]!.x, particles[j]!.y);
@@ -190,8 +195,8 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
         custom={0.1}
         className='flex items-center gap-3.5 mb-7'
       >
-        <span className='w-8 h-px bg-gradient-to-r from-transparent to-[#c9a84c]' />
-        <span className='text-[0.68rem] tracking-[0.35em] uppercase text-[#c9a84c]'>
+        <span className='w-8 h-px bg-gradient-to-r from-transparent to-(--gold)' />
+        <span className='text-[0.68rem] tracking-[0.35em] uppercase text-(--gold)'>
           Geospatial Webinar Series · 2025
         </span>
       </motion.div>
@@ -207,11 +212,11 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
             key={cat}
             className={cn(
               'text-[0.58rem] tracking-[0.18em] uppercase',
-              'px-2.5 py-1 border border-[rgba(201,168,76,0.16)]',
-              'text-[rgba(240,237,230,0.35)] bg-[rgba(201,168,76,0.06)]',
+              'px-2.5 py-1 border border-(--border)',
               'transition-all duration-200 cursor-pointer',
-              'hover:border-[rgba(201,168,76,0.4)] hover:text-[#e8c97e]',
+              'hover:border-(--border-mid) hover:text-(--gold-light)',
             )}
+            style={{ color: 'var(--ivory-muted)', background: 'var(--gold-dim)' }}
           >
             {cat}
           </span>
@@ -222,15 +227,16 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
       <motion.h1
         variants={fadeUp}
         custom={0.28}
-        className='text-[#f0ede6] leading-[1.06] tracking-[-0.01em] mb-6'
+        className='leading-[1.06] tracking-[-0.01em] mb-6'
         style={{
           fontFamily: FONTS.display,
           fontSize: 'clamp(3rem, 5.2vw, 5.2rem)',
           fontWeight: 300,
+          color: 'var(--ivory)',
         }}
       >
         Expert Knowledge
-        <em className='block italic text-[#e8c97e]'>Across Every</em>
+        <em className='block italic text-(--gold-light)'>Across Every</em>
         <strong className='block font-semibold'>Geospatial Frontier.</strong>
       </motion.h1>
 
@@ -238,8 +244,8 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
       <motion.p
         variants={fadeUp}
         custom={0.4}
-        className='text-[rgba(240,237,230,0.55)] font-light leading-[1.7] max-w-[460px] mb-10'
-        style={{ fontSize: 'clamp(0.88rem, 1.4vw, 1.05rem)' }}
+        className='font-light leading-[1.7] max-w-115 mb-10'
+        style={{ fontSize: 'clamp(0.88rem, 1.4vw, 1.05rem)', color: 'var(--ivory-dim)' }}
       >
         IEGS hosts free, expert-led webinars covering GIS, drone surveys,
         precision agriculture, oil &amp; gas intelligence, and remote sensing —
@@ -266,20 +272,21 @@ function HeroLeft({ stats }: { stats: StatItem[] }) {
         custom={0.62}
         className={cn(
           'flex items-center gap-2.5 flex-wrap',
-          'mt-8 pt-7 border-t border-[rgba(201,168,76,0.14)]',
+          'mt-8 pt-7 border-t border-(--border)',
         )}
       >
-        <span className='text-[0.6rem] tracking-[0.22em] uppercase text-[rgba(240,237,230,0.28)]'>
+        <span className='text-[0.6rem] tracking-[0.22em] uppercase text-(--ivory-muted)'>
           Hosted via
         </span>
         {['Zoom', 'Google Meet', 'Zoho'].map((p) => (
           <span
             key={p}
-            className={cn(
-              'text-[0.58rem] tracking-[0.14em] uppercase',
-              'px-2.5 py-1 border border-[rgba(0,212,255,0.2)]',
-              'text-[#00d4ff] bg-[rgba(0,212,255,0.06)]',
-            )}
+            className='text-[0.58rem] tracking-[0.14em] uppercase px-2.5 py-1 border'
+            style={{
+              borderColor: 'var(--cyan-dim)',
+              color: 'var(--cyan)',
+              background: 'var(--cyan-dim)',
+            }}
           >
             {p}
           </span>
@@ -300,7 +307,10 @@ export function HeroSection({
   countdownLabel = 'Next Session Begins In',
 }: HeroSectionProps) {
   return (
-    <section className='relative min-h-screen bg-[#080a0f] overflow-hidden flex flex-col'>
+    <section
+      className='relative min-h-screen overflow-hidden flex flex-col'
+      style={{ background: 'var(--obsidian)' }}
+    >
       {/* ── Background effects ── */}
       <ParticleCanvas />
 
@@ -319,7 +329,7 @@ export function HeroSection({
         className='absolute -top-36 -right-24 w-[560px] h-[560px] rounded-full pointer-events-none blur-[90px] z-0'
         style={{
           background:
-            'radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%)',
+            'radial-gradient(circle, var(--gold-glow) 0%, transparent 70%)',
         }}
         aria-hidden
       />
@@ -327,7 +337,7 @@ export function HeroSection({
         className='absolute bottom-16 -left-20 w-[400px] h-[400px] rounded-full pointer-events-none blur-[90px] z-0'
         style={{
           background:
-            'radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%)',
+            'radial-gradient(circle, var(--cyan-dim) 0%, transparent 70%)',
         }}
         aria-hidden
       />

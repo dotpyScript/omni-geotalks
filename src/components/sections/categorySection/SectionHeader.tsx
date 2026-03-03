@@ -38,9 +38,9 @@ export function SectionHeader({ eyebrow, title, subtitle }: SectionHeaderProps) 
             {/* Gold decorative line */}
             <span
               aria-hidden="true"
-              className="w-8 h-px bg-gradient-to-r from-transparent to-[#c9a84c]"
+              className="w-8 h-px bg-gradient-to-r from-transparent to-(--gold)"
             />
-            <span className="text-[0.68rem] tracking-[0.35em] uppercase text-[#c9a84c]">
+            <span className="text-[0.68rem] tracking-[0.35em] uppercase text-(--gold)">
               {eyebrow}
             </span>
           </div>
@@ -49,11 +49,11 @@ export function SectionHeader({ eyebrow, title, subtitle }: SectionHeaderProps) 
         <h2
           className={[
             "font-['Cormorant_Garamond',serif] font-light leading-[1.06]",
-            "text-[#f0ede6]",
+            "text-(--ivory)",
             // clamp(2.4rem, 4vw, 3.8rem)
             "text-[clamp(2.4rem,4vw,3.8rem)]",
             // Italic parts styled gold via [&_em] selector
-            "[&_em]:italic [&_em]:text-[#e8c97e] [&_em]:not-italic",
+            "[&_em]:italic [&_em]:text-(--gold-light)",
           ].join(" ")}
         >
           {title}
@@ -62,7 +62,7 @@ export function SectionHeader({ eyebrow, title, subtitle }: SectionHeaderProps) 
 
       {/* ── Right column: subtitle ────────────────────────────────────── */}
       {subtitle && (
-        <p className="text-[0.88rem] leading-[1.7] text-[rgba(240,237,230,0.55)] font-light max-w-[400px]">
+        <p className="text-[0.88rem] leading-[1.7] text-(--ivory-dim) font-light max-w-100">
           {subtitle}
         </p>
       )}
