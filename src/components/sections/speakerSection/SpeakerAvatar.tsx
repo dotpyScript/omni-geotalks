@@ -6,9 +6,7 @@
 
 interface SpeakerAvatarProps {
   initials: string;
-  /** Size variant */
   size?: "sm" | "lg";
-  /** Whether this avatar is currently active/selected */
   active?: boolean;
 }
 
@@ -22,20 +20,20 @@ export function SpeakerAvatar({
   return (
     <div
       className={[
-        "relative flex items-center justify-center rounded-full flex-shrink-0 overflow-hidden",
-        "font-['Cormorant_Garamond',serif] font-normal",
-        "bg-gradient-to-br from-[#181d28] to-[#12161f]",
-        "border transition-[border-color,box-shadow] duration-[250ms]",
+        "relative flex items-center justify-center rounded-full shrink-0 overflow-hidden",
+        "font-cormorant font-normal",
+        // Theme-aware gradient: obsidian-4 → obsidian-3
+        "bg-linear-to-br from-(--obsidian-4) to-(--obsidian-3)",
+        "border transition-[border-color,box-shadow] duration-250",
         // size
-        isSm ? "w-[52px] h-[52px] text-[1.1rem]" : "w-[260px] h-[260px] text-[5rem] font-light tracking-[-0.02em]",
-        // border & glow
+        isSm ? "w-13 h-13 text-[1.1rem]" : "w-65 h-65 text-[5rem] font-light tracking-[-0.02em]",
+        // border & glow — theme-aware via CSS vars
         active
-          ? "border-[#c9a84c] shadow-[0_0_16px_rgba(201,168,76,0.2)]"
-          : "border-[rgba(201,168,76,0.14)]",
-        "text-[#e8c97e]",
-        // shimmer overlay on active (sm only)
-        "group",
+          ? "border-(--gold)"
+          : "border-(--border)",
+        "text-(--gold-light)",
       ].join(" ")}
+      style={active ? { boxShadow: "0 0 16px var(--gold-glow)" } : undefined}
       aria-label={`Speaker initials: ${initials}`}
     >
       {initials}
@@ -44,7 +42,7 @@ export function SpeakerAvatar({
       {active && isSm && (
         <span
           aria-hidden="true"
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-[rgba(201,168,76,0.15)] to-transparent"
+          className="absolute inset-0 rounded-full bg-linear-to-br from-(--gold-glow) to-transparent"
         />
       )}
     </div>

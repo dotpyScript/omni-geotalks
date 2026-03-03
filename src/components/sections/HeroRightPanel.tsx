@@ -24,8 +24,6 @@ interface HeroRightPanelProps {
 }
 
 // ─── Floating wrapper ─────────────────────────────────────────────────────────
-// Plays an entrance (fade + rise) then seamlessly transitions to a continuous
-// gentle float loop — giving badges a natural, breathing feel.
 function FloatingCard({
   children,
   className,
@@ -63,7 +61,7 @@ function FloatingCard({
       }
     };
     run();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -78,8 +76,6 @@ function FloatingCard({
 }
 
 // ─── Email Confirmation Card ──────────────────────────────────────────────────
-// Looks like a real desktop mail client — macOS chrome, full email body,
-// session details panel, Zoom link with copy button, speaker avatars.
 function EmailConfirmationCard({
   webinar,
 }: {
@@ -98,20 +94,19 @@ function EmailConfirmationCard({
       <div
         className='w-full rounded-2xl overflow-hidden'
         style={{
-          background:
-            'linear-gradient(160deg, rgba(15,19,30,0.98) 0%, rgba(8,10,16,1) 100%)',
-          border: '1px solid rgba(201,168,76,0.18)',
+          background: 'var(--obsidian-2)',
+          border: '1px solid var(--border)',
           backdropFilter: 'blur(20px)',
           boxShadow:
-            '0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.06), 0 0 80px rgba(201,168,76,0.04)',
+            '0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px var(--border)',
         }}
       >
         {/* ── Window chrome ──────────────────────────────────────────────── */}
         <div
           className='flex items-center gap-3 px-4 py-3 border-b'
           style={{
-            borderColor: 'rgba(201,168,76,0.1)',
-            background: 'rgba(201,168,76,0.025)',
+            borderColor: 'var(--border)',
+            background: 'var(--gold-dim)',
           }}
         >
           {/* macOS traffic-light dots */}
@@ -134,14 +129,17 @@ function EmailConfirmationCard({
             <div
               className='flex items-center gap-1.5 px-3 py-[3px] rounded-full'
               style={{
-                background: 'rgba(201,168,76,0.05)',
-                border: '1px solid rgba(201,168,76,0.1)',
+                background: 'var(--gold-dim)',
+                border: '1px solid var(--border)',
               }}
             >
-              <Mail size={8} style={{ color: 'rgba(201,168,76,0.4)' }} />
+              <Mail size={8} style={{ color: 'var(--gold)' }} />
               <span
                 className='text-[0.44rem] tracking-[0.06em]'
-                style={{ color: 'rgba(240,237,230,0.28)', fontFamily: FONTS.body }}
+                style={{
+                  color: 'var(--ivory-muted)',
+                  fontFamily: FONTS.body,
+                }}
               >
                 no-reply@iegs.africa
               </span>
@@ -152,20 +150,18 @@ function EmailConfirmationCard({
 
         {/* ── Email body ──────────────────────────────────────────────────── */}
         <div className='px-5 pt-4 pb-5 space-y-4'>
-
           {/* Sender + confirmed badge */}
           <div className='flex items-center gap-2.5'>
             <div
               className='w-8 h-8 rounded-lg flex items-center justify-center shrink-0'
               style={{
-                background:
-                  'linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.05))',
-                border: '1px solid rgba(201,168,76,0.22)',
+                background: 'var(--gold-dim)',
+                border: '1px solid var(--border-mid)',
               }}
             >
               <span
                 style={{
-                  color: '#c9a84c',
+                  color: 'var(--gold)',
                   fontSize: 9,
                   fontFamily: "'Bebas Neue', sans-serif",
                   letterSpacing: '0.02em',
@@ -178,13 +174,19 @@ function EmailConfirmationCard({
             <div className='flex-1 min-w-0'>
               <p
                 className='text-[0.6rem] font-medium leading-none mb-[3px]'
-                style={{ color: 'rgba(240,237,230,0.65)', fontFamily: FONTS.body }}
+                style={{
+                  color: 'var(--ivory-dim)',
+                  fontFamily: FONTS.body,
+                }}
               >
                 IEGS Geospatial Series
               </p>
               <p
                 className='text-[0.46rem] leading-none'
-                style={{ color: 'rgba(240,237,230,0.25)', fontFamily: FONTS.body }}
+                style={{
+                  color: 'var(--ivory-muted)',
+                  fontFamily: FONTS.body,
+                }}
               >
                 Webinar Registration
               </p>
@@ -193,14 +195,14 @@ function EmailConfirmationCard({
             <div
               className='flex items-center gap-1.5 px-2.5 py-1 rounded-full shrink-0'
               style={{
-                background: 'rgba(0,229,160,0.08)',
-                border: '1px solid rgba(0,229,160,0.2)',
+                background: 'var(--green-dim)',
+                border: '1px solid var(--green)',
               }}
             >
-              <Check size={8} style={{ color: '#00e5a0' }} />
+              <Check size={8} style={{ color: 'var(--green)' }} />
               <span
                 className='text-[0.44rem] tracking-[0.14em] uppercase'
-                style={{ color: '#00e5a0', fontFamily: FONTS.body }}
+                style={{ color: 'var(--green)', fontFamily: FONTS.body }}
               >
                 Confirmed
               </span>
@@ -210,17 +212,20 @@ function EmailConfirmationCard({
           {/* Greeting */}
           <div
             className='pb-4 border-b'
-            style={{ borderColor: 'rgba(201,168,76,0.08)' }}
+            style={{ borderColor: 'var(--border)' }}
           >
             <p
               className='text-[0.88rem] font-light mb-1'
-              style={{ color: '#f0ede6', fontFamily: FONTS.display }}
+              style={{ color: 'var(--ivory)', fontFamily: FONTS.display }}
             >
               You&apos;re registered!
             </p>
             <p
               className='text-[0.56rem] leading-relaxed'
-              style={{ color: 'rgba(240,237,230,0.35)', fontFamily: FONTS.body }}
+              style={{
+                color: 'var(--ivory-muted)',
+                fontFamily: FONTS.body,
+              }}
             >
               Your spot is confirmed. Your session details and access link are
               below.
@@ -231,19 +236,19 @@ function EmailConfirmationCard({
           <div
             className='rounded-xl p-3.5'
             style={{
-              background: 'rgba(201,168,76,0.03)',
-              border: '1px solid rgba(201,168,76,0.1)',
+              background: 'var(--gold-dim)',
+              border: '1px solid var(--border)',
             }}
           >
             <p
               className='text-[0.44rem] tracking-[0.22em] uppercase mb-1.5'
-              style={{ color: 'rgba(201,168,76,0.5)', fontFamily: FONTS.body }}
+              style={{ color: 'var(--gold)', fontFamily: FONTS.body }}
             >
               {webinar.category}
             </p>
             <p
               className='text-[0.84rem] font-light leading-snug mb-3'
-              style={{ color: '#f0ede6', fontFamily: FONTS.display }}
+              style={{ color: 'var(--ivory)', fontFamily: FONTS.display }}
             >
               {webinar.title}
             </p>
@@ -251,11 +256,14 @@ function EmailConfirmationCard({
               <div className='flex items-center gap-2'>
                 <Clock
                   size={9}
-                  style={{ color: 'rgba(201,168,76,0.45)', flexShrink: 0 }}
+                  style={{ color: 'var(--gold)', flexShrink: 0 }}
                 />
                 <span
                   className='text-[0.54rem]'
-                  style={{ color: 'rgba(240,237,230,0.38)', fontFamily: FONTS.body }}
+                  style={{
+                    color: 'var(--ivory-dim)',
+                    fontFamily: FONTS.body,
+                  }}
                 >
                   {webinar.date} &middot; {webinar.duration}
                 </span>
@@ -263,13 +271,17 @@ function EmailConfirmationCard({
               <div className='flex items-center gap-2'>
                 <Users
                   size={9}
-                  style={{ color: 'rgba(201,168,76,0.45)', flexShrink: 0 }}
+                  style={{ color: 'var(--gold)', flexShrink: 0 }}
                 />
                 <span
                   className='text-[0.54rem]'
-                  style={{ color: 'rgba(240,237,230,0.38)', fontFamily: FONTS.body }}
+                  style={{
+                    color: 'var(--ivory-dim)',
+                    fontFamily: FONTS.body,
+                  }}
                 >
-                  {webinar.registrations?.toLocaleString()} professionals registered
+                  {webinar.registrations?.toLocaleString()} professionals
+                  registered
                 </span>
               </div>
             </div>
@@ -279,16 +291,19 @@ function EmailConfirmationCard({
           <div
             className='rounded-xl p-3.5'
             style={{
-              background: 'rgba(0,212,255,0.03)',
-              border: '1px solid rgba(0,212,255,0.1)',
+              background: 'var(--cyan-dim)',
+              border: '1px solid var(--cyan-dim)',
             }}
           >
             <div className='flex items-center justify-between mb-2'>
               <div className='flex items-center gap-1.5'>
-                <Video size={10} style={{ color: '#00d4ff' }} />
+                <Video size={10} style={{ color: 'var(--cyan)' }} />
                 <span
                   className='text-[0.46rem] tracking-[0.18em] uppercase'
-                  style={{ color: 'rgba(0,212,255,0.55)', fontFamily: FONTS.body }}
+                  style={{
+                    color: 'var(--cyan)',
+                    fontFamily: FONTS.body,
+                  }}
                 >
                   Join via {webinar.platform}
                 </span>
@@ -297,11 +312,9 @@ function EmailConfirmationCard({
                 onClick={handleCopy}
                 className='flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.44rem] tracking-[0.1em] uppercase'
                 style={{
-                  background: copied
-                    ? 'rgba(0,229,160,0.08)'
-                    : 'rgba(0,212,255,0.07)',
-                  border: `1px solid ${copied ? 'rgba(0,229,160,0.22)' : 'rgba(0,212,255,0.16)'}`,
-                  color: copied ? '#00e5a0' : '#00d4ff',
+                  background: copied ? 'var(--green-dim)' : 'var(--cyan-dim)',
+                  border: `1px solid ${copied ? 'var(--green)' : 'var(--cyan-dim)'}`,
+                  color: copied ? 'var(--green)' : 'var(--cyan)',
                   fontFamily: FONTS.body,
                 }}
                 whileTap={{ scale: 0.93 }}
@@ -334,7 +347,7 @@ function EmailConfirmationCard({
             <code
               className='text-[0.58rem] block truncate'
               style={{
-                color: 'rgba(0,212,255,0.65)',
+                color: 'var(--cyan)',
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
@@ -351,9 +364,9 @@ function EmailConfirmationCard({
                     key={i}
                     className='w-6 h-6 rounded-full flex items-center justify-center text-[0.42rem] font-semibold'
                     style={{
-                      background: 'linear-gradient(135deg, #181d28, #12161f)',
-                      border: '1.5px solid rgba(8,10,15,0.9)',
-                      color: '#e8c97e',
+                      background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                      border: '1.5px solid var(--obsidian)',
+                      color: 'var(--gold-light)',
                       marginLeft: i === 0 ? 0 : -6,
                       fontFamily: FONTS.display,
                     }}
@@ -364,7 +377,10 @@ function EmailConfirmationCard({
               </div>
               <span
                 className='text-[0.52rem] ml-1'
-                style={{ color: 'rgba(240,237,230,0.28)', fontFamily: FONTS.body }}
+                style={{
+                  color: 'var(--ivory-muted)',
+                  fontFamily: FONTS.body,
+                }}
               >
                 {webinar.speakers[0]?.name}
               </span>
@@ -372,9 +388,9 @@ function EmailConfirmationCard({
             <button
               className='flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[0.46rem] tracking-[0.1em] uppercase'
               style={{
-                background: 'rgba(201,168,76,0.05)',
-                border: '1px solid rgba(201,168,76,0.16)',
-                color: 'rgba(201,168,76,0.65)',
+                background: 'var(--gold-dim)',
+                border: '1px solid var(--border)',
+                color: 'var(--gold)',
                 fontFamily: FONTS.body,
               }}
             >
@@ -400,15 +416,15 @@ function LiveBadge() {
       <div
         className='flex items-center gap-2.5 pl-3 pr-4 py-2.5 rounded-xl'
         style={{
-          background: 'rgba(6,9,20,0.94)',
-          border: '1px solid rgba(0,229,160,0.24)',
+          background: 'var(--surface-haze)',
+          border: '1px solid var(--green)',
           backdropFilter: 'blur(16px)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
         }}
       >
         <div
           className='w-6 h-6 rounded-full flex items-center justify-center shrink-0'
-          style={{ background: 'rgba(0,229,160,0.1)' }}
+          style={{ background: 'var(--green-dim)' }}
         >
           <span className='relative flex h-[6px] w-[6px]'>
             <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e5a0] opacity-55' />
@@ -418,13 +434,17 @@ function LiveBadge() {
         <div>
           <p
             className='text-[0.58rem] font-medium leading-none mb-[3px]'
-            style={{ color: '#00e5a0', fontFamily: FONTS.body, letterSpacing: '0.06em' }}
+            style={{
+              color: 'var(--green)',
+              fontFamily: FONTS.body,
+              letterSpacing: '0.06em',
+            }}
           >
             Session Live
           </p>
           <p
             className='text-[0.46rem] leading-none'
-            style={{ color: 'rgba(240,237,230,0.28)', fontFamily: FONTS.body }}
+            style={{ color: 'var(--ivory-muted)', fontFamily: FONTS.body }}
           >
             214 watching now
           </p>
@@ -456,8 +476,16 @@ function StatBadge({
 }) {
   const c =
     color === 'gold'
-      ? { bg: 'rgba(201,168,76,0.1)', border: 'rgba(201,168,76,0.2)', text: '#e8c97e' }
-      : { bg: 'rgba(0,212,255,0.08)', border: 'rgba(0,212,255,0.2)', text: '#00d4ff' };
+      ? {
+          bg: 'var(--gold-dim)',
+          border: 'var(--border-mid)',
+          text: 'var(--gold-light)',
+        }
+      : {
+          bg: 'var(--cyan-dim)',
+          border: 'var(--cyan-dim)',
+          text: 'var(--cyan)',
+        };
 
   return (
     <FloatingCard
@@ -469,10 +497,10 @@ function StatBadge({
       <div
         className='flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl'
         style={{
-          background: 'rgba(6,9,20,0.92)',
+          background: 'var(--surface-haze)',
           border: `1px solid ${c.border}`,
           backdropFilter: 'blur(16px)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
         }}
       >
         <div
@@ -494,7 +522,7 @@ function StatBadge({
           </p>
           <p
             className='text-[0.44rem] tracking-[0.18em] uppercase mt-0.5'
-            style={{ color: 'rgba(240,237,230,0.28)', fontFamily: FONTS.body }}
+            style={{ color: 'var(--ivory-muted)', fontFamily: FONTS.body }}
           >
             {label}
           </p>
@@ -516,9 +544,8 @@ function CountdownStrip({
     <motion.div
       className='relative overflow-hidden'
       style={{
-        background:
-          'linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(201,168,76,0.02) 100%)',
-        border: '1px solid rgba(201,168,76,0.14)',
+        background: 'var(--gold-dim)',
+        border: '1px solid var(--border)',
       }}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -527,7 +554,7 @@ function CountdownStrip({
       {/* Gold top rule */}
       <div
         className='absolute top-0 left-0 right-0 h-[1px]'
-        style={{ background: 'linear-gradient(90deg, #c9a84c, transparent)' }}
+        style={{ background: 'linear-gradient(90deg, var(--gold), transparent)' }}
       />
       {/* Corner reticles */}
       {(['tl', 'tr', 'bl', 'br'] as const).map((pos) => (
@@ -539,7 +566,7 @@ function CountdownStrip({
             'bottom-0 left-0 border-b border-l': pos === 'bl',
             'bottom-0 right-0 border-b border-r': pos === 'br',
           })}
-          style={{ borderColor: 'rgba(201,168,76,0.4)' }}
+          style={{ borderColor: 'var(--border-mid)' }}
         />
       ))}
       <div className='px-4 py-3'>
@@ -560,7 +587,8 @@ export function HeroRightPanel({
   nextWebinarDate,
   countdownLabel,
 }: HeroRightPanelProps) {
-  const featuredWebinar = webinars.find((w) => w.status === 'live') ?? webinars[0]!;
+  const featuredWebinar =
+    webinars.find((w) => w.status === 'live') ?? webinars[0]!;
 
   return (
     <motion.div
@@ -570,7 +598,7 @@ export function HeroRightPanel({
       className={cn(
         'relative flex flex-col gap-4',
         'py-[70px] pl-14 lg:pl-[56px]',
-        'border-l border-[rgba(201,168,76,0.14)]',
+        'border-l border-(--border)',
       )}
     >
       {/* Vertical "BROADCAST" rule */}
@@ -579,14 +607,14 @@ export function HeroRightPanel({
           className='flex flex-col items-center gap-[6px]'
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
         >
-          <span className='w-px h-8 bg-gradient-to-t from-[rgba(201,168,76,0.3)] to-transparent' />
+          <span className='w-px h-8 bg-gradient-to-t from-(--border-mid) to-transparent' />
           <span
-            className='text-[0.48rem] tracking-[0.45em] uppercase text-[rgba(201,168,76,0.25)]'
-            style={{ fontFamily: FONTS.body }}
+            className='text-[0.48rem] tracking-[0.45em] uppercase'
+            style={{ color: 'var(--gold)', fontFamily: FONTS.body }}
           >
             Broadcast
           </span>
-          <span className='w-px h-8 bg-gradient-to-b from-[rgba(201,168,76,0.3)] to-transparent' />
+          <span className='w-px h-8 bg-gradient-to-b from-(--border-mid) to-transparent' />
         </div>
       </div>
 
@@ -598,18 +626,16 @@ export function HeroRightPanel({
         transition={{ delay: 0.4, duration: 0.65, ease: EASE_OUT_EXPO }}
       >
         <span
-          className='text-[0.56rem] tracking-[0.35em] uppercase text-[rgba(201,168,76,0.5)]'
-          style={{ fontFamily: FONTS.body }}
+          className='text-[0.56rem] tracking-[0.35em] uppercase'
+          style={{ color: 'var(--gold)', fontFamily: FONTS.body }}
         >
           Live Intelligence
         </span>
-        <div className='flex-1 h-px bg-gradient-to-r from-[rgba(201,168,76,0.2)] to-transparent' />
+        <div className='flex-1 h-px bg-gradient-to-r from-(--gold-dim) to-transparent' />
       </motion.div>
 
       {/* ── Main card + floating badges ──────────────────────────────────── */}
-      {/* Extra horizontal padding so badges that overflow don't clip */}
       <div className='relative pt-7 pb-6 pr-2'>
-
         {/* Badge: Live Now — top-left of card */}
         <LiveBadge />
 
@@ -652,10 +678,10 @@ export function HeroRightPanel({
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 0.6, ease: EASE_OUT_EXPO }}
-        className='flex items-center gap-2 text-[0.62rem] tracking-[0.06em] text-[rgba(240,237,230,0.22)]'
+        className='flex items-center gap-2 text-[0.62rem] tracking-[0.06em] text-(--ivory-muted)'
         style={{ fontFamily: FONTS.body }}
       >
-        <span className='text-[#c9a84c] text-[0.65rem]'>◈</span>
+        <span className='text-(--gold) text-[0.65rem]'>◈</span>
         All webinars are free — no account or password required.
       </motion.p>
     </motion.div>

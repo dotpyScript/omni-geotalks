@@ -79,11 +79,11 @@ export default function SpeakersSection({
 
   return (
     <section
-      className={[
-        "relative overflow-hidden",
-        "text-ivory font-['DM_Sans',sans-serif]",
-      ].join(" ")}
-      style={{ background: 'linear-gradient(180deg, #0d0910 0%, #0f0b13 50%, #0c0910 100%)' }}
+      className="relative overflow-hidden font-['DM_Sans',sans-serif]"
+      style={{
+        background: 'linear-gradient(180deg, var(--obsidian-3) 0%, var(--obsidian-4) 50%, var(--obsidian-3) 100%)',
+        color: 'var(--ivory)',
+      }}
       aria-label="Speakers"
     >
       {/* ── Top gold rule ───────────────────────────────────────────────────── */}
@@ -92,7 +92,7 @@ export default function SpeakersSection({
         className="w-full h-px opacity-20"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, #c9a84c 30%, #c9a84c 70%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%)",
         }}
       />
 
@@ -102,7 +102,7 @@ export default function SpeakersSection({
         className={[
           "absolute -top-[100px] -left-[150px] w-[600px] h-[600px] rounded-full",
           "pointer-events-none filter blur-[90px]",
-          "bg-[radial-gradient(circle,rgba(201,168,76,0.08)_0%,transparent_70%)]",
+          "bg-[radial-gradient(circle,var(--gold-dim)_0%,transparent_70%)]",
         ].join(" ")}
       />
       <div
@@ -110,7 +110,7 @@ export default function SpeakersSection({
         className={[
           "absolute bottom-0 -right-[100px] w-[400px] h-[400px] rounded-full",
           "pointer-events-none filter blur-[90px]",
-          "bg-[radial-gradient(circle,rgba(0,212,255,0.06)_0%,transparent_70%)]",
+          "bg-[radial-gradient(circle,var(--cyan-dim)_0%,transparent_70%)]",
         ].join(" ")}
       />
 

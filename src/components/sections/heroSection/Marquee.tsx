@@ -37,19 +37,19 @@ const variantStyles: Record<
 > = {
   default: {
     section:
-      'border-t border-[rgba(201,168,76,0.14)] bg-gradient-to-r from-[#080a0f] via-[#0d1118] to-[#080a0f] py-3',
-    item: 'text-[0.67rem] tracking-[0.22em] uppercase text-[rgba(240,237,230,0.35)] hover:text-[rgba(240,237,230,0.6)] transition-colors duration-200',
-    separator: 'text-[#c9a84c] opacity-40 text-[0.5rem]',
+      'border-t border-(--border) bg-gradient-to-r from-(--obsidian) via-(--obsidian-2) to-(--obsidian) py-3',
+    item: 'text-[0.67rem] tracking-[0.22em] uppercase text-(--ivory-muted) hover:text-(--ivory-dim) transition-colors duration-200',
+    separator: 'text-(--gold) opacity-40 text-[0.5rem]',
   },
   ticker: {
-    section: 'border-y border-[rgba(201,168,76,0.14)] bg-[#080a0f] py-3.5',
-    item: 'text-[0.65rem] tracking-[0.2em] uppercase text-[rgba(240,237,230,0.3)] font-light',
-    separator: 'text-[#c9a84c] opacity-50 text-[0.55rem]',
+    section: 'border-y border-(--border) bg-(--obsidian) py-3.5',
+    item: 'text-[0.65rem] tracking-[0.2em] uppercase text-(--ivory-muted) font-light',
+    separator: 'text-(--gold) opacity-50 text-[0.55rem]',
   },
   tags: {
-    section: 'border-t border-[rgba(201,168,76,0.14)] bg-[#0d1118] py-4',
-    item: 'text-[0.68rem] tracking-[0.18em] uppercase text-[rgba(240,237,230,0.4)] hover:text-[#e8c97e] transition-colors duration-200 cursor-default',
-    separator: 'text-[#c9a84c] opacity-35 text-[0.5rem]',
+    section: 'border-t border-(--border) bg-(--obsidian-2) py-4',
+    item: 'text-[0.68rem] tracking-[0.18em] uppercase text-(--ivory-dim) hover:text-(--gold-light) transition-colors duration-200 cursor-default',
+    separator: 'text-(--gold) opacity-35 text-[0.5rem]',
   },
 };
 
@@ -122,7 +122,7 @@ function MarqueeTrack({
             <span
               className={cn(
                 styles.item,
-                item.highlight && '!text-[#c9a84c]',
+                item.highlight && 'text-(--gold)!',
                 itemClassName,
               )}
             >
@@ -162,8 +162,8 @@ export function Marquee({
       )}
     >
       {/* Fade masks on edges */}
-      <div className='pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-[#080a0f] to-transparent' />
-      <div className='pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-[#080a0f] to-transparent' />
+      <div className='pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-(--obsidian) to-transparent' />
+      <div className='pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-(--obsidian) to-transparent' />
 
       <MarqueeTrack
         items={items}

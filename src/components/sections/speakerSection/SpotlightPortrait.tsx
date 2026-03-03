@@ -10,54 +10,45 @@ interface SpotlightPortraitProps {
 
 export function SpotlightPortrait({ initials }: SpotlightPortraitProps) {
   return (
-    // Centered absolutely within the spotlight panel
-    <div className="absolute inset-0 z-[1] flex items-center justify-center">
-      {/* Ring wrapper — rings are pseudo-elements via Tailwind `before:` / `after:` */}
-      <div className="relative w-[260px] h-[260px]">
+    <div className="absolute inset-0 z-1 flex items-center justify-center">
+      <div className="relative w-65 h-65">
 
         {/* Outer faint ring — spins counter-clockwise */}
         <span
           aria-hidden="true"
-          className={[
-            "absolute rounded-full pointer-events-none",
-            "border border-[rgba(201,168,76,0.08)]",
-            // -32px inset on all sides
-            "top-[-32px] right-[-32px] bottom-[-32px] left-[-32px]",
-            "animate-[spinSlowReverse_35s_linear_infinite]",
-          ].join(" ")}
+          className="absolute rounded-full pointer-events-none -top-8 -right-8 -bottom-8 -left-8 animate-spin-slow-reverse"
+          style={{ border: "1px solid var(--border)" }}
         />
 
         {/* Inner dashed ring — spins clockwise */}
         <span
           aria-hidden="true"
-          className={[
-            "absolute rounded-full pointer-events-none",
-            "border border-dashed border-[rgba(201,168,76,0.25)]",
-            // -16px inset
-            "top-[-16px] right-[-16px] bottom-[-16px] left-[-16px]",
-            "animate-[spinSlow_20s_linear_infinite]",
-          ].join(" ")}
+          className="absolute rounded-full pointer-events-none -top-4 -right-4 -bottom-4 -left-4 animate-spin-slow"
+          style={{ border: "1px dashed var(--border-mid)" }}
         />
 
         {/* Avatar circle */}
         <div
           className={[
-            "w-[260px] h-[260px] rounded-full overflow-hidden",
-            "border-[3px] border-[rgba(201,168,76,0.25)]",
-            "shadow-[0_0_60px_rgba(201,168,76,0.15),0_0_0_1px_rgba(201,168,76,0.12)]",
-            "bg-[#12161f]",
+            "w-65 h-65 rounded-full overflow-hidden",
+            "border-[3px]",
+            "bg-(--obsidian-3)",
             "flex items-center justify-center",
-            "transition-shadow duration-[400ms]",
+            "transition-shadow duration-400",
           ].join(" ")}
+          style={{
+            borderColor: "var(--border-mid)",
+            boxShadow: "0 0 60px var(--gold-glow), 0 0 0 1px var(--border)",
+          }}
         >
           {/* Initials */}
           <span
             className={[
-              "font-['Cormorant_Garamond',serif] font-light text-[5rem]",
-              "tracking-[-0.02em] text-[#e8c97e]",
-              "bg-gradient-to-br from-[#181d28] to-[#12161f]",
+              "font-cormorant font-light text-[5rem]",
+              "tracking-[-0.02em] text-(--gold-light)",
+              "bg-linear-to-br from-(--obsidian-4) to-(--obsidian-3)",
               "w-full h-full rounded-full flex items-center justify-center",
-              "transition-all duration-[400ms]",
+              "transition-all duration-400",
             ].join(" ")}
           >
             {initials}

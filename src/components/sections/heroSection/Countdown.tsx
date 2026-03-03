@@ -79,14 +79,14 @@ function UnitBlock({
 
   const numberClass = cn(
     "font-['Bebas_Neue'] leading-none tracking-[0.04em] tabular-nums",
-    variant === 'card' && 'text-[3rem] text-[#f0ede6]',
-    variant === 'default' && 'text-[2.5rem] text-[#f0ede6]',
-    variant === 'compact' && 'text-[1.6rem] text-[#f0ede6]',
-    variant === 'minimal' && 'text-[2rem] text-[#e8c97e]',
+    variant === 'card' && 'text-[3rem] text-(--ivory)',
+    variant === 'default' && 'text-[2.5rem] text-(--ivory)',
+    variant === 'compact' && 'text-[1.6rem] text-(--ivory)',
+    variant === 'minimal' && 'text-[2rem] text-(--gold-light)',
   );
 
   const labelClass = cn(
-    'tracking-[0.2em] uppercase text-[rgba(240,237,230,0.3)]',
+    'tracking-[0.2em] uppercase text-(--ivory-muted)',
     variant === 'card' && 'text-[0.58rem] mt-1.5',
     variant === 'default' && 'text-[0.58rem] mt-1',
     variant === 'compact' && 'text-[0.5rem]  mt-0.5',
@@ -97,7 +97,7 @@ function UnitBlock({
     <div
       className={cn(
         'flex flex-col items-center',
-        !isLast && 'border-r border-[rgba(201,168,76,0.14)]',
+        !isLast && 'border-r border-(--border)',
         variant === 'card' && 'flex-1 px-4 py-0',
         variant === 'default' && 'flex-1 px-3',
         variant === 'compact' && 'flex-1 px-2',
@@ -116,7 +116,7 @@ function UnitBlock({
 // ─── Separator colon (minimal variant) ───────────────────────────────────────
 function Colon() {
   return (
-    <span className="font-['Bebas_Neue'] text-[1.4rem] text-[rgba(201,168,76,0.4)] leading-none mb-2 shrink-0">
+    <span className="font-['Bebas_Neue'] text-[1.4rem] text-(--gold) leading-none mb-2 shrink-0 opacity-40">
       :
     </span>
   );
@@ -165,10 +165,10 @@ export function Countdown({
         className={cn('flex items-center justify-center gap-2 py-4', className)}
       >
         <span className='relative flex h-2.5 w-2.5'>
-          <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e5a0] opacity-75' />
-          <span className='relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00e5a0]' />
+          <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-(--green) opacity-75' />
+          <span className='relative inline-flex rounded-full h-2.5 w-2.5 bg-(--green)' />
         </span>
-        <span className='text-[#00e5a0] text-sm tracking-[0.2em] uppercase font-medium'>
+        <span className='text-(--green) text-sm tracking-[0.2em] uppercase font-medium'>
           {expiredLabel}
         </span>
       </motion.div>
@@ -182,11 +182,11 @@ export function Countdown({
         {displayUnits.map((unit, i) => (
           <div key={unit.label} className='flex items-end gap-1'>
             <div className='flex flex-col items-center'>
-              <span className="font-['Bebas_Neue'] text-[2rem] leading-none tracking-[0.04em] text-[#e8c97e] tabular-nums">
+              <span className="font-['Bebas_Neue'] text-[2rem] leading-none tracking-[0.04em] text-(--gold-light) tabular-nums">
                 <FlipDigit value={pad(unit.value)[0]!} />
                 <FlipDigit value={pad(unit.value)[1]!} />
               </span>
-              <span className='text-[0.52rem] tracking-[0.18em] uppercase text-[rgba(240,237,230,0.3)] mt-0.5'>
+              <span className='text-[0.52rem] tracking-[0.18em] uppercase text-(--ivory-muted) mt-0.5'>
                 {unit.label}
               </span>
             </div>
@@ -203,10 +203,10 @@ export function Countdown({
       {/* Label */}
       {label && (
         <div className='flex items-center gap-2 mb-4'>
-          <span className='text-[0.6rem] tracking-[0.28em] uppercase text-[#c9a84c]'>
+          <span className='text-[0.6rem] tracking-[0.28em] uppercase text-(--gold)'>
             ⬡ {label}
           </span>
-          <div className='flex-1 h-px bg-gradient-to-r from-[rgba(201,168,76,0.2)] to-transparent' />
+          <div className='flex-1 h-px bg-gradient-to-r from-(--gold-dim) to-transparent' />
         </div>
       )}
 
@@ -215,8 +215,7 @@ export function Countdown({
         className={cn(
           'flex',
           variant === 'card' && [
-            'bg-gradient-to-br from-[rgba(201,168,76,0.05)] to-[rgba(201,168,76,0.02)]',
-            'border border-[rgba(201,168,76,0.14)]',
+            'border border-(--border)',
             'py-4',
           ],
           variant === 'default' && 'gap-0',

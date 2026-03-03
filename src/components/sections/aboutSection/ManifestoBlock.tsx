@@ -27,7 +27,7 @@ export function ManifestoBlock({ lines = MANIFESTO_LINES }: ManifestoBlockProps)
       <div
         className={[
           "absolute -left-6 top-0 bottom-0 w-[2px]",
-          "bg-gradient-to-b from-[#c9a84c] via-[rgba(201,168,76,0.4)] to-transparent",
+          "bg-gradient-to-b from-(--gold) via-(--gold)/40 to-transparent",
           "transition-[transform] duration-700 origin-top",
           inView ? "scale-y-100" : "scale-y-0",
         ].join(" ")}
@@ -43,8 +43,8 @@ export function ManifestoBlock({ lines = MANIFESTO_LINES }: ManifestoBlockProps)
               "font-['Cormorant_Garamond',serif] italic font-light leading-[1.25]",
               "text-[clamp(1.5rem,3vw,2.4rem)]",
               li === 0 || li === lines.length - 1
-                ? "text-[#f0ede6]"
-                : "text-[rgba(240,237,230,0.7)]",
+                ? "text-(--ivory)"
+                : "text-(--ivory)/70",
               li < lines.length - 1 ? "mb-1" : "",
             ].join(" ")}
           >
@@ -76,8 +76,8 @@ export function ManifestoBlock({ lines = MANIFESTO_LINES }: ManifestoBlockProps)
           inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4",
         ].join(" ")}
       >
-        <span className="w-8 h-px bg-gradient-to-r from-[#c9a84c] to-transparent" aria-hidden="true" />
-        <span className="text-[0.65rem] tracking-[0.3em] uppercase text-[#c9a84c]">
+        <span className="w-8 h-px bg-gradient-to-r from-(--gold) to-transparent" aria-hidden="true" />
+        <span className="text-[0.65rem] tracking-[0.3em] uppercase text-(--gold)">
           IEGS Mission Statement
         </span>
       </div>
