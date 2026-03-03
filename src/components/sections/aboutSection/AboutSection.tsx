@@ -48,7 +48,7 @@ export default function AboutSection({
         "font-['DM_Sans',sans-serif]",
       ].join(' ')}
       style={{
-        background: 'linear-gradient(180deg, #0c0b11 0%, #0e0c13 50%, #0b0a10 100%)',
+        background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)',
       }}
       aria-labelledby='about-heading'
     >
@@ -70,7 +70,7 @@ export default function AboutSection({
         className='w-full h-px opacity-20'
         style={{
           background:
-            'linear-gradient(90deg, transparent 0%, #c9a84c 30%, #c9a84c 70%, transparent 100%)',
+            'linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%)',
         }}
       />
 
@@ -94,13 +94,13 @@ export default function AboutSection({
             className='absolute inset-0'
             style={{
               background:
-                'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.25) 30%, rgba(201,168,76,0.25) 70%, transparent 100%)',
+                'linear-gradient(90deg, transparent 0%, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent 100%)',
             }}
           />
           {/* Small gold diamond in the centre */}
           <div
             className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-              w-[8px] h-[8px] bg-[#c9a84c] rotate-45'
+              w-[8px] h-[8px] bg-(--gold) rotate-45'
           />
         </div>
 
@@ -117,7 +117,7 @@ export default function AboutSection({
         className='w-full h-px opacity-20'
         style={{
           background:
-            'linear-gradient(90deg, transparent 0%, #c9a84c 30%, #c9a84c 70%, transparent 100%)',
+            'linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%)',
         }}
       />
     </section>

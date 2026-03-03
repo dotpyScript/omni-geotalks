@@ -27,7 +27,7 @@ export function CategoryStrip({
       className={[
         "relative z-[2] mt-[2px]",
         "grid grid-cols-6",
-        "border border-[rgba(201,168,76,0.14)] border-t-0",
+        "border border-(--border) border-t-0",
         // ── Responsive ────────────────────────────────────────────────────
         "max-lg:grid-cols-3",
         "max-sm:grid-cols-2",
@@ -46,19 +46,19 @@ export function CategoryStrip({
               "group relative flex flex-col items-center justify-center gap-[6px]",
               "px-4 py-[22px] overflow-hidden",
               // ── Right border (except last) ───────────────────────────────
-              "border-r border-[rgba(201,168,76,0.14)] last:border-r-0",
+              "border-r border-(--border) last:border-r-0",
               // ── Hover / active fill ──────────────────────────────────────
               "transition-colors duration-[250ms]",
               isActive
-                ? "bg-[rgba(201,168,76,0.10)]"
-                : "hover:bg-[rgba(201,168,76,0.10)]",
+                ? "bg-(--gold-dim)"
+                : "hover:bg-(--gold-dim)",
             ].join(" ")}
           >
             {/* Gold underline that scales in on hover / active */}
             <span
               aria-hidden="true"
               className={[
-                "absolute bottom-0 left-0 right-0 h-[2px] bg-[#c9a84c]",
+                "absolute bottom-0 left-0 right-0 h-[2px] bg-(--gold)",
                 "transition-transform duration-300 origin-left",
                 isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
               ].join(" ")}
@@ -70,8 +70,8 @@ export function CategoryStrip({
                 "font-['Bebas_Neue',sans-serif] text-[1.1rem] tracking-[0.05em]",
                 "transition-colors duration-[250ms]",
                 isActive
-                  ? "text-[#c9a84c]"
-                  : "text-[rgba(240,237,230,0.55)] group-hover:text-[#c9a84c]",
+                  ? "text-(--gold)"
+                  : "text-(--ivory-dim) group-hover:text-(--gold)",
               ].join(" ")}
             >
               {cat.webinars}
@@ -83,8 +83,8 @@ export function CategoryStrip({
                 "text-[0.6rem] tracking-[0.15em] uppercase text-center leading-tight",
                 "transition-colors duration-[250ms]",
                 isActive
-                  ? "text-[#e8c97e]"
-                  : "text-[rgba(240,237,230,0.28)] group-hover:text-[#e8c97e]",
+                  ? "text-(--gold-light)"
+                  : "text-(--ivory-muted) group-hover:text-(--gold-light)",
               ].join(" ")}
             >
               {cat.name}

@@ -71,11 +71,11 @@ export function AboutPillars() {
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
         ].join(" ")}
       >
-        <span aria-hidden="true" className="w-8 h-px bg-gradient-to-r from-transparent to-[#c9a84c]" />
-        <span className="text-[0.68rem] tracking-[0.35em] uppercase text-[#c9a84c]">
+        <span aria-hidden="true" className="w-8 h-px bg-gradient-to-r from-transparent to-(--gold)" />
+        <span className="text-[0.68rem] tracking-[0.35em] uppercase text-(--gold)">
           What Drives Us
         </span>
-        <span aria-hidden="true" className="flex-1 h-px bg-gradient-to-r from-[rgba(201,168,76,0.3)] to-transparent" />
+        <span aria-hidden="true" className="flex-1 h-px bg-gradient-to-r from-(--gold-dim) to-transparent" />
       </div>
 
       {/* Pillars grid */}
@@ -86,13 +86,13 @@ export function AboutPillars() {
             style={{ transitionDelay: `${i * 130}ms` }}
             className={[
               "group relative overflow-hidden",
-              "bg-gradient-to-br from-[#0d1118] to-[#12161f]",
-              "border border-[rgba(201,168,76,0.14)]",
+              "bg-gradient-to-br from-(--obsidian-2) to-(--obsidian-3)",
+              "border border-(--border)",
               "p-8 flex flex-col gap-5",
               "cursor-default",
               "transition-[opacity,transform,border-color,box-shadow] duration-700 ease-out",
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-              "hover:border-[rgba(201,168,76,0.30)] hover:shadow-[0_0_40px_rgba(201,168,76,0.07)]",
+              "hover:border-(--border-mid) hover:shadow-[0_0_40px_rgba(201,168,76,0.07)]",
               "hover:z-[1]",
             ].join(" ")}
           >
@@ -109,20 +109,20 @@ export function AboutPillars() {
             <span
               aria-hidden="true"
               className="absolute top-4 right-4 w-5 h-5
-                border-t border-r border-[rgba(201,168,76,0.3)]
+                border-t border-r border-(--border-mid)
                 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100
                 transition-[opacity,transform] duration-300"
             />
             <span
               aria-hidden="true"
               className="absolute bottom-4 left-4 w-5 h-5
-                border-b border-l border-[rgba(201,168,76,0.3)]
+                border-b border-l border-(--border-mid)
                 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100
                 transition-[opacity,transform] duration-300 delay-50"
             />
 
             {/* Index number */}
-            <div className="font-['Bebas_Neue',sans-serif] text-[3.5rem] leading-none tracking-[0.05em] text-[rgba(201,168,76,0.10)] absolute top-4 right-6 select-none">
+            <div className="font-['Bebas_Neue',sans-serif] text-[3.5rem] leading-none tracking-[0.05em] text-(--gold)/10 absolute top-4 right-6 select-none">
               {p.index}
             </div>
 
@@ -130,10 +130,10 @@ export function AboutPillars() {
             <div
               className={[
                 "relative z-[1] w-14 h-14 flex items-center justify-center flex-shrink-0",
-                "border border-[rgba(201,168,76,0.18)] bg-[rgba(8,10,15,0.6)]",
-                "text-[#c9a84c]",
+                "border border-(--border) bg-(--obsidian)/60",
+                "text-(--gold)",
                 "transition-[border-color,background,color] duration-300",
-                "group-hover:border-[rgba(201,168,76,0.40)] group-hover:bg-[rgba(201,168,76,0.08)] group-hover:text-[#e8c97e]",
+                "group-hover:border-(--border-mid) group-hover:bg-(--gold-dim) group-hover:text-(--gold-light)",
               ].join(" ")}
             >
               {p.icon}
@@ -144,13 +144,13 @@ export function AboutPillars() {
               <h3
                 className={[
                   "font-['Cormorant_Garamond',serif] font-normal",
-                  "text-[1.35rem] leading-[1.2] text-[#f0ede6] mb-3",
-                  "transition-colors duration-300 group-hover:text-[#f5e6c0]",
+                  "text-[1.35rem] leading-[1.2] text-(--ivory) mb-3",
+                  "transition-colors duration-300 group-hover:text-(--gold-pale)",
                 ].join(" ")}
               >
                 {p.title}
               </h3>
-              <p className="text-[0.78rem] leading-[1.7] text-[rgba(240,237,230,0.45)] font-light">
+              <p className="text-[0.78rem] leading-[1.7] text-(--ivory-muted) font-light">
                 {p.description}
               </p>
             </div>
@@ -158,7 +158,7 @@ export function AboutPillars() {
             {/* Bottom gold rule that extends on hover */}
             <div
               className="absolute bottom-0 left-0 right-0 h-[1px] origin-left
-                bg-gradient-to-r from-[#c9a84c] to-transparent
+                bg-gradient-to-r from-(--gold) to-transparent
                 scale-x-0 group-hover:scale-x-100
                 transition-transform duration-500 ease-out"
               aria-hidden="true"

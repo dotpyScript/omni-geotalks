@@ -119,9 +119,9 @@ export default function CategoriesSection({
         'px-[60px] py-[120px] pb-[130px]',
         // ── Responsive padding ─────────────────────────────────────────
         'max-lg:px-8 max-lg:py-20 max-lg:pb-[100px]',
-        'max-sm:px-5 max-sm:py-[60px] max-sm:pb-20 bg-[#171818]', // --- IGNORE --- (fallback background color if gradient fails to load)
+        'max-sm:px-5 max-sm:py-[60px] max-sm:pb-20 bg-(--obsidian-2)', // fallback background
       ].join(' ')}
-      //style={{ background: '#07101a' }} //linear-gradient(180deg, #07101a 0%, #08121e 50%, #07101a 100%)
+      style={{ background: 'linear-gradient(180deg, var(--obsidian-2) 0%, var(--obsidian-3) 50%, var(--obsidian-2) 100%)' }}
       aria-label='Webinar categories'
     >
       {/* ── 1. Ambient background decorations ────────────────────────────── */}

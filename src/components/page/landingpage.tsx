@@ -1,6 +1,4 @@
 import HeroSection from '@/components/sections/HeroSection';
-// import AboutSection from '../sections/about/AboutSection';
-// import AboutSection2 from '../sections/AboutSection';
 import AboutSection3 from '../sections/aboutSection/AboutSection';
 import CategoriesSection from '../sections/categorySection/CategoriesSection';
 import Speaker from '../sections/speakerSection/SpeakersSection';
@@ -13,8 +11,6 @@ export default function LandingPage() {
     <main>
       <HeroSection />
       <AboutSection3 />
-      {/* <AboutSection /> */}
-      {/* <AboutSection2 /> */}
       <CategoriesSection />
       <Speaker />
       <HowItWorksSection />

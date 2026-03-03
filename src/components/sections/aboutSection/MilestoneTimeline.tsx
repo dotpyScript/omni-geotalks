@@ -33,14 +33,14 @@ export function MilestoneTimeline({
       >
         <span
           aria-hidden='true'
-          className='w-8 h-px bg-gradient-to-r from-transparent to-[#c9a84c]'
+          className='w-8 h-px bg-gradient-to-r from-transparent to-(--gold)'
         />
-        <span className='text-[0.68rem] tracking-[0.35em] uppercase text-[#c9a84c]'>
+        <span className='text-[0.68rem] tracking-[0.35em] uppercase text-(--gold)'>
           Our Journey
         </span>
         <span
           aria-hidden='true'
-          className='flex-1 h-px bg-gradient-to-r from-[rgba(201,168,76,0.3)] to-transparent'
+          className='flex-1 h-px bg-gradient-to-r from-(--gold-dim) to-transparent'
         />
       </div>
 
@@ -52,7 +52,7 @@ export function MilestoneTimeline({
           className='hidden lg:block absolute top-[28px] left-[6%] right-[6%] h-px z-0'
           style={{
             background:
-              'linear-gradient(90deg, transparent, rgba(201,168,76,0.3) 15%, rgba(201,168,76,0.3) 85%, transparent)',
+              'linear-gradient(90deg, transparent, var(--gold-dim) 15%, var(--gold-dim) 85%, transparent)',
           }}
         >
           {/* Animated fill */}
@@ -85,19 +85,19 @@ export function MilestoneTimeline({
                   className={[
                     'relative z-10 flex-shrink-0',
                     'w-[14px] h-[14px] rounded-full',
-                    'border-2 border-[#c9a84c]',
-                    'bg-[#080a0f]',
+                    'border-2 border-(--gold)',
+                    'bg-(--obsidian)',
                     'transition-[box-shadow,background] duration-300',
-                    'group-hover:bg-[#c9a84c] group-hover:shadow-[0_0_16px_rgba(201,168,76,0.5)]',
+                    'group-hover:bg-(--gold) group-hover:shadow-[0_0_16px_rgba(201,168,76,0.5)]',
                     // mobile: vertical connector line
                     "after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2",
-                    'after:w-px after:h-6 after:bg-gradient-to-b after:from-[rgba(201,168,76,0.4)] after:to-transparent',
+                    'after:w-px after:h-6 after:bg-gradient-to-b after:from-(--gold-dim) after:to-transparent',
                     'lg:after:hidden',
                   ].join(' ')}
                 />
 
                 {/* Year label */}
-                <span className="font-['Bebas_Neue',sans-serif] text-[2rem] leading-none tracking-[0.05em] text-[#c9a84c] lg:mt-3">
+                <span className="font-['Bebas_Neue',sans-serif] text-[2rem] leading-none tracking-[0.05em] text-(--gold) lg:mt-3">
                   {m.year}
                 </span>
               </div>
@@ -105,29 +105,29 @@ export function MilestoneTimeline({
               {/* Card content */}
               <div
                 className={[
-                  'flex-1 p-5 border border-[rgba(201,168,76,0.14)]',
-                  'bg-gradient-to-br from-[#0d1118] to-[#12161f]',
+                  'flex-1 p-5 border border-(--border)',
+                  'bg-gradient-to-br from-(--obsidian-2) to-(--obsidian-3)',
                   'transition-[border-color,box-shadow] duration-300',
-                  'group-hover:border-[rgba(201,168,76,0.30)] group-hover:shadow-[0_0_30px_rgba(201,168,76,0.08)]',
+                  'group-hover:border-(--border-mid) group-hover:shadow-[0_0_30px_rgba(201,168,76,0.08)]',
                   'relative overflow-hidden',
                 ].join(' ')}
               >
                 {/* Top accent bar */}
                 <span
                   aria-hidden='true'
-                  className='absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#c9a84c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+                  className='absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-(--gold) to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'
                 />
 
                 <h4
                   className={[
                     "font-['Cormorant_Garamond',serif] font-normal",
-                    'text-[1.1rem] leading-[1.2] text-[#f0ede6] mb-3',
-                    'group-hover:text-[#e8c97e] transition-colors duration-300',
+                    'text-[1.1rem] leading-[1.2] text-(--ivory) mb-3',
+                    'group-hover:text-(--gold-light) transition-colors duration-300',
                   ].join(' ')}
                 >
                   {m.title}
                 </h4>
-                <p className='text-[0.74rem] leading-[1.65] text-[rgba(240,237,230,0.45)] font-light'>
+                <p className='text-[0.74rem] leading-[1.65] text-(--ivory-muted) font-light'>
                   {m.description}
                 </p>
               </div>

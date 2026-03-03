@@ -99,7 +99,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
     <motion.article
       className='relative cursor-pointer overflow-hidden flex flex-col'
       style={{
-        background: 'linear-gradient(160deg, #0d1118 0%, #10141d 100%)',
+        background: 'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
         border: `1px solid ${hovered ? 'rgba(201,168,76,0.28)' : 'rgba(201,168,76,0.1)'}`,
         transition: 'border-color 0.3s ease',
       }}
@@ -262,7 +262,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
                 key={i}
                 className='w-6 h-6 rounded-full flex items-center justify-center'
                 style={{
-                  background: 'linear-gradient(135deg, #181d28, #12161f)',
+                  background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
                   border: '1.5px solid #0d1118',
                   boxShadow: '0 0 0 1px rgba(201,168,76,0.15)',
                 }}
@@ -545,7 +545,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
                     key={i}
                     className='w-8 h-8 rounded-full flex items-center justify-center'
                     style={{
-                      background: 'linear-gradient(135deg, #181d28, #12161f)',
+                      background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
                       border: '2px solid #0d1118',
                       boxShadow: '0 0 0 1px rgba(201,168,76,0.18)',
                     }}
@@ -792,7 +792,7 @@ export default function WebinarShowcase({
   return (
     <section
       className='relative overflow-hidden pb-[100px]'
-      style={{ background: 'linear-gradient(180deg, #0b0a0e 0%, #0d0b10 50%, #0b0a0e 100%)', color: '#f0ede6' }}
+      style={{ background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)', color: 'var(--ivory)' }}
       aria-label='Webinar showcase'
     >
       {/* Blueprint grid */}

@@ -1,7 +1,7 @@
 // components/layout/Navbar.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +9,7 @@ import type { Variants } from 'framer-motion';
 import { Menu, X, MapPin, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { ThemeToggleButton, useTheme } from './ThemeToggle';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export interface NavLink {
@@ -85,7 +86,7 @@ function NavUnderline() {
   return (
     <motion.span
       layoutId='nav-underline'
-      className='absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#c9a84c] to-transparent'
+      className='absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-(--gold) to-transparent'
       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
     />
   );
@@ -109,8 +110,8 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
             'relative flex items-center gap-1 text-[0.73rem] tracking-[0.14em] uppercase',
             'transition-colors duration-200 focus:outline-none',
             isActive
-              ? 'text-[#e8c97e]'
-              : 'text-[rgba(240,237,230,0.55)] hover:text-[#e8c97e]',
+              ? 'text-(--gold-light)'
+              : 'text-(--ivory-dim) hover:text-(--gold-light)',
           )}
         >
           {link.label}
@@ -133,10 +134,11 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
               exit='exit'
               className={cn(
                 'absolute top-full left-0 mt-3 min-w-[200px]',
-                'bg-[#0d1118] border border-[rgba(201,168,76,0.16)]',
+                'border border-(--border)',
                 'py-2 z-50',
               )}
               style={{
+                background: 'var(--obsidian-2)',
                 clipPath:
                   'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
               }}
@@ -145,7 +147,7 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className='block px-4 py-2.5 text-[0.68rem] tracking-[0.1em] uppercase text-[rgba(240,237,230,0.5)] hover:text-[#e8c97e] hover:bg-[rgba(201,168,76,0.06)] transition-all duration-150'
+                  className='block px-4 py-2.5 text-[0.68rem] tracking-[0.1em] uppercase text-(--ivory-muted) hover:text-(--gold-light) hover:bg-(--gold-dim) transition-all duration-150'
                 >
                   {child.label}
                 </Link>
@@ -164,8 +166,8 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
         'relative text-[0.73rem] tracking-[0.14em] uppercase',
         'transition-colors duration-200',
         isActive
-          ? 'text-[#e8c97e]'
-          : 'text-[rgba(240,237,230,0.55)] hover:text-[#e8c97e]',
+          ? 'text-(--gold-light)'
+          : 'text-(--ivory-dim) hover:text-(--gold-light)',
       )}
     >
       {link.label}
@@ -177,12 +179,12 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
 // ─── Location badge ───────────────────────────────────────────────────────────
 function LocationBadge({ location }: { location: string }) {
   return (
-    <div className='hidden lg:flex items-center gap-2 px-3 py-1.5 border border-[rgba(201,168,76,0.16)] text-[rgba(240,237,230,0.4)] text-[0.6rem] tracking-[0.16em] uppercase'>
+    <div className='hidden lg:flex items-center gap-2 px-3 py-1.5 border border-(--border) text-(--ivory-muted) text-[0.6rem] tracking-[0.16em] uppercase'>
       <span className='relative flex h-[5px] w-[5px]'>
-        <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c9a84c] opacity-60' />
-        <span className='relative inline-flex rounded-full h-[5px] w-[5px] bg-[#c9a84c]' />
+        <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-(--gold) opacity-60' />
+        <span className='relative inline-flex rounded-full h-[5px] w-[5px] bg-(--gold)' />
       </span>
-      <MapPin size={9} className='text-[#c9a84c]' />
+      <MapPin size={9} className='text-(--gold)' />
       {location}
     </div>
   );
@@ -201,6 +203,7 @@ export function Navbar({
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isLight, toggle, mounted } = useTheme();
 
   // Detect scroll for background fill
   useEffect(() => {
@@ -210,9 +213,9 @@ export function Navbar({
     return () => window.removeEventListener('scroll', handler);
   }, [transparent]);
 
-  // Close mobile menu on route change
+  // Close mobile menu on route change (startTransition avoids synchronous setState-in-effect)
   useEffect(() => {
-    setMobileOpen(false);
+    startTransition(() => setMobileOpen(false));
   }, [pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -234,20 +237,21 @@ export function Navbar({
         'fixed top-0 left-0 right-0 z-50',
         'transition-all duration-500',
         showBg
-          ? 'bg-[rgba(8,10,15,0.92)] backdrop-blur-md border-b border-[rgba(201,168,76,0.14)]'
+          ? 'backdrop-blur-md border-b border-(--border)'
           : 'bg-transparent border-b border-transparent',
       )}
+      style={showBg ? { background: 'var(--nav-bg)' } : undefined}
     >
       <div className='flex items-center justify-between px-6 lg:px-[60px] h-[72px]'>
         {/* ── Logo ── */}
         <Link href='/' className='flex flex-col gap-0.5 shrink-0'>
           <span
-            className='text-[1.45rem] leading-none tracking-[0.2em] text-[#e8c97e]'
+            className='text-[1.45rem] leading-none tracking-[0.2em] text-(--gold-light)'
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {logoMark}
           </span>
-          <span className='hidden sm:block text-[0.55rem] tracking-[0.26em] uppercase text-[rgba(240,237,230,0.3)] font-light'>
+          <span className='hidden sm:block text-[0.55rem] tracking-[0.26em] uppercase text-(--ivory-muted) font-light'>
             {logoName}
           </span>
         </Link>
@@ -262,6 +266,13 @@ export function Navbar({
         {/* ── Right side ── */}
         <div className='flex items-center gap-3'>
           <LocationBadge location={location} />
+
+          {/* Theme toggle — desktop only; mobile gets it inside the drawer */}
+          {mounted && (
+            <div className='hidden lg:flex'>
+              <ThemeToggleButton isLight={isLight} onToggle={toggle} />
+            </div>
+          )}
 
           <Button
             variant='primary'
@@ -278,7 +289,7 @@ export function Navbar({
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setMobileOpen((v) => !v)}
-            className='lg:hidden flex items-center justify-center w-9 h-9 border border-[rgba(201,168,76,0.16)] text-[rgba(240,237,230,0.55)] hover:text-[#e8c97e] hover:border-[rgba(201,168,76,0.35)] transition-colors'
+            className='lg:hidden flex items-center justify-center w-9 h-9 border border-(--border) text-(--ivory-dim) hover:text-(--gold-light) hover:border-(--border-mid) transition-colors'
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             style={{
               clipPath:
@@ -308,7 +319,8 @@ export function Navbar({
             initial='hidden'
             animate='visible'
             exit='exit'
-            className='lg:hidden overflow-hidden bg-[rgba(8,10,15,0.97)] border-t border-[rgba(201,168,76,0.14)]'
+            className='lg:hidden overflow-hidden border-t border-(--border)'
+            style={{ background: 'var(--surface-haze)' }}
           >
             <div className='px-6 py-6 flex flex-col gap-1'>
               {links.map((link, i) => (
@@ -323,11 +335,11 @@ export function Navbar({
                     href={link.href}
                     className={cn(
                       'flex items-center py-3 px-4 text-[0.75rem] tracking-[0.16em] uppercase',
-                      'border-b border-[rgba(201,168,76,0.08)]',
+                      'border-b border-(--border)',
                       'transition-all duration-200',
                       pathname === link.href
-                        ? 'text-[#e8c97e] border-l-2 border-l-[#c9a84c] pl-5'
-                        : 'text-[rgba(240,237,230,0.5)] hover:text-[#e8c97e] hover:pl-6',
+                        ? 'text-(--gold-light) border-l-2 border-l-(--gold) pl-5'
+                        : 'text-(--ivory-muted) hover:text-(--gold-light) hover:pl-6',
                     )}
                   >
                     {link.label}
@@ -335,8 +347,21 @@ export function Navbar({
                 </motion.div>
               ))}
 
+              {/* Theme toggle row */}
+              {mounted && (
+                <motion.div
+                  custom={links.length}
+                  variants={mobileLinkVariants}
+                  initial='hidden'
+                  animate='visible'
+                  className='py-3 border-b border-(--border)'
+                >
+                  <ThemeToggleButton isLight={isLight} onToggle={toggle} />
+                </motion.div>
+              )}
+
               <motion.div
-                custom={links.length}
+                custom={links.length + 1}
                 variants={mobileLinkVariants}
                 initial='hidden'
                 animate='visible'
@@ -354,8 +379,8 @@ export function Navbar({
                 </Button>
               </motion.div>
 
-              <div className='flex items-center gap-2 pt-4 text-[0.58rem] tracking-[0.14em] uppercase text-[rgba(240,237,230,0.3)]'>
-                <MapPin size={9} className='text-[#c9a84c]' />
+              <div className='flex items-center gap-2 pt-4 text-[0.58rem] tracking-[0.14em] uppercase text-(--ivory-muted)'>
+                <MapPin size={9} className='text-(--gold)' />
                 {location}
               </div>
             </div>

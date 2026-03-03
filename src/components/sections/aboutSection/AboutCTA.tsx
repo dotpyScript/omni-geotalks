@@ -14,7 +14,7 @@ export function AboutCTA() {
       ref={ref}
       className={[
         "relative overflow-hidden",
-        "border border-[rgba(201,168,76,0.14)]",
+        "border border-(--border)",
         "p-12 md:p-16",
         "flex flex-col md:flex-row items-center justify-between gap-8",
         "transition-[opacity,transform] duration-700",
@@ -50,19 +50,19 @@ export function AboutCTA() {
       {/* Text */}
       <div className="relative z-[1]">
         <div className="flex items-center gap-3 mb-3">
-          <span aria-hidden="true" className="w-6 h-px bg-[#c9a84c]" />
-          <span className="text-[0.65rem] tracking-[0.3em] uppercase text-[#c9a84c]">
+          <span aria-hidden="true" className="w-6 h-px bg-(--gold)" />
+          <span className="text-[0.65rem] tracking-[0.3em] uppercase text-(--gold)">
             Join IEGS
           </span>
         </div>
         <h3
           className={[
             "font-['Cormorant_Garamond',serif] font-light",
-            "text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.15] text-[#f0ede6]",
+            "text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.15] text-(--ivory)",
           ].join(" ")}
         >
           Ready to shape Africa's{" "}
-          <em className="italic text-[#e8c97e]">spatial future?</em>
+          <em className="italic text-(--gold-light)">spatial future?</em>
         </h3>
       </div>
 
@@ -75,12 +75,12 @@ export function AboutCTA() {
             "inline-flex items-center gap-3",
             "text-[0.72rem] tracking-[0.18em] uppercase font-medium",
             "font-['DM_Sans',sans-serif]",
-            "text-[#080a0f]",
-            "bg-gradient-to-br from-[#c9a84c] to-[#e8c97e]",
+            "text-(--obsidian)",
+            "bg-gradient-to-br from-(--gold) to-(--gold-light)",
             "px-7 py-[14px]",
             "clip-bevel-sm",
             "transition-all duration-[250ms]",
-            "hover:from-[#e8c97e] hover:to-[#f5e6c0]",
+            "hover:from-(--gold-light) hover:to-(--gold-pale)",
             "hover:shadow-[0_8px_28px_rgba(201,168,76,0.35)]",
             "hover:-translate-y-px",
             "cursor-pointer border-none",
@@ -97,11 +97,11 @@ export function AboutCTA() {
             "inline-flex items-center gap-3",
             "text-[0.72rem] tracking-[0.18em] uppercase",
             "font-['DM_Sans',sans-serif]",
-            "text-[rgba(240,237,230,0.55)]",
-            "border border-[rgba(201,168,76,0.22)]",
+            "text-(--ivory-dim)",
+            "border border-(--border)",
             "px-7 py-[14px]",
             "transition-all duration-[250ms]",
-            "hover:border-[rgba(201,168,76,0.40)] hover:text-[#f0ede6] hover:bg-[rgba(201,168,76,0.08)]",
+            "hover:border-(--border-mid) hover:text-(--ivory) hover:bg-(--gold-dim)",
             "cursor-pointer bg-transparent",
           ].join(" ")}
         >

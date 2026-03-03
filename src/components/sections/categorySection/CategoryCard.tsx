@@ -57,12 +57,13 @@ export function CategoryCard({
         // ── Layout & base ──────────────────────────────────────────────────
         "group relative overflow-hidden cursor-pointer flex flex-col justify-end",
         // ── Colours ────────────────────────────────────────────────────────
-        "bg-[#12161f]",
+        "bg-(--obsidian-3)",
         // ── Border ─────────────────────────────────────────────────────────
-        "border border-[rgba(201,168,76,0.14)]",
-        "hover:border-[rgba(201,168,76,0.30)]",
-        // ── Shadow on hover ─────────────────────────────────────────────────
-        "hover:shadow-[inset_0_0_60px_rgba(201,168,76,0.05),0_0_0_1px_rgba(201,168,76,0.30)]",
+        "border border-(--border)",
+        "hover:border-(--border-mid)",
+        // ── Shadow ──────────────────────────────────────────────────────────
+        "shadow-[0_2px_16px_rgba(0,0,0,0.10)]",
+        "hover:shadow-[0_12px_40px_var(--gold-dim),inset_0_0_50px_var(--gold-dim)]",
         // ── z-index bump on hover ────────────────────────────────────────
         "hover:z-[3]",
         // ── Height ──────────────────────────────────────────────────────────
@@ -88,23 +89,37 @@ export function CategoryCard({
         <CardPattern color={category.patternColor} />
       </div>
 
-      {/* ── Dark overlay gradient ──────────────────────────────────────── */}
+      {/* ── Dark overlay gradient (theme-aware via color-mix) ─────────────── */}
+      {/* Base overlay — fades out slightly on hover */}
       <div
         aria-hidden="true"
-        className={[
-          "absolute inset-0 z-[1] transition-all duration-[350ms]",
-          // default overlay
-          "[background:linear-gradient(180deg,rgba(8,10,15,0.10)_0%,rgba(8,10,15,0.35)_40%,rgba(8,10,15,0.88)_80%,rgba(8,10,15,0.97)_100%)]",
-          // hover overlay (lighter top, same dark bottom)
-          "group-hover:[background:linear-gradient(180deg,rgba(8,10,15,0.05)_0%,rgba(8,10,15,0.20)_35%,rgba(8,10,15,0.82)_75%,rgba(8,10,15,0.96)_100%)]",
-        ].join(" ")}
+        className="absolute inset-0 z-[1] transition-opacity duration-[350ms] group-hover:opacity-0"
+        style={{
+          background: `linear-gradient(180deg,
+            color-mix(in srgb, var(--obsidian) 10%, transparent) 0%,
+            color-mix(in srgb, var(--obsidian) 35%, transparent) 40%,
+            color-mix(in srgb, var(--obsidian) 88%, transparent) 80%,
+            color-mix(in srgb, var(--obsidian) 97%, transparent) 100%)`,
+        }}
+      />
+      {/* Hover overlay — lighter top so gradient pops through more */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-[1] transition-opacity duration-[350ms] opacity-0 group-hover:opacity-100"
+        style={{
+          background: `linear-gradient(180deg,
+            color-mix(in srgb, var(--obsidian) 5%, transparent) 0%,
+            color-mix(in srgb, var(--obsidian) 20%, transparent) 35%,
+            color-mix(in srgb, var(--obsidian) 82%, transparent) 75%,
+            color-mix(in srgb, var(--obsidian) 96%, transparent) 100%)`,
+        }}
       />
 
       {/* ── Top-right corner bracket ───────────────────────────────────── */}
       <span
         aria-hidden="true"
         className="absolute top-[18px] right-[18px] z-[3] w-[22px] h-[22px]
-          border-t border-r border-[rgba(201,168,76,0.30)]
+          border-t border-r border-(--border-mid)
           opacity-0 scale-[0.7] group-hover:opacity-100 group-hover:scale-100
           transition-[opacity,transform] duration-300"
       />
@@ -113,7 +128,7 @@ export function CategoryCard({
       <span
         aria-hidden="true"
         className="absolute bottom-0 left-0 z-[3] w-[22px] h-[22px]
-          border-b border-l border-[rgba(201,168,76,0.30)]
+          border-b border-l border-(--border-mid)
           opacity-0 scale-[0.7] group-hover:opacity-100 group-hover:scale-100
           transition-[opacity,transform] duration-300 delay-[50ms]"
       />
@@ -122,13 +137,14 @@ export function CategoryCard({
       <div
         className={[
           "absolute z-[3] flex items-center justify-center",
-          "border border-[rgba(201,168,76,0.14)] bg-[rgba(8,10,15,0.6)] backdrop-blur-[8px]",
+          "border border-(--border) backdrop-blur-sm",
           "transition-[border-color,background,transform] duration-300",
-          "group-hover:border-[rgba(201,168,76,0.30)] group-hover:bg-[rgba(201,168,76,0.08)] group-hover:scale-[1.08]",
+          "group-hover:border-(--border-mid) group-hover:bg-(--gold-dim) group-hover:scale-[1.08]",
           isFeatured
             ? "w-16 h-16 top-9 left-9"
             : "w-[52px] h-[52px] top-7 left-7",
         ].join(" ")}
+        style={{ background: 'var(--surface-haze)' }}
       >
         <CategoryIcon
           id={category.icon}
@@ -143,8 +159,8 @@ export function CategoryCard({
       <span
         className="absolute top-7 right-7 z-[3]
           font-['Bebas_Neue',sans-serif] text-base tracking-[0.1em]
-          text-[rgba(240,237,230,0.28)]
-          group-hover:text-[#c9a84c]
+          text-(--ivory-muted)
+          group-hover:text-(--gold)
           transition-colors duration-300"
       >
         {String(index + 1).padStart(2, "0")}
@@ -156,9 +172,10 @@ export function CategoryCard({
         {/* Tag pill */}
         <div
           className="inline-block text-[0.6rem] tracking-[0.25em] uppercase
-            text-[#c9a84c] border border-[rgba(201,168,76,0.14)]
+            text-(--gold) border border-(--border)
             px-[10px] py-1 mb-[14px]
-            bg-[rgba(8,10,15,0.5)] backdrop-blur-[6px]"
+            backdrop-blur-sm"
+          style={{ background: 'var(--surface-haze)' }}
         >
           {category.tag}
         </div>
@@ -167,8 +184,8 @@ export function CategoryCard({
         <h3
           className={[
             "font-['Cormorant_Garamond',serif] font-normal leading-[1.15]",
-            "text-[#f0ede6] mb-[10px]",
-            "group-hover:text-[#f5e6c0] transition-colors duration-300",
+            "text-(--ivory) mb-[10px]",
+            "group-hover:text-(--gold-pale) transition-colors duration-300",
             isFeatured ? "text-[2.4rem] font-light mb-[14px]" : "text-[1.5rem]",
           ].join(" ")}
         >
@@ -178,7 +195,7 @@ export function CategoryCard({
         {/* Description — always visible on featured; revealed on hover for standard */}
         <p
           className={[
-            "text-[rgba(240,237,230,0.28)] font-light leading-[1.65]",
+            "text-(--ivory-muted) font-light leading-[1.65]",
             isFeatured
               ? "text-[0.82rem] opacity-100"
               : "text-[0.76rem] max-h-0 overflow-hidden opacity-0 group-hover:max-h-[120px] group-hover:opacity-100 group-hover:mb-1 transition-[max-height,opacity,margin] duration-[400ms,350ms,300ms] ease-in-out",
@@ -190,7 +207,7 @@ export function CategoryCard({
         {/* Stats row */}
         <div
           className="flex items-center gap-5 mt-[18px] pt-4
-            border-t border-[rgba(201,168,76,0.14)]"
+            border-t border-(--border)"
         >
           <StatItem
             value={category.webinars}
@@ -214,7 +231,7 @@ export function CategoryCard({
         <div
           className={[
             "inline-flex items-center gap-2 mt-5",
-            "text-[0.68rem] tracking-[0.18em] uppercase text-[#c9a84c]",
+            "text-[0.68rem] tracking-[0.18em] uppercase text-(--gold)",
             isFeatured
               ? "opacity-100 translate-x-0"
               : "opacity-0 -translate-x-[10px] group-hover:opacity-100 group-hover:translate-x-0",
@@ -245,13 +262,13 @@ function StatItem({ value, label, suffix = "", featured = false }: StatItemProps
     <div className="flex flex-col gap-[3px]">
       <span
         className={[
-          "font-['Bebas_Neue',sans-serif] leading-none tracking-[0.05em] text-[#e8c97e]",
+          "font-['Bebas_Neue',sans-serif] leading-none tracking-[0.05em] text-(--gold-light)",
           featured ? "text-[1.8rem]" : "text-[1.4rem]",
         ].join(" ")}
       >
         <AnimatedCounter value={value} suffix={suffix} />
       </span>
-      <span className="text-[0.6rem] tracking-[0.18em] uppercase text-[rgba(240,237,230,0.28)]">
+      <span className="text-[0.6rem] tracking-[0.18em] uppercase text-(--ivory-muted)">
         {label}
       </span>
     </div>

@@ -147,33 +147,33 @@ const variantStyles: Record<
   default: {
     wrapper: 'flex flex-col gap-1',
     number:
-      "font-['Bebas_Neue'] text-[2.2rem] tracking-[0.04em] leading-none text-[#e8c97e]",
+      "font-['Bebas_Neue'] text-[2.2rem] tracking-[0.04em] leading-none text-(--gold-light)",
     label:
-      'text-[0.62rem] tracking-[0.2em] uppercase text-[rgba(240,237,230,0.3)]',
-    sublabel: 'text-[0.58rem] text-[rgba(240,237,230,0.2)] mt-0.5',
+      'text-[0.62rem] tracking-[0.2em] uppercase text-(--ivory-muted)',
+    sublabel: 'text-[0.58rem] text-(--ivory-muted) mt-0.5',
   },
   compact: {
     wrapper: 'flex flex-col gap-0.5',
     number:
-      "font-['Bebas_Neue'] text-[1.6rem] tracking-[0.04em] leading-none text-[#e8c97e]",
+      "font-['Bebas_Neue'] text-[1.6rem] tracking-[0.04em] leading-none text-(--gold-light)",
     label:
-      'text-[0.58rem] tracking-[0.16em] uppercase text-[rgba(240,237,230,0.3)]',
-    sublabel: 'text-[0.54rem] text-[rgba(240,237,230,0.2)]',
+      'text-[0.58rem] tracking-[0.16em] uppercase text-(--ivory-muted)',
+    sublabel: 'text-[0.54rem] text-(--ivory-muted)',
   },
   large: {
     wrapper: 'flex flex-col gap-2',
     number:
-      "font-['Bebas_Neue'] text-[4rem] tracking-[0.04em] leading-none text-[#e8c97e]",
+      "font-['Bebas_Neue'] text-[4rem] tracking-[0.04em] leading-none text-(--gold-light)",
     label:
-      'text-[0.68rem] tracking-[0.22em] uppercase text-[rgba(240,237,230,0.3)]',
-    sublabel: 'text-[0.62rem] text-[rgba(240,237,230,0.2)] mt-1',
+      'text-[0.68rem] tracking-[0.22em] uppercase text-(--ivory-muted)',
+    sublabel: 'text-[0.62rem] text-(--ivory-muted) mt-1',
   },
   inline: {
     wrapper: 'flex items-baseline gap-2',
     number:
-      "font-['Bebas_Neue'] text-[1.8rem] tracking-[0.04em] leading-none text-[#e8c97e]",
+      "font-['Bebas_Neue'] text-[1.8rem] tracking-[0.04em] leading-none text-(--gold-light)",
     label:
-      'text-[0.65rem] tracking-[0.12em] uppercase text-[rgba(240,237,230,0.35)]',
+      'text-[0.65rem] tracking-[0.12em] uppercase text-(--ivory-muted)',
     sublabel: '',
   },
 };
@@ -211,7 +211,7 @@ function StatItemComponent({
       className={styles.wrapper}
     >
       {Icon && variant !== 'inline' && (
-        <Icon size={16} className='text-[#c9a84c] mb-1 opacity-70' />
+        <Icon size={16} className='text-(--gold) mb-1 opacity-70' />
       )}
 
       <div className={styles.number}>
@@ -292,7 +292,7 @@ export function HeroStats({ stats, className }: HeroStatsProps) {
     <div
       className={cn(
         'flex items-stretch',
-        'border-t border-[rgba(201,168,76,0.14)]',
+        'border-t border-(--border)',
         'pt-7 mt-8',
         className,
       )}
@@ -306,10 +306,10 @@ export function HeroStats({ stats, className }: HeroStatsProps) {
           className={cn(
             'flex flex-col gap-1.5',
             i < stats.length - 1 &&
-              'pr-7 border-r border-[rgba(201,168,76,0.14)] mr-7',
+              'pr-7 border-r border-(--border) mr-7',
           )}
         >
-          <div className="font-['Bebas_Neue'] text-[2.1rem] tracking-[0.04em] leading-none text-[#e8c97e]">
+          <div className="font-['Bebas_Neue'] text-[2.1rem] tracking-[0.04em] leading-none text-(--gold-light)">
             <StatCounter
               value={stat.value}
               suffix={stat.suffix}
@@ -317,7 +317,7 @@ export function HeroStats({ stats, className }: HeroStatsProps) {
               delay={800 + i * 120}
             />
           </div>
-          <div className='text-[0.6rem] tracking-[0.2em] uppercase text-[rgba(240,237,230,0.3)]'>
+          <div className='text-[0.6rem] tracking-[0.2em] uppercase text-(--ivory-muted)'>
             {stat.label}
           </div>
         </motion.div>
