@@ -13,28 +13,28 @@ import {
 export default function Footer() {
   return (
     /*
-     * .footer — bg-obsidian, border-top gold, overflow-hidden
+     * .footer — bg-(--obsidian), border-top gold, overflow-hidden
      * .footer::before (gold gradient ceiling) → explicit div child
      */
-    <footer className='relative bg-obsidian border-t border-border overflow-hidden font-dm text-ivory'>
+    <footer className='relative bg-(--obsidian) border-t border-(--border) overflow-hidden font-dm text-(--ivory)'>
       {/* ── Gold gradient ceiling (.footer::before) ──────────────────── */}
       <div
-        className='absolute top-0 left-0 right-0 h-[200px] pointer-events-none z-0'
+        className='absolute top-0 left-0 right-0 h-50 pointer-events-none z-0'
         style={{
           background:
-            'linear-gradient(180deg, rgba(201,168,76,0.04) 0%, transparent 100%)',
+            'linear-gradient(180deg, color-mix(in srgb, var(--gold) 4%, transparent) 0%, transparent 100%)',
         }}
       />
 
       {/* ── Large watermark (.footer-watermark) ──────────────────────── */}
       <div
         className={[
-          'absolute bottom-[-20px] left-1/2 -translate-x-1/2',
+          'absolute -bottom-5 left-1/2 -translate-x-1/2',
           'font-bebas tracking-[0.12em] leading-none',
           'text-[clamp(5rem,14vw,12rem)]',
-          'text-[rgba(201,168,76,0.03)]',
-          'whitespace-nowrap select-none pointer-events-none z-[1]',
+          'whitespace-nowrap select-none pointer-events-none z-1',
         ].join(' ')}
+        style={{ color: 'color-mix(in srgb, var(--gold) 3%, transparent)' }}
       >
         IEGS
       </div>
@@ -47,9 +47,9 @@ export default function Footer() {
          ════════════════════════════════════════════════════════════════ */}
       <div
         className={[
-          'relative z-[2]',
+          'relative z-2',
           'grid grid-cols-[1.6fr_1fr_1fr_1fr]',
-          'border-b border-border',
+          'border-b border-(--border)',
           /* responsive */
           'max-[1100px]:grid-cols-2',
           'max-md:grid-cols-1',

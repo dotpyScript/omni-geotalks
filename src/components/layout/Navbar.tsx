@@ -26,6 +26,8 @@ export interface NavbarProps {
   logoMark?: string;
   logoName?: string;
   transparent?: boolean; // start transparent, fill on scroll
+  nextWebinarDate?: string; // ISO string for countdown target
+  isLive?: boolean; // override countdown with live indicator
 }
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
@@ -176,6 +178,72 @@ function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
   );
 }
 
+// ─── Session status badge ─────────────────────────────────────────────────────
+function SessionStatusBadge({
+  nextWebinarDate,
+  isLive = false,
+}: {
+  nextWebinarDate: string;
+  isLive?: boolean;
+}) {
+  const [timeLeft, setTimeLeft] = useState('--:--:--');
+
+  useEffect(() => {
+    if (isLive) return;
+
+    const tick = () => {
+      const diff = new Date(nextWebinarDate).getTime() - Date.now();
+      if (diff <= 0) {
+        setTimeLeft('00:00:00');
+        return;
+      }
+      const d = Math.floor(diff / 86_400_000);
+      const h = Math.floor((diff % 86_400_000) / 3_600_000);
+      const m = Math.floor((diff % 3_600_000) / 60_000);
+      const s = Math.floor((diff % 60_000) / 1_000);
+      const hh = String(h).padStart(2, '0');
+      const mm = String(m).padStart(2, '0');
+      const ss = String(s).padStart(2, '0');
+      setTimeLeft(d > 0 ? `${d}d ${hh}:${mm}:${ss}` : `${hh}:${mm}:${ss}`);
+    };
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [isLive, nextWebinarDate]);
+
+  if (isLive) {
+    return (
+      <div
+        className='hidden lg:flex items-center gap-2 px-3 py-1.5 border text-[0.6rem] tracking-[0.16em] uppercase'
+        style={{
+          borderColor: 'color-mix(in srgb, var(--green) 35%, transparent)',
+          background: 'color-mix(in srgb, var(--green) 8%, transparent)',
+        }}
+      >
+        <span className='relative flex h-1.5 w-1.5'>
+          <span className='animate-ping absolute inline-flex h-full w-full rounded-full opacity-75' style={{ background: 'var(--green)' }} />
+          <span className='relative inline-flex rounded-full h-1.5 w-1.5' style={{ background: 'var(--green)' }} />
+        </span>
+        <span style={{ color: 'var(--green)' }}>Live Now</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className='hidden lg:flex items-center gap-2 px-3 py-1.5 border border-(--border) text-[0.6rem] tracking-[0.14em] uppercase'>
+      <span className='text-(--gold) opacity-55 text-[0.48rem]'>⬡</span>
+      <span className='text-(--ivory-muted)'>Next</span>
+      <span
+        className='font-bebas tracking-[0.06em] leading-none'
+        style={{ fontSize: '0.82rem', color: 'var(--gold-light)' }}
+      >
+        {timeLeft}
+      </span>
+    </div>
+  );
+}
+
 // ─── Location badge ───────────────────────────────────────────────────────────
 function LocationBadge({ location }: { location: string }) {
   return (
@@ -199,6 +267,8 @@ export function Navbar({
   logoMark = 'IEGS',
   logoName = 'Indepth Earth Geospatial Services',
   transparent = false,
+  nextWebinarDate = '2026-04-10T13:00:00Z',
+  isLive = false,
 }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -266,6 +336,7 @@ export function Navbar({
         {/* ── Right side ── */}
         <div className='flex items-center gap-3'>
           <LocationBadge location={location} />
+          <SessionStatusBadge nextWebinarDate={nextWebinarDate} isLive={isLive} />
 
           {/* Theme toggle — desktop only; mobile gets it inside the drawer */}
           {mounted && (
