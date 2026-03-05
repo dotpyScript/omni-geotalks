@@ -19,10 +19,13 @@ function EmptyState() {
   return (
     <div className="col-span-full flex flex-col items-center text-center px-10 py-20 gap-4">
       <div className="text-[2.5rem] opacity-20 mb-2">◎</div>
-      <h3 className="font-['Cormorant_Garamond',serif] text-[1.6rem] font-light text-[rgba(240,237,230,0.55)]">
+      <h3
+        className="font-cormorant text-[1.6rem] font-light"
+        style={{ color: 'var(--ivory-dim)' }}
+      >
         No webinars found
       </h3>
-      <p className="text-[0.8rem] text-[rgba(240,237,230,0.28)]">
+      <p className="text-[0.8rem]" style={{ color: 'var(--ivory-muted)' }}>
         Try adjusting your search or category filter
       </p>
     </div>

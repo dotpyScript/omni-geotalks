@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-// import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Cormorant_Garamond, DM_Sans, Bebas_Neue } from 'next/font/google';
-import './globals.css';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -32,6 +31,19 @@ export const metadata: Metadata = {
   description: 'Free expert-led geospatial webinars across Africa and beyond.',
 };
 
+// Runs synchronously before first paint — reads localStorage and sets
+// data-theme on <html> so there is never a flash of the wrong theme.
+const themeScript = `
+  (function () {
+    try {
+      var t = localStorage.getItem('iegs-theme');
+      document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+    } catch (_) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: {
@@ -40,9 +52,16 @@ export default function RootLayout({
   return (
     <html
       lang='en'
+      suppressHydrationWarning
       className={`${cormorant.variable} ${dmSans.variable} ${bebasNeue.variable}`}
     >
-      <body>{children}</body>
+      <head>
+        {/* Theme script must run before any rendering to prevent flash */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
       <Toaster />
     </html>
   );

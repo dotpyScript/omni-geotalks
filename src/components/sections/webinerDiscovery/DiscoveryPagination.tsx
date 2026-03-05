@@ -1,6 +1,4 @@
-"use client";
-
-// ─── DiscoveryPagination Props ─────────────────────────────────────────────────
+'use client';
 
 interface DiscoveryPaginationProps {
   currentPage: number;
@@ -9,10 +7,6 @@ interface DiscoveryPaginationProps {
   perPage: number;
   onPageChange: (page: number) => void;
 }
-
-// ─── DiscoveryPagination ───────────────────────────────────────────────────────
-// Shows "Showing X–Y of Z webinars" info text on the left,
-// and prev / numbered page buttons / next on the right.
 
 export function DiscoveryPagination({
   currentPage,
@@ -28,90 +22,113 @@ export function DiscoveryPagination({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div
-      className={[
-        "relative z-[2]",
-        "px-[60px]",
-        "flex items-center justify-between",
-        "max-md:px-6 max-md:flex-col max-md:gap-4",
-      ].join(" ")}
-    >
-      {/* Info label */}
-      <p className="text-[0.72rem] text-[rgba(240,237,230,0.28)] tracking-[0.08em]">
-        Showing {from}–{to} of {totalResults} webinars
+    <div className='relative z-10 px-6 sm:px-10 lg:px-16 pb-24 pt-4 flex items-center justify-between flex-wrap gap-4'>
+      {/* Info */}
+      <p
+        className='text-[0.68rem] tracking-[0.1em]'
+        style={{ color: 'var(--ivory-muted)' }}
+      >
+        Showing{' '}
+        <strong
+          className='font-bebas text-[0.95rem] tracking-[0.04em]'
+          style={{ color: 'var(--gold-light)' }}
+        >
+          {from}–{to}
+        </strong>{' '}
+        of{' '}
+        <strong className='font-normal' style={{ color: 'var(--ivory-dim)' }}>
+          {totalResults}
+        </strong>{' '}
+        sessions
       </p>
 
       {/* Page buttons */}
-      <div className="flex items-center gap-[6px]">
-        {/* Previous */}
-        <PageButton
+      <div className='flex items-center gap-1.5'>
+        <PageBtn
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          aria-label="Previous page"
+          aria-label='Previous page'
         >
           ‹
-        </PageButton>
+        </PageBtn>
 
-        {/* Numbered pages */}
         {pages.map((n) => (
-          <PageButton
+          <PageBtn
             key={n}
             onClick={() => onPageChange(n)}
             active={currentPage === n}
             aria-label={`Page ${n}`}
           >
             {n}
-          </PageButton>
+          </PageBtn>
         ))}
 
-        {/* Next */}
-        <PageButton
+        <PageBtn
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          aria-label="Next page"
+          aria-label='Next page'
         >
           ›
-        </PageButton>
+        </PageBtn>
       </div>
     </div>
   );
 }
 
-// ─── PageButton ────────────────────────────────────────────────────────────────
+// ─── PageBtn ──────────────────────────────────────────────────────────────────
 
-interface PageButtonProps {
+interface PageBtnProps {
   children: React.ReactNode;
   onClick: () => void;
   active?: boolean;
   disabled?: boolean;
-  "aria-label"?: string;
+  'aria-label'?: string;
 }
 
-function PageButton({ children, onClick, active = false, disabled = false, ...rest }: PageButtonProps) {
+function PageBtn({
+  children,
+  onClick,
+  active = false,
+  disabled = false,
+  ...rest
+}: PageBtnProps) {
   return (
     <button
-      type="button"
+      type='button'
       onClick={onClick}
       disabled={disabled}
-      aria-current={active ? "page" : undefined}
-      className={[
-        "w-[38px] h-[38px] flex items-center justify-center",
-        "text-[0.78rem] font-['DM_Sans',sans-serif]",
-        "border clip-bevel-xs",
-        "transition-all duration-[200ms]",
-        active
-          ? // Active page: gold fill
-            "bg-gradient-to-br from-[#c9a84c] to-[#e8c97e] border-[#c9a84c] text-[#080a0f] font-medium"
+      aria-current={active ? 'page' : undefined}
+      className='w-9 h-9 flex items-center justify-center text-[0.76rem] font-dm clip-bevel-xs transition-all duration-200 cursor-pointer disabled:cursor-not-allowed'
+      style={{
+        background: active
+          ? 'linear-gradient(135deg, var(--gold), var(--gold-light))'
+          : 'var(--obsidian-3)',
+        border: `1px solid ${active ? 'var(--gold)' : 'var(--border)'}`,
+        color: active
+          ? '#080a0f'
           : disabled
-          ? // Disabled: faded
-            "bg-[#12161f] border-[rgba(201,168,76,0.14)] text-[rgba(240,237,230,0.55)] opacity-30 cursor-not-allowed"
-          : // Default: obsidian with gold hover
-            [
-              "bg-[#12161f] border-[rgba(201,168,76,0.14)] text-[rgba(240,237,230,0.55)]",
-              "hover:border-[rgba(201,168,76,0.28)] hover:text-[#f0ede6] hover:bg-[#181d28]",
-              "cursor-pointer",
-            ].join(" "),
-      ].join(" ")}
+            ? 'var(--ivory-muted)'
+            : 'var(--ivory-dim)',
+        opacity: disabled && !active ? 0.35 : 1,
+        fontWeight: active ? 500 : 400,
+      }}
+      onMouseEnter={(e) => {
+        if (!active && !disabled) {
+          (e.currentTarget as HTMLElement).style.borderColor =
+            'var(--border-mid)';
+          (e.currentTarget as HTMLElement).style.color = 'var(--ivory)';
+          (e.currentTarget as HTMLElement).style.background =
+            'var(--obsidian-4)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!active && !disabled) {
+          (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+          (e.currentTarget as HTMLElement).style.color = 'var(--ivory-dim)';
+          (e.currentTarget as HTMLElement).style.background =
+            'var(--obsidian-3)';
+        }
+      }}
       {...rest}
     >
       {children}

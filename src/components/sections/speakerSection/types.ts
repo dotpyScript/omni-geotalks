@@ -17,4 +17,6 @@ export interface Speaker {
   expertise: string[];
   /** CSS color string used for the per-speaker ambient glow, e.g. "rgba(0,80,160,0.3)" */
   accentColor: string;
+  /** Optional speaker photo URL. Falls back to initials avatar when absent. */
+  image?: string;
 }
