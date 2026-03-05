@@ -9,14 +9,6 @@ import {
   WEBINARS,
   CATEGORIES,
 } from '@/components/sections/webinerDiscovery/data';
-// 'use client';
-
-// import { useState, useMemo } from 'react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { ArrowRight, ArrowUpRight, Clock, Users, Radio } from 'lucide-react';
-// import type { Webinar } from '@/components/sections/webinerDiscovery/types';
-// import { BannerPlaceholder } from '@/components/sections/webinerDiscovery/BannerPlaceholder';
-// import { WEBINARS, CATEGORIES } from '@/components/sections/webinerDiscovery/data';
 
 // ─── Unsplash image map (banner index → topic-matched URL) ───────────────────
 //

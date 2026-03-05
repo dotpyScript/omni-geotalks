@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { Speaker } from "./types";
 import { SpotlightPortrait } from "./SpotlightPortrait";
 import { RoleBadge } from "./RoleBadge";
@@ -121,9 +122,9 @@ export function SpotlightPanel({ speaker, switching }: SpotlightPanelProps) {
 
         {/* Action buttons */}
         <div className="flex items-center gap-3.5 flex-wrap">
-          {/* Primary CTA — intentionally fixed dark text on gold */}
-          <button
-            type="button"
+          {/* Primary CTA — links to speaker profile page */}
+          <Link
+            href={`/speakers/${speaker.id}`}
             className={[
               "inline-flex items-center gap-2.5",
               "text-[0.7rem] tracking-[0.18em] uppercase font-medium font-dm",
@@ -133,11 +134,11 @@ export function SpotlightPanel({ speaker, switching }: SpotlightPanelProps) {
               "transition-all duration-250",
               "hover:from-(--gold-light) hover:to-(--gold-pale)",
               "hover:shadow-[0_8px_24px_var(--gold-glow)]",
-              "hover:-translate-y-px cursor-pointer border-none",
+              "hover:-translate-y-px",
             ].join(" ")}
           >
             View Profile →
-          </button>
+          </Link>
 
           {/* Ghost LinkedIn button */}
           <a
