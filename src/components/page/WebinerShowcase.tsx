@@ -84,11 +84,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
   const isCompleted = webinar.status === 'completed';
   const catLabel = getCatLabel(webinar.category);
 
-  const statusColor = isLive
-    ? 'var(--green)'
-    : isCompleted
-      ? 'var(--gold)'
-      : 'var(--cyan)';
+  const statusColor = isLive ? 'var(--green)' : isCompleted ? 'var(--gold)' : 'var(--cyan)';
   const statusBorderColor = isLive
     ? 'color-mix(in srgb, var(--green) 25%, transparent)'
     : isCompleted
@@ -100,8 +96,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
     <motion.article
       className='relative cursor-pointer overflow-hidden flex flex-col'
       style={{
-        background:
-          'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
+        background: 'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
         border: `1px solid ${hovered ? 'var(--border-mid)' : 'var(--border)'}`,
         transition: 'border-color 0.3s ease',
       }}
@@ -197,8 +192,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
           <span
             className='text-[0.52rem] tracking-[0.18em] uppercase px-2 py-0.5'
             style={{
-              background:
-                'color-mix(in srgb, var(--obsidian) 60%, transparent)',
+              background: 'color-mix(in srgb, var(--obsidian) 60%, transparent)',
               backdropFilter: 'blur(8px)',
               border: '1px solid var(--border-mid)',
               color: 'var(--gold-light)',
@@ -217,11 +211,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
             className='flex items-center gap-1.5 text-[0.62rem] tracking-wide'
             style={{ color: 'var(--ivory-muted)' }}
           >
-            <Clock
-              size={9}
-              className='shrink-0'
-              style={{ color: 'var(--gold)' }}
-            />
+            <Clock size={9} className='shrink-0' style={{ color: 'var(--gold)' }} />
             {webinar.date} · {webinar.time}
           </span>
           <span
@@ -263,11 +253,9 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
                 key={i}
                 className='w-6 h-6 rounded-full flex items-center justify-center'
                 style={{
-                  background:
-                    'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                  background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
                   border: '1.5px solid var(--obsidian-2)',
-                  boxShadow:
-                    '0 0 0 1px color-mix(in srgb, var(--gold) 15%, transparent)',
+                  boxShadow: '0 0 0 1px color-mix(in srgb, var(--gold) 15%, transparent)',
                 }}
               >
                 <span
@@ -369,8 +357,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
     <motion.article
       className='relative overflow-hidden cursor-pointer'
       style={{
-        background:
-          'linear-gradient(145deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
+        background: 'linear-gradient(145deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
         border: isLive
           ? '1px solid color-mix(in srgb, var(--green) 20%, transparent)'
           : '1px solid var(--border)',
@@ -458,8 +445,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
             <span
               className='text-[0.54rem] tracking-[0.18em] uppercase px-2.5 py-1'
               style={{
-                background:
-                  'color-mix(in srgb, var(--obsidian) 60%, transparent)',
+                background: 'color-mix(in srgb, var(--obsidian) 60%, transparent)',
                 backdropFilter: 'blur(8px)',
                 border: '1px solid var(--border-mid)',
                 color: 'var(--gold-light)',
@@ -478,8 +464,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
               <div
                 className='w-6 h-px'
                 style={{
-                  background:
-                    'linear-gradient(90deg, transparent, var(--gold))',
+                  background: 'linear-gradient(90deg, transparent, var(--gold))',
                 }}
               />
               <span
@@ -541,11 +526,9 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
                     key={i}
                     className='w-8 h-8 rounded-full flex items-center justify-center'
                     style={{
-                      background:
-                        'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                      background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
                       border: '2px solid var(--obsidian-2)',
-                      boxShadow:
-                        '0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent)',
+                      boxShadow: '0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent)',
                     }}
                   >
                     <span
@@ -632,11 +615,11 @@ function SectionHeader({ liveCount }: { liveCount: number }) {
       <div className='flex items-center gap-3 mb-5'>
         <div
           className='w-8 h-px'
-          style={{
-            background: 'linear-gradient(90deg, transparent, var(--gold))',
-          }}
+          style={{ background: 'linear-gradient(90deg, transparent, var(--gold))' }}
         />
-        <span className='text-[0.62rem] tracking-[0.38em] uppercase text-(--gold)'>
+        <span
+          className='text-[0.62rem] tracking-[0.38em] uppercase text-(--gold)'
+        >
           Expert-Led Sessions
         </span>
         {liveCount > 0 && (
@@ -644,8 +627,7 @@ function SectionHeader({ liveCount }: { liveCount: number }) {
             className='flex items-center gap-1.5 ml-3 px-2.5 py-1'
             style={{
               background: 'var(--green-dim)',
-              border:
-                '1px solid color-mix(in srgb, var(--green) 18%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--green) 18%, transparent)',
             }}
           >
             <span className='relative flex h-1.25 w-1.25'>
@@ -713,7 +695,9 @@ function ViewMoreRow({
         onClick={onClick}
       >
         View All Sessions
-        <span className='tabular-nums text-[0.6rem] text-(--gold)'>
+        <span
+          className='tabular-nums text-[0.6rem] text-(--gold)'
+        >
           ({count})
         </span>
         <ArrowRight size={12} style={{ color: 'var(--gold)' }} />
@@ -775,11 +759,7 @@ export default function WebinarShowcase({
   return (
     <section
       className='relative overflow-hidden pb-25'
-      style={{
-        background:
-          'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)',
-        color: 'var(--ivory)',
-      }}
+      style={{ background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)', color: 'var(--ivory)' }}
       aria-label='Webinar showcase'
     >
       {/* Blueprint grid */}
@@ -840,9 +820,7 @@ export default function WebinarShowcase({
                 />
                 <span
                   className='text-[0.56rem] tracking-[0.32em] uppercase'
-                  style={{
-                    color: 'color-mix(in srgb, var(--gold) 45%, transparent)',
-                  }}
+                  style={{ color: 'color-mix(in srgb, var(--gold) 45%, transparent)' }}
                 >
                   More Sessions
                 </span>
