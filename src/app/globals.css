@@ -57,6 +57,14 @@
   --animate-marquee-right: marqueeRight 32s linear infinite;
   --animate-cat-reveal: catReveal 0.6s ease both;
 
+  /* ── CTA section animations ──────────────────────────────────────────── */
+  --animate-diamond-float: diamondFloat 8s ease-in-out infinite;
+
+  @keyframes diamondFloat {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(-12px); }
+  }
+
   /* ── Speaker section animations ──────────────────────────────────────── */
   --animate-spin-slow: spinSlow 20s linear infinite;
   --animate-spin-slow-reverse: spinSlowReverse 35s linear infinite;

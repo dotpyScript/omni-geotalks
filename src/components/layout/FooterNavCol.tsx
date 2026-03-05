@@ -9,7 +9,7 @@ function ColHeading({ title }: { title: string }) {
      * .footer-col__heading — tiny caps label + gradient rule line
      * ::after rule replicated as a sibling span.
      */
-    <div className='flex items-center gap-[10px] text-[0.62rem] tracking-[0.3em] uppercase text-gold mb-6'>
+    <div className='flex items-center gap-2.5 text-[0.62rem] tracking-[0.3em] uppercase text-(--gold) mb-6'>
       <span>{title}</span>
       <span
         className='flex-1 h-px'
@@ -36,13 +36,13 @@ function NavList({ links }: { links: NavLink[] }) {
             className={[
               'group/link',
               'inline-flex items-center gap-2',
-              'text-[0.78rem] text-ivory-muted font-light tracking-[0.03em] no-underline',
-              'transition-[color,padding-left] duration-[250ms]',
-              'hover:text-ivory hover:pl-[6px]',
+              'text-[0.78rem] text-(--ivory-muted) font-light tracking-[0.03em] no-underline',
+              'transition-[color,padding-left] duration-250',
+              'hover:text-(--ivory) hover:pl-1.5',
             ].join(' ')}
           >
             {/* › arrow — invisible by default, appears on hover */}
-            <span className='text-gold text-[0.9rem] opacity-0 transition-opacity duration-200 group-hover/link:opacity-100'>
+            <span className='text-(--gold) text-[0.9rem] opacity-0 transition-opacity duration-200 group-hover/link:opacity-100'>
               ›
             </span>
             {l.label}
@@ -60,9 +60,9 @@ function ContactList({ items }: { items: ContactItem[] }) {
       {items.map((item, i) => (
         <li
           key={i}
-          className='flex items-start gap-3 text-[0.76rem] text-ivory-muted font-light leading-[1.5]'
+          className='flex items-start gap-3 text-[0.76rem] text-(--ivory-muted) font-light leading-normal'
         >
-          <span className='text-gold text-[0.85rem] mt-[1px] flex-shrink-0'>
+          <span className='text-(--gold) text-[0.85rem] mt-px shrink-0'>
             {item.icon}
           </span>
           <span>{item.text}</span>
@@ -95,11 +95,11 @@ export default function FooterNavCol({
     <div
       className={[
         'px-10 py-16',
-        !isLast ? 'border-r border-border' : '',
+        !isLast ? 'border-r border-(--border)' : '',
         /* responsive */
         'max-[1100px]:border-r-0',
         !isLast
-          ? 'max-md:border-r-0 max-md:border-b max-md:border-border max-md:px-6 max-md:py-10'
+          ? 'max-md:border-r-0 max-md:border-b max-md:border-(--border) max-md:px-6 max-md:py-10'
           : 'max-md:px-6 max-md:py-10',
       ]
         .filter(Boolean)

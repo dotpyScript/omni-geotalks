@@ -9,14 +9,6 @@ import {
   WEBINARS,
   CATEGORIES,
 } from '@/components/sections/webinerDiscovery/data';
-// 'use client';
-
-// import { useState, useMemo } from 'react';
-// import { motion, AnimatePresence } from 'framer-motion';
-// import { ArrowRight, ArrowUpRight, Clock, Users, Radio } from 'lucide-react';
-// import type { Webinar } from '@/components/sections/webinerDiscovery/types';
-// import { BannerPlaceholder } from '@/components/sections/webinerDiscovery/BannerPlaceholder';
-// import { WEBINARS, CATEGORIES } from '@/components/sections/webinerDiscovery/data';
 
 // ─── Unsplash image map (banner index → topic-matched URL) ───────────────────
 //
@@ -92,15 +84,25 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
   const isCompleted = webinar.status === 'completed';
   const catLabel = getCatLabel(webinar.category);
 
-  const statusColor = isLive ? '#00e5a0' : isCompleted ? '#c9a84c' : '#00d4ff';
+  const statusColor = isLive
+    ? 'var(--green)'
+    : isCompleted
+      ? 'var(--gold)'
+      : 'var(--cyan)';
+  const statusBorderColor = isLive
+    ? 'color-mix(in srgb, var(--green) 25%, transparent)'
+    : isCompleted
+      ? 'var(--border)'
+      : 'color-mix(in srgb, var(--cyan) 25%, transparent)';
   const statusLabel = isLive ? 'Live' : isCompleted ? 'Recorded' : 'Upcoming';
 
   return (
     <motion.article
       className='relative cursor-pointer overflow-hidden flex flex-col'
       style={{
-        background: 'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
-        border: `1px solid ${hovered ? 'rgba(201,168,76,0.28)' : 'rgba(201,168,76,0.1)'}`,
+        background:
+          'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
+        border: `1px solid ${hovered ? 'var(--border-mid)' : 'var(--border)'}`,
         transition: 'border-color 0.3s ease',
       }}
       initial={{ opacity: 0, y: 32 }}
@@ -133,10 +135,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
       />
 
       {/* ── Thumbnail ── */}
-      <div
-        className='relative w-full overflow-hidden flex-shrink-0'
-        style={{ height: 180 }}
-      >
+      <div className='relative w-full overflow-hidden shrink-0 h-45'>
         <motion.div
           className='absolute inset-0'
           animate={{
@@ -155,33 +154,33 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
           className='absolute inset-0 pointer-events-none'
           style={{
             background:
-              'linear-gradient(180deg, transparent 50%, rgba(13,17,24,0.78) 100%)',
+              'linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--obsidian-2) 78%, transparent) 100%)',
           }}
         />
 
         {/* Status pill */}
         <div
-          className='absolute top-3 left-3 z-[3] flex items-center gap-1.5 px-2.5 py-1'
+          className='absolute top-3 left-3 z-3 flex items-center gap-1.5 px-2.5 py-1'
           style={{
-            background: 'rgba(8,10,15,0.55)',
+            background: 'color-mix(in srgb, var(--obsidian) 55%, transparent)',
             backdropFilter: 'blur(10px)',
-            border: `1px solid ${statusColor}40`,
+            border: `1px solid ${statusBorderColor}`,
           }}
         >
           {isLive ? (
-            <span className='relative flex h-[5px] w-[5px]'>
+            <span className='relative flex h-1.25 w-1.25'>
               <span
                 className='animate-ping absolute inline-flex h-full w-full rounded-full opacity-75'
                 style={{ backgroundColor: statusColor }}
               />
               <span
-                className='relative inline-flex rounded-full h-[5px] w-[5px]'
+                className='relative inline-flex rounded-full h-1.25 w-1.25'
                 style={{ backgroundColor: statusColor }}
               />
             </span>
           ) : (
             <span
-              className='inline-flex rounded-full h-[5px] w-[5px]'
+              className='inline-flex rounded-full h-1.25 w-1.25'
               style={{ backgroundColor: statusColor }}
             />
           )}
@@ -194,14 +193,15 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
         </div>
 
         {/* Category tag */}
-        <div className='absolute bottom-3 left-3 z-[3]'>
+        <div className='absolute bottom-3 left-3 z-3'>
           <span
             className='text-[0.52rem] tracking-[0.18em] uppercase px-2 py-0.5'
             style={{
-              background: 'rgba(8,10,15,0.6)',
+              background:
+                'color-mix(in srgb, var(--obsidian) 60%, transparent)',
               backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(201,168,76,0.22)',
-              color: '#e8c97e',
+              border: '1px solid var(--border-mid)',
+              color: 'var(--gold-light)',
             }}
           >
             {catLabel}
@@ -215,17 +215,21 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
         <div className='flex items-center gap-3 mb-3'>
           <span
             className='flex items-center gap-1.5 text-[0.62rem] tracking-wide'
-            style={{ color: 'rgba(240,237,230,0.35)' }}
+            style={{ color: 'var(--ivory-muted)' }}
           >
-            <Clock size={9} className='shrink-0' style={{ color: '#c9a84c' }} />
+            <Clock
+              size={9}
+              className='shrink-0'
+              style={{ color: 'var(--gold)' }}
+            />
             {webinar.date} · {webinar.time}
           </span>
           <span
-            className='ml-auto text-[0.56rem] tracking-[0.1em] px-1.5 py-0.5'
+            className='ml-auto text-[0.56rem] tracking-widest px-1.5 py-0.5'
             style={{
-              background: 'rgba(201,168,76,0.07)',
-              border: '1px solid rgba(201,168,76,0.13)',
-              color: 'rgba(232,201,126,0.5)',
+              background: 'var(--gold-dim)',
+              border: '1px solid var(--border)',
+              color: 'var(--gold)',
             }}
           >
             {webinar.duration}
@@ -234,11 +238,8 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
 
         {/* Title */}
         <h3
-          className='text-[1.05rem] font-light leading-[1.3] mb-3 transition-colors duration-300'
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            color: hovered ? '#f5e6c0' : '#f0ede6',
-          }}
+          className='font-cormorant text-[1.05rem] font-light leading-[1.3] mb-3 transition-colors duration-300'
+          style={{ color: hovered ? 'var(--gold-pale)' : 'var(--ivory)' }}
         >
           {webinar.title}
         </h3>
@@ -246,7 +247,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
         {/* Description — always visible, 2 lines */}
         <p
           className='text-[0.72rem] leading-[1.6] mb-4 line-clamp-2 font-light flex-1'
-          style={{ color: 'rgba(240,237,230,0.38)' }}
+          style={{ color: 'var(--ivory-muted)' }}
         >
           {webinar.description}
         </p>
@@ -254,7 +255,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
         {/* Speaker + registrations */}
         <div
           className='flex items-center gap-3 pt-3'
-          style={{ borderTop: '1px solid rgba(201,168,76,0.08)' }}
+          style={{ borderTop: '1px solid var(--border)' }}
         >
           <div className='flex -space-x-1.5'>
             {webinar.speakers.slice(0, 2).map((s, i) => (
@@ -262,17 +263,16 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
                 key={i}
                 className='w-6 h-6 rounded-full flex items-center justify-center'
                 style={{
-                  background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
-                  border: '1.5px solid #0d1118',
-                  boxShadow: '0 0 0 1px rgba(201,168,76,0.15)',
+                  background:
+                    'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                  border: '1.5px solid var(--obsidian-2)',
+                  boxShadow:
+                    '0 0 0 1px color-mix(in srgb, var(--gold) 15%, transparent)',
                 }}
               >
                 <span
-                  className='text-[0.46rem] font-semibold'
-                  style={{
-                    color: '#e8c97e',
-                    fontFamily: "'Cormorant Garamond', serif",
-                  }}
+                  className='font-cormorant text-[0.46rem] font-semibold'
+                  style={{ color: 'var(--gold-light)' }}
                 >
                   {s.initials}
                 </span>
@@ -281,11 +281,11 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
           </div>
           <span
             className='text-[0.62rem] flex-1 truncate'
-            style={{ color: 'rgba(240,237,230,0.38)' }}
+            style={{ color: 'var(--ivory-muted)' }}
           >
             {webinar.speakers[0]?.name}
             {webinar.speakers.length > 1 && (
-              <span style={{ color: 'rgba(240,237,230,0.22)' }}>
+              <span style={{ color: 'var(--ivory-muted)' }}>
                 {' '}
                 +{webinar.speakers.length - 1}
               </span>
@@ -293,9 +293,9 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
           </span>
           <div
             className='flex items-center gap-1 text-[0.6rem]'
-            style={{ color: 'rgba(240,237,230,0.28)' }}
+            style={{ color: 'var(--ivory-muted)' }}
           >
-            <Users size={9} style={{ color: '#c9a84c' }} />
+            <Users size={9} style={{ color: 'var(--gold)' }} />
             {webinar.registrations.toLocaleString()}
           </div>
         </div>
@@ -314,16 +314,15 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
       >
         <button
           type='button'
-          className='w-full flex items-center justify-between px-4 py-2.5 text-[0.62rem] tracking-[0.18em] uppercase'
+          className='font-dm w-full flex items-center justify-between px-4 py-2.5 text-[0.62rem] tracking-[0.18em] uppercase'
           style={{
             background: isLive
-              ? 'linear-gradient(135deg, rgba(0,229,160,0.12), rgba(0,229,160,0.06))'
-              : 'linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.05))',
+              ? 'linear-gradient(135deg, var(--green-dim), color-mix(in srgb, var(--green) 6%, transparent))'
+              : 'linear-gradient(135deg, var(--gold-dim), color-mix(in srgb, var(--gold) 5%, transparent))',
             border: isLive
-              ? '1px solid rgba(0,229,160,0.28)'
-              : '1px solid rgba(201,168,76,0.26)',
-            color: isLive ? '#00e5a0' : '#e8c97e',
-            fontFamily: "'DM Sans', sans-serif",
+              ? '1px solid color-mix(in srgb, var(--green) 28%, transparent)'
+              : '1px solid var(--border-mid)',
+            color: isLive ? 'var(--green)' : 'var(--gold-light)',
           }}
           onClick={(e) => {
             e.stopPropagation();
@@ -345,8 +344,8 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
       <span
         className='absolute bottom-0 right-0 w-3 h-3 pointer-events-none'
         style={{
-          borderBottom: '1px solid rgba(201,168,76,0.28)',
-          borderRight: '1px solid rgba(201,168,76,0.28)',
+          borderBottom: '1px solid var(--border-mid)',
+          borderRight: '1px solid var(--border-mid)',
         }}
       />
     </motion.article>
@@ -371,10 +370,10 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
       className='relative overflow-hidden cursor-pointer'
       style={{
         background:
-          'linear-gradient(145deg, #0d1118 0%, #10141d 60%, #141820 100%)',
+          'linear-gradient(145deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
         border: isLive
-          ? '1px solid rgba(0,229,160,0.2)'
-          : '1px solid rgba(201,168,76,0.16)',
+          ? '1px solid color-mix(in srgb, var(--green) 20%, transparent)'
+          : '1px solid var(--border)',
       }}
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
@@ -388,17 +387,17 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
     >
       {/* Top accent */}
       <div
-        className='absolute top-0 left-0 right-0 h-[2px] z-10'
+        className='absolute top-0 left-0 right-0 h-0.5 z-10'
         style={{
           background: isLive
-            ? 'linear-gradient(90deg, #00e5a0, rgba(0,229,160,0.3), transparent)'
-            : 'linear-gradient(90deg, #c9a84c, rgba(201,168,76,0.4), transparent)',
+            ? 'linear-gradient(90deg, var(--green), color-mix(in srgb, var(--green) 30%, transparent), transparent)'
+            : 'linear-gradient(90deg, var(--gold), color-mix(in srgb, var(--gold) 40%, transparent), transparent)',
         }}
       />
 
       <div className='grid grid-cols-[1fr_1fr] max-[900px]:grid-cols-1'>
         {/* Left: Banner */}
-        <div className='relative overflow-hidden min-h-[380px] max-[900px]:min-h-[240px]'>
+        <div className='relative overflow-hidden min-h-95 max-[900px]:min-h-60'>
           <motion.div
             className='absolute inset-0'
             animate={{
@@ -414,57 +413,56 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
 
           {/* Seam fade — only the last 22% bleeds into content panel */}
           <div
-            className='absolute inset-0 z-[2] max-[900px]:hidden'
+            className='absolute inset-0 z-2 max-[900px]:hidden'
             style={{
               background:
-                'linear-gradient(90deg, transparent 78%, rgba(13,17,24,0.95) 100%)',
+                'linear-gradient(90deg, transparent 78%, color-mix(in srgb, var(--obsidian-2) 95%, transparent) 100%)',
             }}
           />
           {/* Mobile bottom fade */}
           <div
-            className='absolute inset-0 z-[2] hidden max-[900px]:block'
+            className='absolute inset-0 z-2 hidden max-[900px]:block'
             style={{
               background:
-                'linear-gradient(180deg, transparent 55%, #0d1118 100%)',
+                'linear-gradient(180deg, transparent 55%, var(--obsidian-2) 100%)',
             }}
           />
 
           {/* Status badge */}
           <div
-            className='absolute top-4 left-4 z-[3] flex items-center gap-2 px-3 py-1.5'
+            className='absolute top-4 left-4 z-3 flex items-center gap-2 px-3 py-1.5'
             style={{
-              background: isLive
-                ? 'rgba(0,229,160,0.09)'
-                : 'rgba(201,168,76,0.08)',
+              background: isLive ? 'var(--green-dim)' : 'var(--gold-dim)',
               backdropFilter: 'blur(10px)',
               border: isLive
-                ? '1px solid rgba(0,229,160,0.3)'
-                : '1px solid rgba(201,168,76,0.25)',
+                ? '1px solid color-mix(in srgb, var(--green) 30%, transparent)'
+                : '1px solid var(--border-mid)',
             }}
           >
             {isLive && (
-              <span className='relative flex h-[5px] w-[5px]'>
-                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e5a0] opacity-75' />
-                <span className='relative inline-flex rounded-full h-[5px] w-[5px] bg-[#00e5a0]' />
+              <span className='relative flex h-1.25 w-1.25'>
+                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-(--green) opacity-75' />
+                <span className='relative inline-flex rounded-full h-1.25 w-1.25 bg-(--green)' />
               </span>
             )}
             <span
               className='text-[0.56rem] tracking-[0.3em] uppercase'
-              style={{ color: isLive ? '#00e5a0' : '#c9a84c' }}
+              style={{ color: isLive ? 'var(--green)' : 'var(--gold)' }}
             >
               {isLive ? 'Live Now' : isCompleted ? 'Recording' : 'Upcoming'}
             </span>
           </div>
 
           {/* Category tag */}
-          <div className='absolute bottom-4 left-4 z-[3]'>
+          <div className='absolute bottom-4 left-4 z-3'>
             <span
               className='text-[0.54rem] tracking-[0.18em] uppercase px-2.5 py-1'
               style={{
-                background: 'rgba(8,10,15,0.6)',
+                background:
+                  'color-mix(in srgb, var(--obsidian) 60%, transparent)',
                 backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(201,168,76,0.22)',
-                color: '#e8c97e',
+                border: '1px solid var(--border-mid)',
+                color: 'var(--gold-light)',
               }}
             >
               {catLabel}
@@ -473,37 +471,35 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
         </div>
 
         {/* Right: Content */}
-        <div className='relative z-[3] flex flex-col justify-between p-8 max-[900px]:pt-5 max-[900px]:px-5 max-[900px]:pb-6'>
+        <div className='relative z-3 flex flex-col justify-between p-8 max-[900px]:pt-5 max-[900px]:px-5 max-[900px]:pb-6'>
           <div>
             {/* Featured eyebrow */}
             <div className='flex items-center gap-2.5 mb-6'>
               <div
                 className='w-6 h-px'
                 style={{
-                  background: 'linear-gradient(90deg, transparent, #c9a84c)',
+                  background:
+                    'linear-gradient(90deg, transparent, var(--gold))',
                 }}
               />
               <span
                 className='text-[0.56rem] tracking-[0.4em] uppercase'
-                style={{ color: '#c9a84c' }}
+                style={{ color: 'var(--gold)' }}
               >
                 Featured Session
               </span>
             </div>
 
             <h3
-              className='text-[clamp(1.5rem,2.5vw,2.1rem)] font-light leading-[1.2] mb-4 transition-colors duration-300'
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                color: hovered ? '#f5e6c0' : '#f0ede6',
-              }}
+              className='font-cormorant text-[clamp(1.5rem,2.5vw,2.1rem)] font-light leading-[1.2] mb-4 transition-colors duration-300'
+              style={{ color: hovered ? 'var(--gold-pale)' : 'var(--ivory)' }}
             >
               {webinar.title}
             </h3>
 
             <p
               className='text-[0.78rem] leading-[1.7] mb-6 font-light line-clamp-3'
-              style={{ color: 'rgba(240,237,230,0.38)' }}
+              style={{ color: 'var(--ivory-muted)' }}
             >
               {webinar.description}
             </p>
@@ -512,22 +508,22 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
             <div className='flex flex-col gap-2 mb-6'>
               <div
                 className='flex items-center gap-2 text-[0.68rem]'
-                style={{ color: 'rgba(240,237,230,0.4)' }}
+                style={{ color: 'var(--ivory-muted)' }}
               >
                 <Clock
                   size={11}
-                  style={{ color: '#c9a84c' }}
+                  style={{ color: 'var(--gold)' }}
                   className='shrink-0'
                 />
                 {webinar.date} · {webinar.time} · {webinar.duration}
               </div>
               <div
                 className='flex items-center gap-2 text-[0.68rem]'
-                style={{ color: 'rgba(240,237,230,0.4)' }}
+                style={{ color: 'var(--ivory-muted)' }}
               >
                 <Users
                   size={11}
-                  style={{ color: '#c9a84c' }}
+                  style={{ color: 'var(--gold)' }}
                   className='shrink-0'
                 />
                 {webinar.registrations.toLocaleString()} registered
@@ -537,7 +533,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
             {/* Speakers */}
             <div
               className='flex items-center gap-3 pb-6 mb-6'
-              style={{ borderBottom: '1px solid rgba(201,168,76,0.1)' }}
+              style={{ borderBottom: '1px solid var(--border)' }}
             >
               <div className='flex -space-x-2'>
                 {webinar.speakers.slice(0, 3).map((s, i) => (
@@ -545,17 +541,16 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
                     key={i}
                     className='w-8 h-8 rounded-full flex items-center justify-center'
                     style={{
-                      background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
-                      border: '2px solid #0d1118',
-                      boxShadow: '0 0 0 1px rgba(201,168,76,0.18)',
+                      background:
+                        'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                      border: '2px solid var(--obsidian-2)',
+                      boxShadow:
+                        '0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent)',
                     }}
                   >
                     <span
-                      className='text-[0.5rem] font-semibold'
-                      style={{
-                        color: '#e8c97e',
-                        fontFamily: "'Cormorant Garamond', serif",
-                      }}
+                      className='font-cormorant text-[0.5rem] font-semibold'
+                      style={{ color: 'var(--gold-light)' }}
                     >
                       {s.initials}
                     </span>
@@ -565,14 +560,14 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
               <div>
                 <p
                   className='text-[0.68rem]'
-                  style={{ color: 'rgba(240,237,230,0.55)' }}
+                  style={{ color: 'var(--ivory-dim)' }}
                 >
                   {webinar.speakers[0]?.name}
                 </p>
                 {webinar.speakers.length > 1 && (
                   <p
                     className='text-[0.6rem]'
-                    style={{ color: 'rgba(240,237,230,0.25)' }}
+                    style={{ color: 'var(--ivory-muted)' }}
                   >
                     +{webinar.speakers.length - 1} more
                   </p>
@@ -584,15 +579,14 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
           {/* CTA */}
           <button
             type='button'
-            className='flex items-center justify-between w-full px-5 py-3.5 text-left relative overflow-hidden transition-all duration-300'
+            className='font-dm flex items-center justify-between w-full px-5 py-3.5 text-left relative overflow-hidden transition-all duration-300'
             style={{
               background: isLive
-                ? 'linear-gradient(135deg, #00e5a0, #00c882)'
-                : 'linear-gradient(135deg, #c9a84c, #e8c97e)',
+                ? 'linear-gradient(135deg, var(--green), color-mix(in srgb, var(--green) 85%, #000))'
+                : 'linear-gradient(135deg, var(--gold), var(--gold-light))',
               color: isLive ? '#001a10' : '#080a0f',
               clipPath:
                 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
-              fontFamily: "'DM Sans', sans-serif",
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -630,7 +624,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
 function SectionHeader({ liveCount }: { liveCount: number }) {
   return (
     <motion.div
-      className='relative z-[2] px-[60px] pt-[90px] pb-[52px] max-md:px-6 max-md:pt-14 max-md:pb-8'
+      className='relative z-2 px-15 pt-22.5 pb-13 max-md:px-6 max-md:pt-14 max-md:pb-8'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -638,27 +632,27 @@ function SectionHeader({ liveCount }: { liveCount: number }) {
       <div className='flex items-center gap-3 mb-5'>
         <div
           className='w-8 h-px'
-          style={{ background: 'linear-gradient(90deg, transparent, #c9a84c)' }}
+          style={{
+            background: 'linear-gradient(90deg, transparent, var(--gold))',
+          }}
         />
-        <span
-          className='text-[0.62rem] tracking-[0.38em] uppercase'
-          style={{ color: '#c9a84c' }}
-        >
+        <span className='text-[0.62rem] tracking-[0.38em] uppercase text-(--gold)'>
           Expert-Led Sessions
         </span>
         {liveCount > 0 && (
           <div
             className='flex items-center gap-1.5 ml-3 px-2.5 py-1'
             style={{
-              background: 'rgba(0,229,160,0.06)',
-              border: '1px solid rgba(0,229,160,0.18)',
+              background: 'var(--green-dim)',
+              border:
+                '1px solid color-mix(in srgb, var(--green) 18%, transparent)',
             }}
           >
-            <span className='relative flex h-[5px] w-[5px]'>
-              <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e5a0] opacity-75' />
-              <span className='relative inline-flex rounded-full h-[5px] w-[5px] bg-[#00e5a0]' />
+            <span className='relative flex h-1.25 w-1.25'>
+              <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-(--green) opacity-75' />
+              <span className='relative inline-flex rounded-full h-1.25 w-1.25 bg-(--green)' />
             </span>
-            <span className='text-[0.54rem] tracking-[0.22em] uppercase text-[#00e5a0]'>
+            <span className='text-[0.54rem] tracking-[0.22em] uppercase text-(--green)'>
               {liveCount} Live
             </span>
           </div>
@@ -666,18 +660,18 @@ function SectionHeader({ liveCount }: { liveCount: number }) {
       </div>
 
       <h2
-        className='font-light leading-[1.05] text-[clamp(2.2rem,4vw,3.6rem)]'
-        style={{ fontFamily: "'Cormorant Garamond', serif", color: '#f0ede6' }}
+        className='font-cormorant font-light leading-[1.05] text-[clamp(2.2rem,4vw,3.6rem)]'
+        style={{ color: 'var(--ivory)' }}
       >
         Discover{' '}
-        <em className='italic' style={{ color: '#e8c97e' }}>
+        <em className='italic' style={{ color: 'var(--gold-light)' }}>
           Webinars
         </em>
       </h2>
 
       <p
-        className='mt-3 text-[0.78rem] font-light max-w-[480px]'
-        style={{ color: 'rgba(240,237,230,0.3)', lineHeight: 1.6 }}
+        className='mt-3 text-[0.78rem] font-light max-w-120 leading-[1.6]'
+        style={{ color: 'var(--ivory-muted)' }}
       >
         Hover any session to preview details. Click to open the full page.
       </p>
@@ -706,27 +700,23 @@ function ViewMoreRow({
         className='flex-1 h-px'
         style={{
           background:
-            'linear-gradient(90deg, rgba(201,168,76,0.15), transparent)',
+            'linear-gradient(90deg, color-mix(in srgb, var(--gold) 15%, transparent), transparent)',
         }}
       />
       <button
         type='button'
-        className='flex items-center gap-2.5 px-5 py-2.5 text-[0.65rem] tracking-[0.22em] uppercase transition-all duration-300 hover:bg-[rgba(201,168,76,0.06)]'
+        className='font-dm flex items-center gap-2.5 px-5 py-2.5 text-[0.65rem] tracking-[0.22em] uppercase transition-all duration-300 hover:bg-(--gold-dim)'
         style={{
-          border: '1px solid rgba(201,168,76,0.18)',
-          color: 'rgba(240,237,230,0.42)',
-          fontFamily: "'DM Sans', sans-serif",
+          border: '1px solid var(--border)',
+          color: 'var(--ivory-muted)',
         }}
         onClick={onClick}
       >
         View All Sessions
-        <span
-          className='tabular-nums'
-          style={{ color: '#c9a84c', fontSize: '0.6rem' }}
-        >
+        <span className='tabular-nums text-[0.6rem] text-(--gold)'>
           ({count})
         </span>
-        <ArrowRight size={12} style={{ color: '#c9a84c' }} />
+        <ArrowRight size={12} style={{ color: 'var(--gold)' }} />
       </button>
     </motion.div>
   );
@@ -743,22 +733,15 @@ function EmptyState({ onReset }: { onReset: () => void }) {
     >
       <div className='text-[2rem] opacity-15 mb-2'>◎</div>
       <h3
-        className='text-[1.5rem] font-light'
-        style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          color: 'rgba(240,237,230,0.4)',
-        }}
+        className='font-cormorant text-[1.5rem] font-light'
+        style={{ color: 'var(--ivory-muted)' }}
       >
         No sessions found
       </h3>
       <button
         type='button'
-        className='mt-2 text-[0.66rem] tracking-[0.18em] uppercase px-5 py-2 transition-colors duration-200 hover:bg-[rgba(201,168,76,0.07)]'
-        style={{
-          color: '#c9a84c',
-          border: '1px solid rgba(201,168,76,0.25)',
-          fontFamily: "'DM Sans', sans-serif",
-        }}
+        className='font-dm mt-2 text-[0.66rem] tracking-[0.18em] uppercase px-5 py-2 transition-colors duration-200 hover:bg-(--gold-dim) text-(--gold)'
+        style={{ border: '1px solid var(--border-mid)' }}
         onClick={onReset}
       >
         Show All
@@ -791,19 +774,18 @@ export default function WebinarShowcase({
 
   return (
     <section
-      className='relative overflow-hidden pb-[100px]'
-      style={{ background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)', color: 'var(--ivory)' }}
+      className='relative overflow-hidden pb-25'
+      style={{
+        background:
+          'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)',
+        color: 'var(--ivory)',
+      }}
       aria-label='Webinar showcase'
     >
       {/* Blueprint grid */}
       <div
         aria-hidden
-        className='pointer-events-none absolute inset-0 z-0'
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(201,168,76,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.035) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
+        className='pointer-events-none absolute inset-0 z-0 bg-grid'
       />
 
       {/* Ambient glow */}
@@ -814,7 +796,7 @@ export default function WebinarShowcase({
           width: 500,
           height: 280,
           background:
-            'radial-gradient(ellipse, rgba(201,168,76,0.055) 0%, transparent 70%)',
+            'radial-gradient(ellipse, color-mix(in srgb, var(--gold) 5%, transparent) 0%, transparent 70%)',
           filter: 'blur(60px)',
         }}
       />
@@ -824,15 +806,15 @@ export default function WebinarShowcase({
 
       {/* Divider */}
       <div
-        className='mx-[60px] mb-10 h-px max-md:mx-6'
+        className='mx-15 mb-10 h-px max-md:mx-6'
         style={{
           background:
-            'linear-gradient(90deg, rgba(201,168,76,0.18), rgba(201,168,76,0.05) 60%, transparent)',
+            'linear-gradient(90deg, var(--border-mid), color-mix(in srgb, var(--gold) 5%, transparent) 60%, transparent)',
         }}
       />
 
       {/* Content */}
-      <div className='relative z-[2] px-[60px] max-md:px-6'>
+      <div className='relative z-2 px-15 max-md:px-6'>
         <div className='flex flex-col gap-8'>
           {/* Featured card */}
           {featured && (
@@ -853,12 +835,14 @@ export default function WebinarShowcase({
                   className='w-4 h-px'
                   style={{
                     background:
-                      'linear-gradient(90deg, transparent, rgba(201,168,76,0.35))',
+                      'linear-gradient(90deg, transparent, var(--border-mid))',
                   }}
                 />
                 <span
                   className='text-[0.56rem] tracking-[0.32em] uppercase'
-                  style={{ color: 'rgba(201,168,76,0.45)' }}
+                  style={{
+                    color: 'color-mix(in srgb, var(--gold) 45%, transparent)',
+                  }}
                 >
                   More Sessions
                 </span>
@@ -866,7 +850,7 @@ export default function WebinarShowcase({
                   className='flex-1 h-px'
                   style={{
                     background:
-                      'linear-gradient(90deg, rgba(201,168,76,0.12), transparent)',
+                      'linear-gradient(90deg, var(--border), transparent)',
                   }}
                 />
               </motion.div>
