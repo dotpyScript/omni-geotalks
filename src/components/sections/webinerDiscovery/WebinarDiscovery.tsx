@@ -59,8 +59,6 @@ export default function WebinarDiscovery({ onWebinarSelect }: WebinarDiscoveryPr
       className="relative min-h-screen font-dm overflow-hidden"
       style={{ background: 'var(--obsidian)', color: 'var(--ivory)' }}
     >
-      {/* Blueprint grid */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 bg-grid opacity-60" />
 
       {/* Ambient orbs */}
       <div aria-hidden className="absolute -top-40 left-[8%] w-[640px] h-[640px] rounded-full pointer-events-none"

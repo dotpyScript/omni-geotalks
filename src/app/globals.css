@@ -5,40 +5,57 @@
 @import 'tailwindcss';
 
 /* ─── Tailwind v4: @theme block ─────────────────────────────────────────────
-   In v4 there is NO tailwind.config.ts for theme values.
-   Everything lives here. Tokens defined in @theme become:
-     - CSS variables:        var(--color-gold), var(--font-bebas) …
-     - Tailwind utilities:   bg-gold, text-gold, font-bebas, animate-cat-reveal …
+   Indepth Earth Brand Colours (Rebrand 2025)
+   Navy Blue + Forest Teal + Silver
 ─────────────────────────────────────────────────────────────────────────── */
 @theme {
-  /* ── Backgrounds ─────────────────────────────────────────────────────── */
-  --color-obsidian: #080a0f;
-  --color-obsidian-2: #0d1118;
-  --color-obsidian-3: #12161f;
-  --color-obsidian-4: #181d28;
+  /* ── Backgrounds (dark → deep navy/black) ────────────────────────────── */
+  --color-obsidian: #000000; /* was #080a0f  — pure midnight black      */
+  --color-obsidian-2: #060d18; /* was #0d1118  — near-black navy          */
+  --color-obsidian-3: #0b1829; /* was #12161f  — deep navy surface        */
+  --color-obsidian-4: #0f2035; /* was #181d28  — navy card surface        */
 
-  /* ── Gold palette ────────────────────────────────────────────────────── */
-  --color-gold: #c9a84c;
-  --color-gold-light: #e8c97e;
-  --color-gold-pale: #f5e6c0;
-  --color-gold-dim: rgba(201, 168, 76, 0.1);
-  --color-gold-glow: rgba(201, 168, 76, 0.22);
+  /* ── Navy Blue palette (replaces Gold) ───────────────────────────────── */
+  --color-navy: #183d6e; /* Primary brand navy                      */
+  --color-navy-mid: #326195; /* Mid navy — hover states, highlights     */
+  --color-navy-light: #7d9bc0; /* Light navy — subtle accents             */
+  --color-navy-pale: #a7bcd7; /* Pale navy — backgrounds, borders        */
+  --color-navy-dim: rgba(24, 61, 110, 0.12);
+  --color-navy-glow: rgba(50, 97, 149, 0.25);
 
-  /* ── Accents ─────────────────────────────────────────────────────────── */
-  --color-cyan: #00d4ff;
-  --color-cyan-dim: rgba(0, 212, 255, 0.08);
-  --color-green: #00e5a0;
-  --color-green-dim: rgba(0, 229, 160, 0.08);
+  /* ── Forest Teal palette (replaces Cyan/Green) ───────────────────────── */
+  --color-teal: #0d6c4a; /* Primary brand teal                      */
+  --color-teal-mid: #008065; /* Mid teal — hover, highlights            */
+  --color-teal-light: #6fa088; /* Light teal — subtle accents             */
+  --color-teal-pale: #9abdab; /* Pale teal — backgrounds, borders        */
+  --color-teal-dim: rgba(13, 108, 74, 0.1);
+  --color-teal-glow: rgba(0, 128, 101, 0.2);
 
-  /* ── Text ────────────────────────────────────────────────────────────── */
-  --color-ivory: #f0ede6;
-  --color-ivory-dim: rgba(240, 237, 230, 0.55);
-  --color-ivory-muted: rgba(240, 237, 230, 0.28);
+  /* ── Accent aliases (for components using cyan/green tokens) ─────────── */
+  --color-cyan: #008065; /* teal-mid used where cyan was            */
+  --color-cyan-dim: rgba(0, 128, 101, 0.1);
+  --color-green: #0d6c4a; /* teal primary used where green was       */
+  --color-green-dim: rgba(13, 108, 74, 0.1);
 
-  /* ── Border shades ───────────────────────────────────────────────────── */
-  --color-border: rgba(201, 168, 76, 0.14);
-  --color-border-mid: rgba(201, 168, 76, 0.3);
-  --color-border-hi: rgba(201, 168, 76, 0.55);
+  /* ── Text (Silver / White) ───────────────────────────────────────────── */
+  --color-ivory: #ffffff; /* was #f0ede6 — pure white     */
+  --color-ivory-dim: rgba(255, 255, 255, 0.6); /* was ivory 55%               */
+  --color-ivory-muted: rgba(
+    255,
+    255,
+    255,
+    0.32
+  ); /* was ivory 28%              */
+
+  /* ── Silver tones (new — for body copy, captions) ───────────────────── */
+  --color-silver: #dfdfdf;
+  --color-silver-dim: rgba(223, 223, 223, 0.6);
+  --color-silver-muted: rgba(223, 223, 223, 0.3);
+
+  /* ── Border shades (navy-toned) ──────────────────────────────────────── */
+  --color-border: rgba(24, 61, 110, 0.2);
+  --color-border-mid: rgba(50, 97, 149, 0.38);
+  --color-border-hi: rgba(124, 155, 192, 0.6);
 
   /* ── Fonts ───────────────────────────────────────────────────────────── */
   --font-cormorant: 'Cormorant Garamond', serif;
@@ -49,45 +66,62 @@
   /* ── Backdrop blur ───────────────────────────────────────────────────── */
   --blur-xs: 2px;
 
-  /* ── Animations (shorthand → animate-* utility classes) ─────────────── */
+  /* ── Animations ──────────────────────────────────────────────────────── */
   --animate-orb-float: orbFloat 14s ease-in-out infinite;
   --animate-fade-down: fadeDown 0.8s ease both;
   --animate-fade-up: fadeUp 0.9s ease both;
   --animate-marquee-left: marqueeLeft 32s linear infinite;
   --animate-marquee-right: marqueeRight 32s linear infinite;
   --animate-cat-reveal: catReveal 0.6s ease both;
-
-  /* ── CTA section animations ──────────────────────────────────────────── */
   --animate-diamond-float: diamondFloat 8s ease-in-out infinite;
-
-  @keyframes diamondFloat {
-    0%, 100% { transform: rotate(45deg) translateY(0); }
-    50%       { transform: rotate(45deg) translateY(-12px); }
-  }
-
-  /* ── Speaker section animations ──────────────────────────────────────── */
   --animate-spin-slow: spinSlow 20s linear infinite;
   --animate-spin-slow-reverse: spinSlowReverse 35s linear infinite;
   --animate-roster-reveal: rosterReveal 0.5s ease both;
   --animate-tag-marquee: tagMarquee 30s linear infinite;
 
+  @keyframes diamondFloat {
+    0%,
+    100% {
+      transform: rotate(45deg) translateY(0);
+    }
+    50% {
+      transform: rotate(45deg) translateY(-12px);
+    }
+  }
   @keyframes spinSlow {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
   @keyframes spinSlowReverse {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(-360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-360deg);
+    }
   }
   @keyframes rosterReveal {
-    from { opacity: 0; transform: translateX(20px); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   @keyframes tagMarquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
-
   @keyframes orbFloat {
     0%,
     100% {
@@ -152,95 +186,134 @@
   }
 }
 
-/* ─── Raw CSS variables — DARK MODE (default) ───────────────────────────────
-   These are the semantic tokens used throughout all components via var().
-   Light mode overrides them inside [data-theme="light"] below.
+/* ─── CSS variables — LIGHT MODE (default) ──────────────────────────────────
+   Indepth Earth light theme: white/silver backgrounds, deep navy + teal accents.
+   This is the default because layout.tsx sets data-theme="light" on first load.
 ─────────────────────────────────────────────────────────────────────────── */
-:root {
-  color-scheme: dark;
+:root,
+[data-theme='light'] {
+  color-scheme: light;
 
-  /* Backgrounds */
-  --obsidian: #080a0f;
-  --obsidian-2: #0d1118;
-  --obsidian-3: #12161f;
-  --obsidian-4: #181d28;
+  /* Backgrounds — clean white/silver */
+  --obsidian: #ffffff;
+  --obsidian-2: #f4f6f9;
+  --obsidian-3: #e8edf4;
+  --obsidian-4: #d8e1ec;
 
-  /* Gold */
-  --gold: #c9a84c;
-  --gold-light: #e8c97e;
-  --gold-pale: #f5e6c0;
-  --gold-dim: rgba(201, 168, 76, 0.1);
-  --gold-glow: rgba(201, 168, 76, 0.22);
+  /* Navy (primary accent) */
+  --navy: #183d6e;
+  --navy-mid: #0f2d55;
+  --navy-light: #326195;
+  --navy-pale: #7d9bc0;
+  --navy-dim: rgba(24, 61, 110, 0.1);
+  --navy-glow: rgba(24, 61, 110, 0.14);
 
-  /* Accents */
-  --cyan: #00d4ff;
-  --cyan-dim: rgba(0, 212, 255, 0.08);
-  --green: #00e5a0;
-  --green-dim: rgba(0, 229, 160, 0.08);
+  /* Legacy gold aliases → navy (zero component changes needed) */
+  --gold: #183d6e;
+  --gold-light: #326195;
+  --gold-pale: #7d9bc0;
+  --gold-dim: rgba(24, 61, 110, 0.1);
+  --gold-glow: rgba(24, 61, 110, 0.14);
 
-  /* Text */
-  --ivory: #f0ede6;
-  --ivory-dim: rgba(240, 237, 230, 0.55);
-  --ivory-muted: rgba(240, 237, 230, 0.28);
+  /* Teal (secondary accent) */
+  --teal: #0d6c4a;
+  --teal-mid: #095c3d;
+  --teal-light: #008065;
+  --teal-pale: #6fa088;
+  --teal-dim: rgba(13, 108, 74, 0.1);
+  --teal-glow: rgba(13, 108, 74, 0.14);
+
+  /* Legacy cyan/green aliases → teal */
+  --cyan: #008065;
+  --cyan-dim: rgba(0, 128, 101, 0.1);
+  --green: #0d6c4a;
+  --green-dim: rgba(13, 108, 74, 0.1);
+
+  /* Text — deep navy ink on white */
+  --ivory: #0b1829;
+  --ivory-dim: rgba(11, 24, 41, 0.65);
+  --ivory-muted: rgba(11, 24, 41, 0.4);
+
+  /* Silver */
+  --silver: #dfdfdf;
+  --silver-dim: rgba(223, 223, 223, 0.6);
+  --silver-muted: rgba(223, 223, 223, 0.3);
 
   /* Borders */
-  --border: rgba(201, 168, 76, 0.14);
-  --border-mid: rgba(201, 168, 76, 0.3);
-  --border-hi: rgba(201, 168, 76, 0.55);
+  --border: rgba(24, 61, 110, 0.18);
+  --border-mid: rgba(24, 61, 110, 0.35);
+  --border-hi: rgba(24, 61, 110, 0.6);
 
   /* Typography */
   --font-display: 'Cormorant Garamond', serif;
   --font-bebas: 'Bebas Neue', sans-serif;
   --font-body: 'DM Sans', sans-serif;
 
-  /* Navbar frosted background */
-  --nav-bg: rgba(8, 10, 15, 0.92);
-  /* Floating badge / card frosted surface */
-  --surface-haze: rgba(8, 10, 15, 0.94);
+  /* Surfaces */
+  --nav-bg: rgba(255, 255, 255, 0.92);
+  --surface-haze: rgba(255, 255, 255, 0.94);
 }
 
-/* ─── Light Mode token overrides ────────────────────────────────────────────
-   Philosophy: "Aged cartographic paper meets modern precision."
-   Warm parchment backgrounds, deep ink text, darkened gold for contrast.
-   Toggle by setting data-theme="light" on <html>.
-   No component changes needed — all var() references cascade automatically.
+/* ─── Dark Mode token overrides ─────────────────────────────────────────────
+   Applied when ThemeProvider sets data-theme="dark" on <html>.
+   Midnight black + navy blue + forest teal + white text.
 ─────────────────────────────────────────────────────────────────────────── */
-[data-theme='light'] {
-  color-scheme: light;
+[data-theme='dark'] {
+  color-scheme: dark;
 
-  /* ── Backgrounds: warm parchment/survey-paper tones ──────────────────── */
-  --obsidian: #f5f2eb; /* Base page bg — warm parchment                */
-  --obsidian-2: #ede9df; /* Subtle section bg                             */
-  --obsidian-3: #e4dfd3; /* Card / panel surfaces                         */
-  --obsidian-4: #d9d3c5; /* Deepest surface, input fields, hover states   */
+  /* Backgrounds */
+  --obsidian: #000000;
+  --obsidian-2: #060d18;
+  --obsidian-3: #0b1829;
+  --obsidian-4: #0f2035;
 
-  /* ── Gold: deepened for WCAG contrast on light surfaces ─────────────── */
-  --gold: #a8751e; /* Primary gold — darkened from #c9a84c          */
-  --gold-light: #c9a84c; /* Original gold becomes "light" variant         */
-  --gold-pale: #7a5512; /* Deepest gold, used for emphasis / headings    */
-  --gold-dim: rgba(168, 117, 30, 0.1);
-  --gold-glow: rgba(168, 117, 30, 0.16);
+  /* Navy */
+  --navy: #183d6e;
+  --navy-mid: #326195;
+  --navy-light: #7d9bc0;
+  --navy-pale: #a7bcd7;
+  --navy-dim: rgba(24, 61, 110, 0.15);
+  --navy-glow: rgba(50, 97, 149, 0.28);
 
-  /* ── Accents: richer, non-neon equivalents ───────────────────────────── */
-  --cyan: #0077aa; /* Deep teal-blue (replaces #00d4ff neon)        */
-  --cyan-dim: rgba(0, 119, 170, 0.1);
-  --green: #007a54; /* Forest green (replaces #00e5a0 neon)          */
-  --green-dim: rgba(0, 122, 84, 0.1);
+  /* Gold aliases → navy in dark */
+  --gold: #326195;
+  --gold-light: #7d9bc0;
+  --gold-pale: #a7bcd7;
+  --gold-dim: rgba(24, 61, 110, 0.15);
+  --gold-glow: rgba(50, 97, 149, 0.28);
 
-  /* ── Text: warm near-black ink tones ────────────────────────────────── */
-  --ivory: #1c1a14; /* Primary text — warm near-black   */
-  --ivory-dim: rgba(28, 26, 20, 0.6); /* Secondary / body copy           */
-  --ivory-muted: rgba(28, 26, 20, 0.38); /* Placeholders, captions, labels  */
+  /* Teal */
+  --teal: #0d6c4a;
+  --teal-mid: #008065;
+  --teal-light: #6fa088;
+  --teal-pale: #9abdab;
+  --teal-dim: rgba(13, 108, 74, 0.12);
+  --teal-glow: rgba(0, 128, 101, 0.22);
 
-  /* ── Borders ─────────────────────────────────────────────────────────── */
-  --border: rgba(168, 117, 30, 0.18);
-  --border-mid: rgba(168, 117, 30, 0.35);
-  --border-hi: rgba(168, 117, 30, 0.6);
+  /* Cyan/green aliases */
+  --cyan: #008065;
+  --cyan-dim: rgba(0, 128, 101, 0.12);
+  --green: #0d6c4a;
+  --green-dim: rgba(13, 108, 74, 0.12);
 
-  /* Navbar frosted background */
-  --nav-bg: rgba(245, 242, 235, 0.92);
-  /* Floating badge / card frosted surface */
-  --surface-haze: rgba(245, 242, 235, 0.94);
+  /* Text — white on dark */
+  --ivory: #ffffff;
+  --ivory-dim: rgba(255, 255, 255, 0.6);
+  --ivory-muted: rgba(255, 255, 255, 0.32);
+
+  /* Silver */
+  --silver: #dfdfdf;
+  --silver-dim: rgba(223, 223, 223, 0.6);
+  --silver-muted: rgba(223, 223, 223, 0.3);
+
+  /* Borders */
+  --border: rgba(50, 97, 149, 0.22);
+  --border-mid: rgba(50, 97, 149, 0.4);
+  --border-hi: rgba(125, 155, 192, 0.62);
+
+  /* Surfaces */
+  --nav-bg: rgba(0, 6, 18, 0.92);
+  --surface-haze: rgba(0, 6, 18, 0.94);
 }
 
 /* ─── Base resets ───────────────────────────────────────────────────────────── */
@@ -267,7 +340,6 @@
     font-weight: 300;
     line-height: 1.6;
     overflow-x: hidden;
-    /* Smooth colour transition when toggling themes */
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
@@ -285,20 +357,16 @@
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--gold);
+    background: var(--navy);
   }
 
   ::selection {
-    background: rgba(201, 168, 76, 0.25);
+    background: rgba(24, 61, 110, 0.28);
     color: var(--ivory);
   }
 }
 
-/* ─── Custom utilities ──────────────────────────────────────────────────────────
-   In Tailwind v4 @apply inside @layer components requires @reference for
-   custom-defined classes. To avoid this entirely, we write all component
-   styles as plain CSS — no @apply needed.
-─────────────────────────────────────────────────────────────────────────────── */
+/* ─── Custom utilities ────────────────────────────────────────────────────── */
 
 /* Clipped corners */
 .clip-corner-sm {
@@ -342,7 +410,7 @@
   );
 }
 
-/* Bevel clip utilities (replaces the old tailwind.config.ts plugin) */
+/* Bevel clip utilities */
 .clip-bevel-xs {
   clip-path: polygon(
     0 0,
@@ -394,17 +462,16 @@
   );
 }
 
-/* Gold gradient text */
+/* ── Navy gradient text — light is default ───────────────────────────────── */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #c9a84c, #e8c97e, #f5e6c0);
+  background: linear-gradient(135deg, #0f2d55, #183d6e, #326195);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Light mode: gold gradient shifts darker for contrast */
-[data-theme='light'] .text-gold-gradient {
-  background: linear-gradient(135deg, #7a5512, #a8751e, #c9a84c);
+[data-theme='dark'] .text-gold-gradient {
+  background: linear-gradient(135deg, #326195, #7d9bc0, #a7bcd7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -416,25 +483,24 @@
   background-size: 180px;
 }
 
-/* Blueprint grid */
+/* Blueprint grid — light is default */
 .bg-grid {
   background-image:
-    linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(24, 61, 110, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 61, 110, 0.09) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Light mode: slightly stronger grid lines to show on parchment */
-[data-theme='light'] .bg-grid {
+[data-theme='dark'] .bg-grid {
   background-image:
-    linear-gradient(rgba(168, 117, 30, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168, 117, 30, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(24, 61, 110, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 61, 110, 0.06) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Gold rule */
+/* Gold rule → navy rule — light is default */
 .border-gold-rule {
-  border-image: linear-gradient(90deg, transparent, #c9a84c, transparent) 1;
+  border-image: linear-gradient(90deg, transparent, #183d6e, transparent) 1;
 }
 .gold-rule {
   width: 100%;
@@ -442,16 +508,16 @@
   background: linear-gradient(
     to right,
     transparent,
-    rgba(201, 168, 76, 0.2),
+    rgba(24, 61, 110, 0.4),
     transparent
   );
 }
 
-[data-theme='light'] .gold-rule {
+[data-theme='dark'] .gold-rule {
   background: linear-gradient(
     to right,
     transparent,
-    rgba(168, 117, 30, 0.35),
+    rgba(50, 97, 149, 0.3),
     transparent
   );
 }
@@ -485,29 +551,28 @@
 .eyebrow {
   display: flex;
   align-items: center;
-  gap: 0.875rem; /* 14px = gap-3.5 */
+  gap: 0.875rem;
 }
 .eyebrow::before {
   content: '';
   display: block;
   flex-shrink: 0;
-  width: 2rem; /* 32px = w-8 */
+  width: 2rem;
   height: 1px;
-  background: linear-gradient(to right, transparent, #c9a84c);
+  background: linear-gradient(to right, transparent, #183d6e);
 }
 .eyebrow-text {
   font-size: 0.68rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #c9a84c;
+  color: #183d6e;
 }
 
-/* Light mode eyebrow: darker gold for legibility */
-[data-theme='light'] .eyebrow::before {
-  background: linear-gradient(to right, transparent, #a8751e);
+[data-theme='dark'] .eyebrow::before {
+  background: linear-gradient(to right, transparent, #326195);
 }
-[data-theme='light'] .eyebrow-text {
-  color: #a8751e;
+[data-theme='dark'] .eyebrow-text {
+  color: #7d9bc0;
 }
 
 /* ─── Status dot (animated ping) ─────────────────────────────────────────────── */
@@ -536,29 +601,37 @@
   height: 5px;
   width: 5px;
 }
+
+/* live → teal (light default — darker for white bg) */
 .status-dot.live::before,
 .status-dot.live::after {
-  background-color: #00e5a0;
-}
-.status-dot.open::before,
-.status-dot.open::after {
-  background-color: #00d4ff;
-}
-.status-dot.gold::before,
-.status-dot.gold::after {
-  background-color: #c9a84c;
+  background-color: #095c3d;
 }
 
-/* Light mode status dots: richer colours for parchment backgrounds */
-[data-theme='light'] .status-dot.live::before,
-[data-theme='light'] .status-dot.live::after {
-  background-color: #007a54;
+/* open → teal-mid */
+.status-dot.open::before,
+.status-dot.open::after {
+  background-color: #006652;
 }
-[data-theme='light'] .status-dot.open::before,
-[data-theme='light'] .status-dot.open::after {
-  background-color: #0077aa;
+
+/* gold → navy */
+.status-dot.gold::before,
+.status-dot.gold::after {
+  background-color: #183d6e;
 }
-[data-theme='light'] .status-dot.gold::before,
-[data-theme='light'] .status-dot.gold::after {
-  background-color: #a8751e;
+
+/* Dark mode: brighter tones on dark backgrounds */
+[data-theme='dark'] .status-dot.live::before,
+[data-theme='dark'] .status-dot.live::after {
+  background-color: #0d6c4a;
+}
+
+[data-theme='dark'] .status-dot.open::before,
+[data-theme='dark'] .status-dot.open::after {
+  background-color: #008065;
+}
+
+[data-theme='dark'] .status-dot.gold::before,
+[data-theme='dark'] .status-dot.gold::after {
+  background-color: #326195;
 }
