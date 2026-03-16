@@ -71,49 +71,51 @@ export function AboutCTA() {
       {/* Buttons */}
       <div className='relative z-[1] flex flex-wrap gap-4 flex-shrink-0'>
         {/* Primary */}
-        <Link
-          href='/webinars'
-          className={[
-            'inline-flex items-center gap-3',
-            'text-[0.72rem] tracking-[0.18em] uppercase font-medium',
-            "font-['DM_Sans',sans-serif]",
-            'text-(--obsidian)',
-            'bg-gradient-to-br from-(--gold) to-(--gold-light)',
-            'px-7 py-[14px]',
-            'clip-bevel-sm',
-            'transition-all duration-[250ms]',
-            'hover:from-(--gold-light) hover:to-(--gold-pale)',
-            'hover:shadow-[0_8px_28px_rgba(201,168,76,0.35)]',
-            'hover:-translate-y-px',
-          ].join(' ')}
-        >
-          Explore Webinars
-          <span aria-hidden='true'>→</span>
+        <Link href='/webinars' passHref>
+          <button
+            type='button'
+            className={[
+              'inline-flex items-center gap-3',
+              'text-[0.72rem] tracking-[0.18em] uppercase font-medium',
+              "font-['DM_Sans',sans-serif]",
+              'text-(--obsidian)',
+              'bg-gradient-to-br from-(--gold) to-(--gold-light)',
+              'px-7 py-[14px]',
+              'clip-bevel-sm',
+              'transition-all duration-[250ms]',
+              'hover:from-(--gold-light) hover:to-(--gold-pale)',
+              'hover:shadow-[0_8px_28px_rgba(201,168,76,0.35)]',
+              'hover:-translate-y-px',
+              'cursor-pointer border-none',
+            ].join(' ')}
+          >
+            Explore Webinars
+            <span className='inline-block transition-transform duration-200 group-hover:translate-x-1'>
+              →
+            </span>
+          </button>
         </Link>
 
         {/* Ghost */}
-        <button
-          type='button'
-          onClick={() =>
-            document
-              .getElementById('speakers')
-              ?.scrollIntoView({ behavior: 'smooth' })
-          }
-          className={[
-            'inline-flex items-center gap-3',
-            'text-[0.72rem] tracking-[0.18em] uppercase',
-            "font-['DM_Sans',sans-serif]",
-            'text-(--ivory-dim)',
-            'border border-(--border)',
-            'px-7 py-[14px]',
-            'transition-all duration-[250ms]',
-            'hover:border-(--border-mid) hover:text-(--ivory) hover:bg-(--gold-dim)',
-            'cursor-pointer bg-transparent',
-          ].join(' ')}
-          id='meet-speakers-btn'
-        >
-          Meet Our Speakers
-        </button>
+        <Link href='#speakers' passHref>
+          <button
+            type='button'
+            className={[
+              'inline-flex items-center gap-3',
+              'text-[0.72rem] tracking-[0.18em] uppercase',
+              "font-['DM_Sans',sans-serif]",
+              'text-(--ivory-dim)',
+              'border border-(--border)',
+              'px-7 py-[14px]',
+              'transition-all duration-[250ms]',
+              'hover:border-(--border-mid) hover:text-(--ivory) hover:bg-(--gold-dim)',
+              'cursor-pointer bg-transparent',
+            ].join(' ')}
+            id='meet-speakers-btn'
+          >
+            Meet Our Speakers
+          </button>
+        </Link>
       </div>
     </div>
   );
