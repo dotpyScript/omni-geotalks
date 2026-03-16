@@ -10,9 +10,11 @@
 ## 🎯 WHAT THIS APPLICATION IS
 
 ### Core Purpose
+
 A beautifully designed, landing page-driven webinar discovery and registration platform for geospatial professionals across Africa.
 
 ### Key Features (Current)
+
 - 🌟 **Landing Page**: 7 animated sections (Hero, About, Categories, Speakers, How It Works, Showcase, CTA)
 - 🔍 **Webinar Discovery**: Filter by category, search, sort (9+ webinars)
 - 👥 **Speaker Profiles**: 6 expert speakers with expertise tags and webinar history
@@ -22,6 +24,7 @@ A beautifully designed, landing page-driven webinar discovery and registration p
 - 🎨 **Premium Design**: Gold + obsidian color scheme, particle animations, smooth transitions
 
 ### Technology Highlights
+
 - **Next.js App Router** with Static Generation (generateStaticParams)
 - **React 19** with Server Components support
 - **Tailwind v4** with CSS variables (all design tokens in globals.css)
@@ -35,6 +38,7 @@ A beautifully designed, landing page-driven webinar discovery and registration p
 ## 📊 CODEBASE STRUCTURE ANALYSIS
 
 ### What's Perfect ✅
+
 1. **Component Organization**: Clean separation of concerns (sections, layout, ui, providers)
 2. **Design System**: Centralized CSS variables + utilities (no scattered Tailwind classes)
 3. **Type Safety**: Full TypeScript strict mode with interfaces for all data
@@ -45,6 +49,7 @@ A beautifully designed, landing page-driven webinar discovery and registration p
 8. **Bundle Size**: Lightweight dependencies (Lucide icons, minimal libraries)
 
 ### Current Limitations 🚧
+
 1. **No Backend**: All data is static/hardcoded in data.ts files
 2. **No Authentication**: Anyone can "register" (form just shows success message)
 3. **No Database**: No persistent data storage
@@ -55,6 +60,7 @@ A beautifully designed, landing page-driven webinar discovery and registration p
 8. **Single Entry Point**: Content can only be updated by deploying new code
 
 ### Ready for Migration 🚀
+
 - Static data (data.ts) can be moved to database gradually without refactoring components
 - API routes can be added to /api without affecting public routes
 - Admin section can be added under /admin with separate authentication
@@ -97,6 +103,7 @@ A beautifully designed, landing page-driven webinar discovery and registration p
 ## 💾 CURRENT DATA MODEL
 
 ### Static Data Files
+
 ```
 src/components/
 ├── data/
@@ -110,9 +117,10 @@ src/components/
 ```
 
 ### Data Objects (Key Types)
+
 ```typescript
 Webinar {
-  id, category, status, title, description, date, time, 
+  id, category, status, title, description, date, time,
   duration, speakers[], registrations, banner
 }
 
@@ -132,17 +140,20 @@ Category {
 ## 🎨 DESIGN SYSTEM
 
 ### Color Palette
+
 - **Primary**: Gold (#c9a84c) - main accent
 - **Dark**: Obsidian (#080a0f-#181d28) - backgrounds
 - **Accent**: Cyan (#00d4ff), Green (#00e5a0)
 - **Text**: Ivory (#f0ede6) - light text on dark
 
 ### Typography
+
 - **Display**: Cormorant Garamond (serif, elegant)
 - **Accent**: Bebas Neue (caps, bold)
 - **Body**: DM Sans (clean, readable)
 
 ### Animations
+
 - Particle canvas (Framer Motion spring physics)
 - Marquee scrolling (32s loops)
 - Fade in/up transitions (staggered)
@@ -153,14 +164,18 @@ Category {
 ## 🔐 AUTHENTICATION & AUTHORIZATION GAPS
 
 ### Current State
+
 ⚠️ **No authentication whatsoever**
+
 - Registration form has no backend validation
 - No user accounts or sessions
 - No role-based access control
 - Anyone visiting the site can "register"
 
 ### Needed for Admin
+
 ✅ **JWT-based Authentication**
+
 - Email + password login
 - Token refresh mechanism
 - Session management
@@ -168,6 +183,7 @@ Category {
 - Logout functionality
 
 ✅ **Role-Based Access Control**
+
 - Roles: admin, moderator, speaker, user
 - Permissions table
 - Middleware to check access
@@ -178,6 +194,7 @@ Category {
 ## 📈 DATA FLOW RECOMMENDATIONS
 
 ### Phase 1: Add Backend Without Breaking Changes
+
 ```
 Current:
   Landing Page ← data.ts (static)
@@ -186,11 +203,12 @@ Option A (Gradual):
   Landing Page ← data.ts (stays static)
      ↑
   Admin Dashboard ← /api/... ← Database (new)
-  
+
 Result: Public routes unchanged, admin section new
 ```
 
 ### Phase 2: Migrate Public Routes (Optional Later)
+
 ```
 Landing Page ← /api/landing-data ← Database
 (generateMetadata still works)
@@ -204,6 +222,7 @@ Landing Page ← /api/landing-data ← Database
 ### Essential Components (MVP)
 
 #### 1. **Layout & Navigation**
+
 ```
 - AdminLayout (sidebar + header + content area)
 - AdminSidebar (nav to webinars, speakers, registrations, analytics, settings)
@@ -212,6 +231,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 2. **Authentication**
+
 ```
 - /admin/auth/login page (email + password)
 - /api/auth/login (validates, returns JWT)
@@ -220,6 +240,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 3. **Dashboard**
+
 ```
 - Metrics cards (total webinars, registrations, speakers, satisfaction)
 - Recent activity feed
@@ -228,6 +249,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 4. **Webinar Management**
+
 ```
 - /admin/webinars - List all with filters
 - /admin/webinars/new - Create new
@@ -237,6 +259,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 5. **Speaker Management**
+
 ```
 - /admin/speakers - List all
 - /admin/speakers/new - Create new
@@ -246,6 +269,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 6. **Registration Management**
+
 ```
 - /admin/registrations - List all (filter by webinar, status, date)
 - Details modal (show per-registration info)
@@ -255,6 +279,7 @@ Landing Page ← /api/landing-data ← Database
 ```
 
 #### 7. **Analytics Dashboard**
+
 ```
 - Registration trends (line chart)
 - Category breakdown (pie chart)
@@ -266,16 +291,19 @@ Landing Page ← /api/landing-data ← Database
 ### Additional Features (Phase 2+)
 
 #### Email Management
+
 - Template editor for confirmation, reminders, feedback
 - Send test emails
 - Schedule automated emails
 
 #### User Management
+
 - Create/edit/delete admin users
 - Assign roles and permissions
 - Login activity logs
 
 #### Settings
+
 - Branding (colors, logo)
 - Email configuration
 - Timezone settings
@@ -286,6 +314,7 @@ Landing Page ← /api/landing-data ← Database
 ## 🗄️ DATABASE SCHEMA (PostgreSQL + Prisma)
 
 ### Minimum Tables
+
 ```
 Users
 ├─ id, email, password_hash, name, role, permissions
@@ -322,6 +351,7 @@ Analytics
 ## 🚀 IMPLEMENTATION ROADMAP
 
 ### Week 1-2: Foundation
+
 - [ ] Set up PostgreSQL + Prisma
 - [ ] Create database schema
 - [ ] Build authentication system (JWT)
@@ -329,6 +359,7 @@ Analytics
 - [ ] Implement auth middleware
 
 ### Week 3-4: Core Features
+
 - [ ] Webinar CRUD API endpoints
 - [ ] Speaker CRUD API endpoints
 - [ ] Build webinar management UI
@@ -336,6 +367,7 @@ Analytics
 - [ ] Registration list + export
 
 ### Week 5-6: Analytics & Polish
+
 - [ ] Analytics dashboard with charts
 - [ ] User role management
 - [ ] Email template system
@@ -343,6 +375,7 @@ Analytics
 - [ ] Deployment to staging
 
 ### Week 7+: Enhancements
+
 - [ ] Zoom API integration
 - [ ] Email automation
 - [ ] Advanced reporting
@@ -353,21 +386,23 @@ Analytics
 ## 🛠️ Tech Stack for Admin
 
 ### New Dependencies to Add
+
 ```json
 {
-  "next-auth": "^5.0.0",              // OAuth + JWT
-  "jsonwebtoken": "^9.1.0",           // JWT signing
-  "bcryptjs": "^2.4.3",               // Password hashing
-  "@prisma/client": "^5.0.0",         // ORM
-  "@tanstack/react-table": "^8.0.0",  // Data table
-  "recharts": "^2.10.0",              // Charts
-  "axios": "^1.6.0",                  // HTTP client
-  "react-easy-crop": "^10.0.0",       // Image cropping
-  "react-dropzone": "^14.2.0"         // File upload
+  "next-auth": "^5.0.0", // OAuth + JWT
+  "jsonwebtoken": "^9.1.0", // JWT signing
+  "bcryptjs": "^2.4.3", // Password hashing
+  "@prisma/client": "^5.0.0", // ORM
+  "@tanstack/react-table": "^8.0.0", // Data table
+  "recharts": "^2.10.0", // Charts
+  "axios": "^1.6.0", // HTTP client
+  "react-easy-crop": "^10.0.0", // Image cropping
+  "react-dropzone": "^14.2.0" // File upload
 }
 ```
 
 ### Services/Tools
+
 - **Database**: PostgreSQL (recommended) or MongoDB
 - **ORM**: Prisma (pairs well with Next.js)
 - **Email**: SendGrid, Mailgun, or AWS SES
@@ -379,6 +414,7 @@ Analytics
 ## ⚠️ KEY CONSIDERATIONS
 
 ### Security
+
 1. ✅ Use HTTPS only (no http in production)
 2. ✅ Store JWT in httpOnly cookies (not localStorage)
 3. ✅ Hash passwords with bcryptjs (min 10 rounds)
@@ -388,12 +424,14 @@ Analytics
 7. ✅ Audit log all admin actions
 
 ### Performance
+
 - Use database indexes on frequently queried fields
 - Implement pagination (default 25-50 items per page)
 - Cache analytics after computing (Redis optional)
 - Use ISR (Incremental Static Regeneration) for public cache invalidation
 
 ### Scalability
+
 - Separate read/write databases for analytics
 - Use message queues for email sending (Bullmq, RabbitMQ)
 - Implement webhooks for Zoom/third-party events
@@ -404,6 +442,7 @@ Analytics
 ## 📝 RECOMMENDATIONS SUMMARY
 
 ### ✅ DO
+
 1. **Keep public routes static** - Don't add complexity to landing page
 2. **Separate admin under /admin** - Clean URL structure
 3. **Reuse UI components** - Button, Input, etc. work in admin too
@@ -414,6 +453,7 @@ Analytics
 8. **Document the API** - Makes future integrations easier
 
 ### ❌ DON'T
+
 1. **Don't store JWT in localStorage** - Use httpOnly cookies
 2. **Don't directly expose raw data.ts in admin** - Add API layer
 3. **Don't skip database schema planning** - Design thoroughly before building
@@ -469,6 +509,7 @@ Analytics
 ## 🎓 CONCLUSION
 
 This is a **well-built, design-forward webinar platform** with solid fundamentals:
+
 - ✅ Clean architecture and component organization
 - ✅ Consistent design system with CSS variables
 - ✅ Type-safe throughout
@@ -476,6 +517,7 @@ This is a **well-built, design-forward webinar platform** with solid fundamental
 - ✅ Responsive and accessible
 
 **The admin section is not a redesign—it's an addition** that will:
+
 1. Allow content management without code deploys
 2. Track registrations and analytics
 3. Manage speakers and webinars

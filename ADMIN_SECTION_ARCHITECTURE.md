@@ -1,6 +1,7 @@
 # 🎯 ADMIN SECTION ARCHITECTURE GUIDE
 
 ## Overview
+
 This document outlines the structure for implementing an admin dashboard for the IEGS Geospatial Webinar Platform. The admin section will manage webinars, speakers, registrations, and analytics.
 
 ---
@@ -158,20 +159,20 @@ Webinar {
   description: string
   category: enum (gis, drones, agriculture, oil-gas, remote, land-admin)
   status: enum (draft, scheduled, live, completed, cancelled)
-  
+
   // Scheduling
   date: datetime
   time: string (HH:MM)
   timezone: string (default: 'GMT')
   duration_minutes: number
-  
+
   // Media
   banner_url: string?
   banner_source: enum (upload, unsplash, generative)
-  
+
   // Speakers
   speaker_ids: UUID[] (foreign key)
-  
+
   // Content
   learning_objectives: string[]
   agenda: {
@@ -179,16 +180,16 @@ Webinar {
     topic: string
     speaker_id?: UUID
   }[]
-  
+
   // Registration & Attendance
   registrations: number (count)
   max_registrations: number?
   published: boolean
-  
+
   // Metadata
   zoom_meeting_id?: string
   zoom_join_url?: string
-  
+
   created_by: UUID (foreign key to User)
   created_at: timestamp
   updated_at: timestamp
@@ -205,25 +206,25 @@ Speaker {
   title: string
   organization: string
   bio: string
-  
+
   // Media
   image_url: string?
   image_upload_date: timestamp?
-  
+
   // Contact & Social
   email: string
   phone: string?
   linkedin_url: string?
-  
+
   // Platform
   expertise: string[] (tags)
   accent_color: string (hex color for spotlight)
   role: enum (host, guest, moderator)
   webinar_ids: UUID[]
-  
+
   is_featured: boolean
   featured_order: number?
-  
+
   created_at: timestamp
   updated_at: timestamp
 }
@@ -235,30 +236,30 @@ Speaker {
 Registration {
   id: UUID
   webinar_id: UUID (foreign key)
-  
+
   // Personal Info
   first_name: string
   last_name: string
   email: string @unique(webinar_id, email)
   phone: string?
   timezone: string
-  
+
   // Preferences
   interests: string[]
   newsletter_opt_in: boolean
-  
+
   // Attendance
   status: enum (registered, attended, no-show, cancelled)
   attended_at: timestamp?
   satisfaction_score: 1-5?
   feedback: text?
-  
+
   // Communication
   confirmation_email_sent: boolean
   reminder_24h_sent: boolean
   reminder_1h_sent: boolean
   post_webinar_email_sent: boolean
-  
+
   created_at: timestamp
   updated_at: timestamp
 }
@@ -288,22 +289,22 @@ EmailTemplate {
 WebinarAnalytic {
   id: UUID
   webinar_id: UUID (foreign key) @unique
-  
+
   // Metrics
   total_registrations: number
   total_attendees: number
   no_show_count: number
   avg_attendance_duration_minutes: number
-  
+
   // Engagement
   avg_satisfaction_score: float (1-5)
   feedback_submissions: number
   sharing_count: number
-  
+
   // Traffic
   page_views: number
   unique_visitors: number
-  
+
   created_at: timestamp
   updated_at: timestamp
 }
@@ -311,13 +312,13 @@ WebinarAnalytic {
 SpeakerAnalytic {
   id: UUID
   speaker_id: UUID (foreign key) @unique
-  
+
   // Stats
   total_webinars_hosted: number
   total_attendees: number
   avg_satisfaction_score: float
   highest_rated_webinar_id: UUID?
-  
+
   created_at: timestamp
   updated_at: timestamp
 }
@@ -348,22 +349,22 @@ AuditLog {
 
 ```typescript
 // 1. Login
-POST /api/auth/login
+POST / api / auth / login;
 {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 // Response: { token, user, permissions }
 
 // 2. Verify Token
-GET /api/auth/verify
+GET / api / auth / verify;
 // Header: Authorization: Bearer <token>
 
 // 3. Logout
-POST /api/auth/logout
+POST / api / auth / logout;
 
 // 4. Refresh Token
-POST /api/auth/refresh-token
+POST / api / auth / refresh - token;
 ```
 
 ### Role-Based Access Control (RBAC)
@@ -372,7 +373,7 @@ POST /api/auth/refresh-token
 // Roles & Permissions
 
 ROLES = {
-  'admin': [
+  admin: [
     'webinar.create',
     'webinar.edit',
     'webinar.delete',
@@ -386,7 +387,7 @@ ROLES = {
     'registrations.export',
     'email.send',
   ],
-  'moderator': [
+  moderator: [
     'webinar.view',
     'webinar.edit',
     'speaker.view',
@@ -395,13 +396,13 @@ ROLES = {
     'analytics.view',
     'email.send',
   ],
-  'speaker': [
+  speaker: [
     'webinar.view',
     'speaker.view',
     'speaker.edit', // only own profile
     'registrations.view', // only own webinars
   ],
-}
+};
 ```
 
 ---
@@ -411,6 +412,7 @@ ROLES = {
 ### Key Components to Build
 
 #### 1. **Dashboard Overview**
+
 ```typescript
 // Components/admin/dashboard/
 - StatCard (value, label, trend, icon)
@@ -423,6 +425,7 @@ ROLES = {
 ```
 
 #### 2. **Data Tables**
+
 ```typescript
 // Components/admin/tables/
 interface TableProps {
@@ -446,6 +449,7 @@ interface TableProps {
 ```
 
 #### 3. **Forms**
+
 ```typescript
 // Components/admin/forms/
 interface FormProps {
@@ -463,6 +467,7 @@ interface FormProps {
 ```
 
 #### 4. **Image Upload**
+
 ```typescript
 // Enhanced for admin
 - Drag & drop zone
@@ -540,6 +545,7 @@ POST   /api/users/[id]/reset-password     # Reset password
 ## 🛠️ Implementation Priority
 
 ### Phase 1: MVP (Essential)
+
 - [ ] Authentication (JWT-based login)
 - [ ] Admin layout (sidebar + header)
 - [ ] Dashboard with basic metrics
@@ -549,6 +555,7 @@ POST   /api/users/[id]/reset-password     # Reset password
 - [ ] Basic analytics (top metrics)
 
 ### Phase 2: Enhanced Features
+
 - [ ] User role management
 - [ ] Email template editor
 - [ ] Advanced analytics (charts, geographic)
@@ -557,6 +564,7 @@ POST   /api/users/[id]/reset-password     # Reset password
 - [ ] Search & filtering UI
 
 ### Phase 3: Integrations & Polish
+
 - [ ] Zoom API integration
 - [ ] Email service integration (Mailchimp, SendGrid)
 - [ ] Image upload/cropping
@@ -565,6 +573,7 @@ POST   /api/users/[id]/reset-password     # Reset password
 - [ ] API documentation (Swagger/OpenAPI)
 
 ### Phase 4: Advanced
+
 - [ ] CMS for landing page content
 - [ ] Advanced reporting
 - [ ] Webhook integrations
@@ -576,22 +585,22 @@ POST   /api/users/[id]/reset-password     # Reset password
 
 ```json
 {
-  "next-auth": "^5.0.0",           // Authentication (alternative to manual JWT)
-  "jsonwebtoken": "^9.1.0",         // JWT token generation
-  "bcryptjs": "^2.4.3",             // Password hashing
-  "react-hot-toast": "^2.4.1",      // Better than sonner for admin UX
+  "next-auth": "^5.0.0", // Authentication (alternative to manual JWT)
+  "jsonwebtoken": "^9.1.0", // JWT token generation
+  "bcryptjs": "^2.4.3", // Password hashing
+  "react-hot-toast": "^2.4.1", // Better than sonner for admin UX
   "@tanstack/react-table": "^8.0.0", // Advanced table component
-  "recharts": "^2.10.0",            // Charts (line, pie, bar)
-  "axios": "^1.6.0",                // HTTP client
-  "date-fns": "^2.30.0",            // Already installed
-  "zod": "^3.22.0",                 // Already installed
-  "react-easy-crop": "^10.0.0",     // Image cropping
-  "react-dropzone": "^14.2.0",      // File upload
-  "csv-parser": "^3.0.0",           // CSV parsing
-  "papaparse": "^5.4.1",            // CSV generation
-  "@hookform/resolvers": "^3.3.4",  // Already installed
-  "lucide-react": "^0.575.0",       // Already installed
-  "framer-motion": "^12.3.4"        // Already installed
+  "recharts": "^2.10.0", // Charts (line, pie, bar)
+  "axios": "^1.6.0", // HTTP client
+  "date-fns": "^2.30.0", // Already installed
+  "zod": "^3.22.0", // Already installed
+  "react-easy-crop": "^10.0.0", // Image cropping
+  "react-dropzone": "^14.2.0", // File upload
+  "csv-parser": "^3.0.0", // CSV parsing
+  "papaparse": "^5.4.1", // CSV generation
+  "@hookform/resolvers": "^3.3.4", // Already installed
+  "lucide-react": "^0.575.0", // Already installed
+  "framer-motion": "^12.3.4" // Already installed
 }
 ```
 

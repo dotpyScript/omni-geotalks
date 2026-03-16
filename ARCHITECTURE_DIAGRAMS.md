@@ -496,6 +496,7 @@ Registration Form (CTA)               Registration List
 ## How Existing Components Adapt
 
 ### WITH NO CHANGES REQUIRED:
+
 ```
 ✓ UI Components (Button, Input, etc.)
 ✓ Theme system (Light/Dark)
@@ -508,6 +509,7 @@ Registration Form (CTA)               Registration List
 ```
 
 ### NEW ADMIN-SPECIFIC VERSIONS:
+
 ```
 🆕 AdminSidebar (different from Navbar)
 🆕 AdminHeader (user profile, logout)
@@ -518,6 +520,7 @@ Registration Form (CTA)               Registration List
 ```
 
 ### POTENTIALLY SHARED (After Migration):
+
 ```
 ? Webinar data source (currently data.ts → could come from DB)
 ? Speaker data source (currently data.ts → could come from DB)
