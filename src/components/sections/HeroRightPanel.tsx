@@ -97,8 +97,7 @@ function EmailConfirmationCard({
           background: 'var(--obsidian-2)',
           border: '1px solid var(--border)',
           backdropFilter: 'blur(20px)',
-          boxShadow:
-            '0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px var(--border)',
+          boxShadow: '0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px var(--border)',
         }}
       >
         {/* ── Window chrome ──────────────────────────────────────────────── */}
@@ -364,7 +363,8 @@ function EmailConfirmationCard({
                     key={i}
                     className='w-6 h-6 rounded-full flex items-center justify-center text-[0.42rem] font-semibold'
                     style={{
-                      background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                      background:
+                        'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
                       border: '1.5px solid var(--obsidian)',
                       color: 'var(--gold-light)',
                       marginLeft: i === 0 ? 0 : -6,
@@ -554,7 +554,9 @@ function CountdownStrip({
       {/* Gold top rule */}
       <div
         className='absolute top-0 left-0 right-0 h-[1px]'
-        style={{ background: 'linear-gradient(90deg, var(--gold), transparent)' }}
+        style={{
+          background: 'linear-gradient(90deg, var(--gold), transparent)',
+        }}
       />
       {/* Corner reticles */}
       {(['tl', 'tr', 'bl', 'br'] as const).map((pos) => (

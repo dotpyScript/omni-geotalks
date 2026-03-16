@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Clock, Users, Radio } from 'lucide-react';
 import type { Webinar } from '@/components/sections/webinerDiscovery/types';
@@ -9,6 +10,7 @@ import {
   WEBINARS,
   CATEGORIES,
 } from '@/components/sections/webinerDiscovery/data';
+import Link from 'next/link';
 
 // ─── Unsplash image map (banner index → topic-matched URL) ───────────────────
 //
@@ -79,6 +81,7 @@ interface SessionCardProps {
 }
 
 function SessionCard({ webinar, index, onClick }: SessionCardProps) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const isLive = webinar.status === 'live';
   const isCompleted = webinar.status === 'completed';
@@ -108,12 +111,12 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
         delay: index * 0.07,
         ease: [0.22, 1, 0.36, 1],
       }}
-      onClick={() => onClick?.(webinar.id)}
+      onClick={() => { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       role='button'
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
+      onKeyDown={(e) => { if (e.key === 'Enter') { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
       whileHover={{ y: -4 }}
     >
       {/* Top accent line */}
@@ -312,10 +315,7 @@ function SessionCard({ webinar, index, onClick }: SessionCardProps) {
               : '1px solid var(--border-mid)',
             color: isLive ? 'var(--green)' : 'var(--gold-light)',
           }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick?.(webinar.id);
-          }}
+          onClick={(e) => { e.stopPropagation(); router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
         >
           <span>
             {isLive
@@ -348,6 +348,7 @@ interface FeaturedCardProps {
 }
 
 function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const isLive = webinar.status === 'live';
   const isCompleted = webinar.status === 'completed';
@@ -367,10 +368,10 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={() => onClick?.(webinar.id)}
+      onClick={() => { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
       role='button'
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
+      onKeyDown={(e) => { if (e.key === 'Enter') { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
     >
       {/* Top accent */}
       <div
@@ -571,10 +572,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
               clipPath:
                 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick?.(webinar.id);
-            }}
+            onClick={(e) => { e.stopPropagation(); router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
           >
             <motion.span
               className='absolute inset-0 pointer-events-none'
@@ -762,11 +760,6 @@ export default function WebinarShowcase({
       style={{ background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)', color: 'var(--ivory)' }}
       aria-label='Webinar showcase'
     >
-      {/* Blueprint grid */}
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-0 z-0 bg-grid'
-      />
 
       {/* Ambient glow */}
       <div
