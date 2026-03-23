@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:/Users/MR BROWN/Documents/program/Geotalks-webiner/omni-geotalks/src/app/\\(admin\\)/adminwebinars/\")",
+      "Bash(cat -A \"c:/Users/MR BROWN/Documents/program/Geotalks-webiner/omni-geotalks/src/app/\\(admin\\)/adminwebinars/page.tsx\")"
+    ]
+  }
+}

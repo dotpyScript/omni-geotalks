@@ -169,12 +169,6 @@ export function HeroSection() {
       {/* ── Background effects ─────────────────────────────────────────── */}
       <ParticleCanvas />
 
-      {/* Blueprint grid */}
-      <div
-        className='absolute inset-0 z-0 pointer-events-none bg-grid'
-        aria-hidden
-      />
-
       {/* Noise grain */}
       <div
         className='absolute inset-0 z-1 pointer-events-none opacity-35'
@@ -313,12 +307,13 @@ export function HeroSection() {
             }}
           >
             Expert Knowledge
-            <em className='block italic' style={{ color: 'var(--gold-light)' }}>
+            <em
+              className='block italic font-semibold'
+              style={{ color: 'var(--green)' }}
+            >
               Across Every
             </em>
-            <strong className='block font-semibold'>
-              Geospatial Frontier.
-            </strong>
+            <strong className='block'>Geospatial Frontier.</strong>
           </h1>
         </motion.div>
 

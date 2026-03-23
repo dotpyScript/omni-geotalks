@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, Clock, Users, Radio } from 'lucide-react';
+import { ArrowRight, Clock, Users, Radio } from 'lucide-react';
 import type { Webinar } from '@/components/sections/webinerDiscovery/types';
 import { BannerPlaceholder } from '@/components/sections/webinerDiscovery/BannerPlaceholder';
+import { WebinarCard } from '@/components/sections/webinerDiscovery/WebinarCard';
 import {
   WEBINARS,
   CATEGORIES,
@@ -70,276 +72,6 @@ function getCatLabel(category: string) {
   return CATEGORIES.find((c) => c.id === category)?.label ?? category;
 }
 
-// ─── Session Card ─────────────────────────────────────────────────────────────
-
-interface SessionCardProps {
-  webinar: Webinar;
-  index: number;
-  onClick?: (id: number) => void;
-}
-
-function SessionCard({ webinar, index, onClick }: SessionCardProps) {
-  const [hovered, setHovered] = useState(false);
-  const isLive = webinar.status === 'live';
-  const isCompleted = webinar.status === 'completed';
-  const catLabel = getCatLabel(webinar.category);
-
-  const statusColor = isLive ? 'var(--green)' : isCompleted ? 'var(--gold)' : 'var(--cyan)';
-  const statusBorderColor = isLive
-    ? 'color-mix(in srgb, var(--green) 25%, transparent)'
-    : isCompleted
-      ? 'var(--border)'
-      : 'color-mix(in srgb, var(--cyan) 25%, transparent)';
-  const statusLabel = isLive ? 'Live' : isCompleted ? 'Recorded' : 'Upcoming';
-
-  return (
-    <motion.article
-      className='relative cursor-pointer overflow-hidden flex flex-col'
-      style={{
-        background: 'linear-gradient(160deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
-        border: `1px solid ${hovered ? 'var(--border-mid)' : 'var(--border)'}`,
-        transition: 'border-color 0.3s ease',
-      }}
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.07,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      onClick={() => onClick?.(webinar.id)}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      role='button'
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
-      whileHover={{ y: -4 }}
-    >
-      {/* Top accent line */}
-      <motion.div
-        className='absolute top-0 left-0 right-0 h-[1.5px] z-10 origin-left'
-        style={{ background: statusColor }}
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        transition={{
-          duration: 0.7,
-          delay: index * 0.07 + 0.3,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-      />
-
-      {/* ── Thumbnail ── */}
-      <div className='relative w-full overflow-hidden shrink-0 h-45'>
-        <motion.div
-          className='absolute inset-0'
-          animate={{
-            scale: hovered ? 1.06 : 1,
-            filter: hovered
-              ? 'brightness(1.15) saturate(1.1)'
-              : 'brightness(0.88) saturate(0.95)',
-          }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <SmartBanner index={webinar.banner} />
-        </motion.div>
-
-        {/* Bottom vignette — just enough for overlaid text */}
-        <div
-          className='absolute inset-0 pointer-events-none'
-          style={{
-            background:
-              'linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--obsidian-2) 78%, transparent) 100%)',
-          }}
-        />
-
-        {/* Status pill */}
-        <div
-          className='absolute top-3 left-3 z-3 flex items-center gap-1.5 px-2.5 py-1'
-          style={{
-            background: 'color-mix(in srgb, var(--obsidian) 55%, transparent)',
-            backdropFilter: 'blur(10px)',
-            border: `1px solid ${statusBorderColor}`,
-          }}
-        >
-          {isLive ? (
-            <span className='relative flex h-1.25 w-1.25'>
-              <span
-                className='animate-ping absolute inline-flex h-full w-full rounded-full opacity-75'
-                style={{ backgroundColor: statusColor }}
-              />
-              <span
-                className='relative inline-flex rounded-full h-1.25 w-1.25'
-                style={{ backgroundColor: statusColor }}
-              />
-            </span>
-          ) : (
-            <span
-              className='inline-flex rounded-full h-1.25 w-1.25'
-              style={{ backgroundColor: statusColor }}
-            />
-          )}
-          <span
-            className='text-[0.54rem] tracking-[0.25em] uppercase'
-            style={{ color: statusColor }}
-          >
-            {statusLabel}
-          </span>
-        </div>
-
-        {/* Category tag */}
-        <div className='absolute bottom-3 left-3 z-3'>
-          <span
-            className='text-[0.52rem] tracking-[0.18em] uppercase px-2 py-0.5'
-            style={{
-              background: 'color-mix(in srgb, var(--obsidian) 60%, transparent)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid var(--border-mid)',
-              color: 'var(--gold-light)',
-            }}
-          >
-            {catLabel}
-          </span>
-        </div>
-      </div>
-
-      {/* ── Card body ── */}
-      <div className='flex flex-col flex-1 px-5 pt-4 pb-5'>
-        {/* Date + duration */}
-        <div className='flex items-center gap-3 mb-3'>
-          <span
-            className='flex items-center gap-1.5 text-[0.62rem] tracking-wide'
-            style={{ color: 'var(--ivory-muted)' }}
-          >
-            <Clock size={9} className='shrink-0' style={{ color: 'var(--gold)' }} />
-            {webinar.date} · {webinar.time}
-          </span>
-          <span
-            className='ml-auto text-[0.56rem] tracking-widest px-1.5 py-0.5'
-            style={{
-              background: 'var(--gold-dim)',
-              border: '1px solid var(--border)',
-              color: 'var(--gold)',
-            }}
-          >
-            {webinar.duration}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h3
-          className='font-cormorant text-[1.05rem] font-light leading-[1.3] mb-3 transition-colors duration-300'
-          style={{ color: hovered ? 'var(--gold-pale)' : 'var(--ivory)' }}
-        >
-          {webinar.title}
-        </h3>
-
-        {/* Description — always visible, 2 lines */}
-        <p
-          className='text-[0.72rem] leading-[1.6] mb-4 line-clamp-2 font-light flex-1'
-          style={{ color: 'var(--ivory-muted)' }}
-        >
-          {webinar.description}
-        </p>
-
-        {/* Speaker + registrations */}
-        <div
-          className='flex items-center gap-3 pt-3'
-          style={{ borderTop: '1px solid var(--border)' }}
-        >
-          <div className='flex -space-x-1.5'>
-            {webinar.speakers.slice(0, 2).map((s, i) => (
-              <div
-                key={i}
-                className='w-6 h-6 rounded-full flex items-center justify-center'
-                style={{
-                  background: 'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
-                  border: '1.5px solid var(--obsidian-2)',
-                  boxShadow: '0 0 0 1px color-mix(in srgb, var(--gold) 15%, transparent)',
-                }}
-              >
-                <span
-                  className='font-cormorant text-[0.46rem] font-semibold'
-                  style={{ color: 'var(--gold-light)' }}
-                >
-                  {s.initials}
-                </span>
-              </div>
-            ))}
-          </div>
-          <span
-            className='text-[0.62rem] flex-1 truncate'
-            style={{ color: 'var(--ivory-muted)' }}
-          >
-            {webinar.speakers[0]?.name}
-            {webinar.speakers.length > 1 && (
-              <span style={{ color: 'var(--ivory-muted)' }}>
-                {' '}
-                +{webinar.speakers.length - 1}
-              </span>
-            )}
-          </span>
-          <div
-            className='flex items-center gap-1 text-[0.6rem]'
-            style={{ color: 'var(--ivory-muted)' }}
-          >
-            <Users size={9} style={{ color: 'var(--gold)' }} />
-            {webinar.registrations.toLocaleString()}
-          </div>
-        </div>
-      </div>
-
-      {/* ── CTA — slides in on hover ── */}
-      <motion.div
-        className='px-5 overflow-hidden'
-        animate={{
-          opacity: hovered ? 1 : 0,
-          height: hovered ? 'auto' : 0,
-          paddingBottom: hovered ? 20 : 0,
-        }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        style={{ pointerEvents: hovered ? 'auto' : 'none' }}
-      >
-        <button
-          type='button'
-          className='font-dm w-full flex items-center justify-between px-4 py-2.5 text-[0.62rem] tracking-[0.18em] uppercase'
-          style={{
-            background: isLive
-              ? 'linear-gradient(135deg, var(--green-dim), color-mix(in srgb, var(--green) 6%, transparent))'
-              : 'linear-gradient(135deg, var(--gold-dim), color-mix(in srgb, var(--gold) 5%, transparent))',
-            border: isLive
-              ? '1px solid color-mix(in srgb, var(--green) 28%, transparent)'
-              : '1px solid var(--border-mid)',
-            color: isLive ? 'var(--green)' : 'var(--gold-light)',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick?.(webinar.id);
-          }}
-        >
-          <span>
-            {isLive
-              ? 'Join Live'
-              : isCompleted
-                ? 'Watch Recording'
-                : 'Register Free'}
-          </span>
-          <ArrowUpRight size={13} />
-        </button>
-      </motion.div>
-
-      {/* Corner reticle */}
-      <span
-        className='absolute bottom-0 right-0 w-3 h-3 pointer-events-none'
-        style={{
-          borderBottom: '1px solid var(--border-mid)',
-          borderRight: '1px solid var(--border-mid)',
-        }}
-      />
-    </motion.article>
-  );
-}
-
 // ─── Featured Card ────────────────────────────────────────────────────────────
 
 interface FeaturedCardProps {
@@ -348,6 +80,7 @@ interface FeaturedCardProps {
 }
 
 function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const isLive = webinar.status === 'live';
   const isCompleted = webinar.status === 'completed';
@@ -367,10 +100,10 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={() => onClick?.(webinar.id)}
+      onClick={() => { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
       role='button'
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
+      onKeyDown={(e) => { if (e.key === 'Enter') { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
     >
       {/* Top accent */}
       <div
@@ -571,10 +304,7 @@ function FeaturedCard({ webinar, onClick }: FeaturedCardProps) {
               clipPath:
                 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick?.(webinar.id);
-            }}
+            onClick={(e) => { e.stopPropagation(); router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
           >
             <motion.span
               className='absolute inset-0 pointer-events-none'
@@ -762,11 +492,6 @@ export default function WebinarShowcase({
       style={{ background: 'linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%)', color: 'var(--ivory)' }}
       aria-label='Webinar showcase'
     >
-      {/* Blueprint grid */}
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-0 z-0 bg-grid'
-      />
 
       {/* Ambient glow */}
       <div
@@ -835,7 +560,7 @@ export default function WebinarShowcase({
 
               <div className='grid grid-cols-3 gap-5 max-[1100px]:grid-cols-2 max-md:grid-cols-1'>
                 {previewRest.map((webinar, i) => (
-                  <SessionCard
+                  <WebinarCard
                     key={webinar.id}
                     webinar={webinar}
                     index={i}

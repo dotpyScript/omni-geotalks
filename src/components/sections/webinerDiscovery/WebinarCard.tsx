@@ -1,10 +1,34 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Share2, Copy, Check, Download, Mail, X, ArrowRight, Loader2 } from 'lucide-react';
 import type { Webinar } from './types';
 import { CATEGORIES } from './data';
 import { BannerPlaceholder } from './BannerPlaceholder';
+import { SharePopup } from '@/components/ui/SharePopup';
+
+// ─── Shared copy-to-clipboard hook ───────────────────────────────────────────
+
+function useCopy() {
+  const [copied, setCopied] = useState(false);
+  const copy = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const el = document.createElement('input');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, []);
+  return { copied, copy };
+}
 
 // ─── Banner image map (topic-matched Unsplash photos) ─────────────────────────
 
@@ -42,6 +66,223 @@ function SmartBanner({ index }: { index: number }) {
   );
 }
 
+// ─── RegisterOverlay ──────────────────────────────────────────────────────────
+// Absolutely positioned inside the card (inset-0) so it never shifts
+// neighbouring cards' heights.
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+interface RegisterOverlayProps {
+  title: string;
+  onClose: () => void;
+}
+
+function RegisterOverlay({ title, onClose }: RegisterOverlayProps) {
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.');
+      inputRef.current?.focus();
+      return;
+    }
+    setError('');
+    setSubmitting(true);
+    // Simulate async registration (replace with real API call)
+    await new Promise((r) => setTimeout(r, 900));
+    setSubmitting(false);
+    setDone(true);
+  };
+
+  return (
+    <motion.div
+      key='register-overlay'
+      initial={{ opacity: 0, y: '100%' }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: '100%' }}
+      transition={{ duration: 0.32, ease: EASE_OUT }}
+      className='absolute inset-0 z-20 flex flex-col'
+      style={{
+        background:
+          'linear-gradient(180deg, rgba(6,13,24,0.92) 0%, var(--obsidian-2) 100%)',
+        backdropFilter: 'blur(12px)',
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close button */}
+      <button
+        type='button'
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className='absolute top-3 right-3 flex items-center justify-center w-7 h-7 transition-colors duration-150 hover:text-(--ivory)'
+        style={{ color: 'var(--ivory-muted)' }}
+        aria-label='Cancel registration'
+      >
+        <X size={14} />
+      </button>
+
+      <div className='flex flex-col flex-1 justify-center px-6 py-8'>
+        <AnimatePresence mode='wait'>
+          {done ? (
+            /* ── Success state ── */
+            <motion.div
+              key='success'
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: EASE_OUT }}
+              className='flex flex-col items-center text-center gap-3'
+            >
+              <div
+                className='w-10 h-10 flex items-center justify-center mb-1'
+                style={{
+                  background: 'var(--teal-dim)',
+                  border: '1px solid var(--teal-glow)',
+                  clipPath:
+                    'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                }}
+              >
+                <Check size={18} style={{ color: 'var(--teal-light)' }} />
+              </div>
+              <p
+                className='text-[0.7rem] tracking-[0.28em] uppercase'
+                style={{ color: 'var(--teal-light)', fontFamily: 'var(--font-body)' }}
+              >
+                You&apos;re Registered
+              </p>
+              <p
+                className='text-[0.62rem] leading-[1.6] max-w-[200px]'
+                style={{ color: 'var(--ivory-muted)', fontFamily: 'var(--font-body)' }}
+              >
+                Check your inbox — we&apos;ll send the session link before it starts.
+              </p>
+              <button
+                type='button'
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                className='mt-2 text-[0.6rem] tracking-[0.16em] uppercase transition-colors duration-150'
+                style={{ color: 'var(--ivory-muted)', fontFamily: 'var(--font-body)' }}
+              >
+                Close
+              </button>
+            </motion.div>
+          ) : (
+            /* ── Form state ── */
+            <motion.form
+              key='form'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onSubmit={handleSubmit}
+              className='flex flex-col gap-4'
+              noValidate
+            >
+              {/* Heading */}
+              <div>
+                <p
+                  className='text-[0.56rem] tracking-[0.28em] uppercase mb-1'
+                  style={{ color: 'var(--gold)', fontFamily: 'var(--font-body)' }}
+                >
+                  Register Free
+                </p>
+                <p
+                  className='text-[0.7rem] font-light leading-[1.4] line-clamp-2'
+                  style={{
+                    color: 'var(--ivory-dim)',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  {title}
+                </p>
+              </div>
+
+              {/* Email input */}
+              <div className='relative'>
+                <Mail
+                  size={12}
+                  className='absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none'
+                  style={{ color: 'var(--ivory-muted)' }}
+                />
+                <input
+                  ref={inputRef}
+                  type='email'
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                  placeholder='your@email.com'
+                  autoComplete='email'
+                  className='w-full pl-8 pr-3 py-2.5 text-[0.72rem] outline-none transition-all duration-200'
+                  style={{
+                    background: 'var(--obsidian-3)',
+                    border: `1px solid ${error ? '#f87171' : 'var(--border-mid)'}`,
+                    color: 'var(--ivory-dim)',
+                    fontFamily: 'var(--font-body)',
+                    clipPath:
+                      'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
+                  }}
+                  disabled={submitting}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                {error && (
+                  <p
+                    className='mt-1 text-[0.58rem]'
+                    style={{ color: '#f87171', fontFamily: 'var(--font-body)' }}
+                  >
+                    {error}
+                  </p>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className='flex items-center gap-2'>
+                {/* Submit */}
+                <button
+                  type='submit'
+                  disabled={submitting}
+                  className='flex-1 flex items-center justify-center gap-2 py-2.5 text-[0.62rem] tracking-[0.16em] uppercase font-medium transition-all duration-200 disabled:opacity-60'
+                  style={{
+                    background: 'linear-gradient(135deg, var(--gold), var(--gold-light))',
+                    color: 'var(--obsidian)',
+                    clipPath:
+                      'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                    fontFamily: 'var(--font-body)',
+                  }}
+                >
+                  {submitting ? (
+                    <Loader2 size={13} className='animate-spin' />
+                  ) : (
+                    <>
+                      Confirm
+                      <ArrowRight size={12} />
+                    </>
+                  )}
+                </button>
+
+                {/* Cancel */}
+                <button
+                  type='button'
+                  onClick={(e) => { e.stopPropagation(); onClose(); }}
+                  disabled={submitting}
+                  className='px-4 py-2.5 text-[0.62rem] tracking-[0.16em] uppercase transition-all duration-150 hover:text-(--ivory) disabled:opacity-40'
+                  style={{
+                    border: '1px solid var(--border-mid)',
+                    color: 'var(--ivory-muted)',
+                    fontFamily: 'var(--font-body)',
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── WebinarCard ───────────────────────────────────────────────────────────────
 
 interface WebinarCardProps {
@@ -57,7 +298,15 @@ export function WebinarCard({
   index,
   onClick,
 }: WebinarCardProps) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const { copied, copy } = useCopy();
+  const shareButtonRef = useRef<HTMLButtonElement>(null);
+  const webinarUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/webinars/${webinar.id}`
+    : `/webinars/${webinar.id}`;
   const catLabel =
     CATEGORIES.find((c) => c.id === webinar.category)?.label ?? webinar.category;
   const isLive = webinar.status === 'live';
@@ -107,13 +356,13 @@ export function WebinarCard({
         delay: index * 0.07,
         ease: [0.22, 1, 0.36, 1],
       }}
-      onClick={() => onClick?.(webinar.id)}
-      onHoverStart={() => setHovered(true)}
+      onClick={() => { if (registerOpen) return; router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
+      onHoverStart={() => { if (!registerOpen) setHovered(true); }}
       onHoverEnd={() => setHovered(false)}
       role='button'
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
-      whileHover={{ y: -4 }}
+      onKeyDown={(e) => { if (e.key === 'Enter' && !registerOpen) { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
+      whileHover={{ y: registerOpen ? 0 : -4 }}
     >
       {/* ── Thumbnail ──────────────────────────────────────────────────── */}
       <div className='relative w-full overflow-hidden shrink-0 h-48'>
@@ -278,44 +527,90 @@ export function WebinarCard({
         </div>
       </div>
 
-      {/* ── CTA — slides in on hover ────────────────────────────────────── */}
-      <motion.div
-        className='px-5 overflow-hidden'
-        animate={{
-          opacity: hovered ? 1 : 0,
-          height: hovered ? 'auto' : 0,
-          paddingBottom: hovered ? 20 : 0,
-        }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        style={{ pointerEvents: hovered ? 'auto' : 'none' }}
-      >
-        <button
-          type='button'
-          className='font-dm w-full flex items-center justify-between px-4 py-2.5 text-[0.62rem] tracking-[0.18em] uppercase'
-          style={{
-            background: isLive
-              ? 'linear-gradient(135deg, var(--green-dim), color-mix(in srgb, var(--green) 6%, transparent))'
-              : 'linear-gradient(135deg, var(--gold-dim), color-mix(in srgb, var(--gold) 5%, transparent))',
-            border: isLive
-              ? '1px solid color-mix(in srgb, var(--green) 28%, transparent)'
-              : '1px solid var(--border-mid)',
-            color: isLive ? 'var(--green)' : 'var(--gold-light)',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick?.(webinar.id);
-          }}
-        >
-          <span>
-            {isLive
-              ? 'Join Live Session'
-              : isCompleted
-                ? 'Watch Recording'
-                : 'Register Free'}
-          </span>
-          <span aria-hidden>↗</span>
-        </button>
-      </motion.div>
+      {/* ── CTA — always visible ─────────────────────────────────────────── */}
+      <div className='px-5 pb-5'>
+        <div className='flex items-center gap-2'>
+          <button
+            type='button'
+            className='font-dm flex-1 flex items-center justify-between px-4 py-2.5 text-[0.62rem] tracking-[0.18em] uppercase'
+            style={{
+              background: isLive
+                ? 'linear-gradient(135deg, var(--green-dim), color-mix(in srgb, var(--green) 6%, transparent))'
+                : 'linear-gradient(135deg, var(--gold-dim), color-mix(in srgb, var(--gold) 5%, transparent))',
+              border: isLive
+                ? '1px solid color-mix(in srgb, var(--green) 28%, transparent)'
+                : '1px solid var(--border-mid)',
+              color: isLive ? 'var(--green)' : 'var(--gold-light)',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isLive && !isCompleted) {
+                setRegisterOpen(true);
+              } else {
+                router.push('/webinars/' + webinar.id);
+              }
+            }}
+          >
+            <span>
+              {isLive ? 'Join Live Session' : isCompleted ? 'Watch Recording' : 'Register Free'}
+            </span>
+            <span aria-hidden>↗</span>
+          </button>
+
+          {/* Share */}
+          <div className='relative'>
+            <button
+              ref={shareButtonRef}
+              type='button'
+              className='flex items-center justify-center w-8 h-8 transition-colors duration-150'
+              style={{
+                background: 'var(--obsidian-3)',
+                border: '1px solid var(--border-mid)',
+                color: 'var(--ivory-dim)',
+              }}
+              onClick={(e) => { e.stopPropagation(); setShareOpen((v) => !v); }}
+              aria-label='Share webinar'
+            >
+              <Share2 size={13} />
+            </button>
+            {shareOpen && (
+              <SharePopup url={webinarUrl} title={webinar.title} anchorRef={shareButtonRef} onClose={() => setShareOpen(false)} />
+            )}
+          </div>
+
+          {/* Copy link */}
+          <button
+            type='button'
+            className='flex items-center justify-center w-8 h-8 transition-colors duration-150'
+            style={{
+              background: copied ? 'var(--gold-dim)' : 'var(--obsidian-3)',
+              border: '1px solid var(--border-mid)',
+              color: copied ? 'var(--gold-light)' : 'var(--ivory-dim)',
+            }}
+            onClick={(e) => { e.stopPropagation(); copy(webinarUrl); }}
+            aria-label='Copy link'
+          >
+            {copied ? <Check size={13} /> : <Copy size={13} />}
+          </button>
+
+          {/* Download (completed only) */}
+          {isCompleted && (
+            <button
+              type='button'
+              className='flex items-center justify-center w-8 h-8 transition-colors duration-150'
+              style={{
+                background: 'var(--obsidian-3)',
+                border: '1px solid var(--border-mid)',
+                color: 'var(--ivory-dim)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+              aria-label='Download recording'
+            >
+              <Download size={13} />
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Corner reticle */}
       <span
@@ -326,11 +621,22 @@ export function WebinarCard({
           borderRight: '1px solid var(--border-mid)',
         }}
       />
+
+      {/* ── Registration overlay — absolute inset-0, never affects card height ── */}
+      <AnimatePresence>
+        {registerOpen && (
+          <RegisterOverlay
+            title={webinar.title}
+            onClose={() => { setRegisterOpen(false); setHovered(false); }}
+          />
+        )}
+      </AnimatePresence>
     </motion.article>
   );
 }
 
 // ─── ListCard ─────────────────────────────────────────────────────────────────
+// Matches the FeaturedCard layout from WebinarShowcase — full-width split grid.
 
 function ListCard({
   webinar,
@@ -351,150 +657,294 @@ function ListCard({
   index: number;
   onClick?: (id: number) => void;
 }) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const { copied, copy } = useCopy();
+  const shareButtonRef = useRef<HTMLButtonElement>(null);
+  const webinarUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/webinars/${webinar.id}`
+    : `/webinars/${webinar.id}`;
 
   return (
     <motion.article
-      role='button'
-      tabIndex={0}
-      onClick={() => onClick?.(webinar.id)}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.(webinar.id)}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      className='relative overflow-hidden cursor-pointer'
       style={{
-        border: `1px solid ${hovered ? 'var(--border-mid)' : 'var(--border)'}`,
         background:
-          'linear-gradient(90deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
-        transition: 'border-color 0.25s ease',
+          'linear-gradient(145deg, var(--obsidian-2) 0%, var(--obsidian-3) 100%)',
+        border: isLive
+          ? '1px solid color-mix(in srgb, var(--green) 20%, transparent)'
+          : `1px solid ${hovered ? 'var(--border-mid)' : 'var(--border)'}`,
+        transition: 'border-color 0.3s ease',
       }}
-      className='relative overflow-hidden cursor-pointer flex items-stretch'
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{
-        duration: 0.5,
-        delay: index * 0.06,
+        duration: 0.6,
+        delay: index * 0.07,
         ease: [0.22, 1, 0.36, 1],
       }}
-      whileHover={{ x: 4 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      onClick={() => { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
+      role='button'
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter') { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
     >
-      {/* Left status stripe */}
-      <motion.div
-        className='w-[3px] shrink-0 self-stretch'
-        animate={{ background: hovered ? statusColor : 'var(--border)' }}
-        transition={{ duration: 0.3 }}
+      {/* Top accent line */}
+      <div
+        className='absolute top-0 left-0 right-0 h-0.5 z-10'
+        style={{
+          background: isLive
+            ? 'linear-gradient(90deg, var(--green), color-mix(in srgb, var(--green) 30%, transparent), transparent)'
+            : 'linear-gradient(90deg, var(--gold), color-mix(in srgb, var(--gold) 40%, transparent), transparent)',
+        }}
       />
 
-      {/* Banner thumbnail */}
-      <div className='relative overflow-hidden shrink-0 w-[200px] max-sm:hidden'>
-        <motion.div
-          className='absolute inset-0'
-          animate={{
-            scale: hovered ? 1.05 : 1,
-            filter: hovered
-              ? 'brightness(1.1) saturate(1.05)'
-              : 'brightness(0.85) saturate(0.9)',
-          }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <SmartBanner index={webinar.banner} />
-        </motion.div>
-        <div
-          aria-hidden
-          className='absolute inset-0'
-          style={{
-            background:
-              'linear-gradient(90deg, transparent 60%, color-mix(in srgb, var(--obsidian-2) 90%, transparent) 100%)',
-          }}
-        />
-      </div>
+      <div className='grid grid-cols-[1fr_1fr] max-[900px]:grid-cols-1'>
+        {/* ── Left: Banner ─────────────────────────────────────────────── */}
+        <div className='relative overflow-hidden min-h-72 max-[900px]:min-h-52'>
+          <motion.div
+            className='absolute inset-0'
+            animate={{
+              scale: hovered ? 1.05 : 1,
+              filter: hovered
+                ? 'brightness(1.12) saturate(1.08)'
+                : 'brightness(0.88) saturate(0.95)',
+            }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <SmartBanner index={webinar.banner} />
+          </motion.div>
 
-      {/* Content */}
-      <div className='flex-1 flex items-center gap-6 px-6 py-5 min-w-0'>
-        <div className='flex-1 min-w-0'>
-          <div className='flex items-center gap-2 mb-2'>
+          {/* Seam fade into content panel */}
+          <div
+            className='absolute inset-0 z-[2] max-[900px]:hidden'
+            style={{
+              background:
+                'linear-gradient(90deg, transparent 78%, color-mix(in srgb, var(--obsidian-2) 95%, transparent) 100%)',
+            }}
+          />
+          {/* Mobile bottom fade */}
+          <div
+            className='absolute inset-0 z-[2] hidden max-[900px]:block'
+            style={{
+              background:
+                'linear-gradient(180deg, transparent 55%, var(--obsidian-2) 100%)',
+            }}
+          />
+
+          {/* Status badge */}
+          <div
+            className='absolute top-4 left-4 z-[3] flex items-center gap-2 px-3 py-1.5'
+            style={{
+              background: `color-mix(in srgb, ${statusColor} 10%, transparent)`,
+              backdropFilter: 'blur(10px)',
+              border: `1px solid color-mix(in srgb, ${statusColor} 30%, transparent)`,
+            }}
+          >
+            {isLive ? (
+              <span className='relative flex h-1.25 w-1.25'>
+                <span
+                  className='animate-ping absolute inline-flex h-full w-full rounded-full opacity-75'
+                  style={{ background: statusColor }}
+                />
+                <span
+                  className='relative inline-flex rounded-full h-1.25 w-1.25'
+                  style={{ background: statusColor }}
+                />
+              </span>
+            ) : (
+              <span
+                className='inline-flex rounded-full h-[5px] w-[5px]'
+                style={{ background: statusColor }}
+              />
+            )}
             <span
-              className='text-[0.5rem] tracking-[0.22em] uppercase'
+              className='text-[0.56rem] tracking-[0.3em] uppercase'
               style={{ color: statusColor }}
             >
               {statusLabel}
             </span>
-            <span style={{ color: 'var(--border)' }}>·</span>
+          </div>
+
+          {/* Category tag */}
+          <div className='absolute bottom-4 left-4 z-[3]'>
             <span
-              className='text-[0.5rem] tracking-[0.18em] uppercase'
-              style={{ color: 'var(--gold)' }}
+              className='text-[0.54rem] tracking-[0.18em] uppercase px-2.5 py-1'
+              style={{
+                background:
+                  'color-mix(in srgb, var(--obsidian) 60%, transparent)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid var(--border-mid)',
+                color: 'var(--gold-light)',
+              }}
             >
               {catLabel}
             </span>
           </div>
-
-          <h3
-            className='font-cormorant font-light leading-[1.25] mb-1.5 transition-colors duration-250 text-[1.05rem]'
-            style={{ color: hovered ? 'var(--gold-pale)' : 'var(--ivory)' }}
-          >
-            {webinar.title}
-          </h3>
-
-          <p
-            className='text-[0.68rem] tracking-[0.06em]'
-            style={{ color: 'var(--ivory-muted)' }}
-          >
-            {webinar.date} · {webinar.time} · {webinar.duration}
-          </p>
         </div>
 
-        {/* Speakers */}
-        <div className='flex flex-col items-end gap-2 shrink-0'>
-          <div className='flex -space-x-1.5'>
-            {webinar.speakers.slice(0, 2).map((s, i) => (
+        {/* ── Right: Content ───────────────────────────────────────────── */}
+        <div className='relative z-[3] flex flex-col justify-between p-8 max-[900px]:pt-5 max-[900px]:px-5 max-[900px]:pb-6'>
+          <div>
+            <h3
+              className='font-cormorant font-light leading-[1.2] mb-4 transition-colors duration-300'
+              style={{
+                fontSize: 'clamp(1.4rem, 2vw, 1.9rem)',
+                color: hovered ? 'var(--gold-pale)' : 'var(--ivory)',
+              }}
+            >
+              {webinar.title}
+            </h3>
+
+            <p
+              className='text-[0.78rem] leading-[1.7] mb-5 font-light line-clamp-3'
+              style={{ color: 'var(--ivory-muted)' }}
+            >
+              {webinar.description}
+            </p>
+
+            {/* Meta */}
+            <div className='flex flex-col gap-1.5 mb-5'>
               <div
-                key={i}
-                className='w-6 h-6 rounded-full flex items-center justify-center'
-                style={{
-                  background: 'var(--obsidian-4)',
-                  border: '1.5px solid var(--obsidian-2)',
-                  boxShadow:
-                    '0 0 0 1px color-mix(in srgb, var(--gold) 15%, transparent)',
-                }}
+                className='flex items-center gap-2 text-[0.68rem]'
+                style={{ color: 'var(--ivory-muted)' }}
               >
-                <span
-                  className='font-cormorant text-[0.42rem] font-semibold'
-                  style={{ color: 'var(--gold-light)' }}
-                >
-                  {s.initials}
-                </span>
+                <span style={{ color: 'var(--gold)' }}>◷</span>
+                {webinar.date} · {webinar.time} · {webinar.duration}
               </div>
-            ))}
-          </div>
-          <span
-            className='text-[0.58rem]'
-            style={{ color: 'var(--ivory-muted)' }}
-          >
-            <span style={{ color: 'var(--gold)', marginRight: 3 }}>◈</span>
-            {webinar.registrations.toLocaleString()}
-          </span>
-        </div>
+              <div
+                className='flex items-center gap-2 text-[0.68rem]'
+                style={{ color: 'var(--ivory-muted)' }}
+              >
+                <span style={{ color: 'var(--gold)', fontSize: '0.58rem' }}>◈</span>
+                {webinar.registrations.toLocaleString()} registered
+              </div>
+            </div>
 
-        {/* CTA */}
-        <button
-          type='button'
-          className='font-dm shrink-0 px-5 py-2.5 text-[0.6rem] tracking-[0.16em] uppercase transition-all duration-250'
-          style={{
-            background: isLive
-              ? 'linear-gradient(135deg, var(--green), color-mix(in srgb, var(--green) 80%, #000))'
-              : isCompleted
-                ? 'transparent'
-                : 'linear-gradient(135deg, var(--gold), var(--gold-light))',
-            border: isCompleted ? '1px solid var(--border-mid)' : 'none',
-            color: isCompleted ? 'var(--gold)' : '#080a0f',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick?.(webinar.id);
-          }}
-        >
-          {isLive ? 'Join Live' : isCompleted ? '▶ Watch' : 'Register →'}
-        </button>
+            {/* Speakers */}
+            <div
+              className='flex items-center gap-3 pb-5 mb-5'
+              style={{ borderBottom: '1px solid var(--border)' }}
+            >
+              <div className='flex -space-x-2'>
+                {webinar.speakers.slice(0, 3).map((s, i) => (
+                  <div
+                    key={i}
+                    className='w-8 h-8 rounded-full flex items-center justify-center'
+                    style={{
+                      background:
+                        'linear-gradient(135deg, var(--obsidian-4), var(--obsidian-3))',
+                      border: '2px solid var(--obsidian-2)',
+                      boxShadow:
+                        '0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent)',
+                    }}
+                  >
+                    <span
+                      className='font-cormorant text-[0.5rem] font-semibold'
+                      style={{ color: 'var(--gold-light)' }}
+                    >
+                      {s.initials}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p
+                  className='text-[0.68rem]'
+                  style={{ color: 'var(--ivory-dim)' }}
+                >
+                  {webinar.speakers[0]?.name}
+                </p>
+                {webinar.speakers.length > 1 && (
+                  <p
+                    className='text-[0.6rem]'
+                    style={{ color: 'var(--ivory-muted)' }}
+                  >
+                    +{webinar.speakers.length - 1} more
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* CTA row */}
+          <div className='flex items-center gap-2'>
+            <button
+              type='button'
+              className='font-dm flex-1 flex items-center justify-between px-5 py-3.5 text-left transition-all duration-300'
+              style={{
+                background: isLive
+                  ? 'linear-gradient(135deg, var(--green), color-mix(in srgb, var(--green) 85%, #000))'
+                  : 'linear-gradient(135deg, var(--gold), var(--gold-light))',
+                color: isLive ? '#001a10' : '#080a0f',
+                clipPath:
+                  'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              }}
+              onClick={(e) => { e.stopPropagation(); router.push('/webinars/' + webinar.id); }}
+            >
+              <span className='text-[0.68rem] tracking-[0.2em] uppercase font-medium'>
+                {isLive ? 'Join Live Session' : isCompleted ? '▶ Watch Recording' : 'Register Free'}
+              </span>
+              <span aria-hidden className='text-[0.9rem]'>→</span>
+            </button>
+
+            {/* Share */}
+            <div className='relative'>
+              <button
+                ref={shareButtonRef}
+                type='button'
+                className='flex items-center justify-center w-10 h-10 transition-colors duration-150'
+                style={{
+                  background: 'var(--obsidian-3)',
+                  border: '1px solid var(--border-mid)',
+                  color: 'var(--ivory-dim)',
+                }}
+                onClick={(e) => { e.stopPropagation(); setShareOpen((v) => !v); }}
+                aria-label='Share webinar'
+              >
+                <Share2 size={15} />
+              </button>
+              {shareOpen && (
+                <SharePopup url={webinarUrl} title={webinar.title} anchorRef={shareButtonRef} onClose={() => setShareOpen(false)} />
+              )}
+            </div>
+
+            {/* Copy link */}
+            <button
+              type='button'
+              className='flex items-center justify-center w-10 h-10 transition-colors duration-150'
+              style={{
+                background: copied ? 'var(--gold-dim)' : 'var(--obsidian-3)',
+                border: '1px solid var(--border-mid)',
+                color: copied ? 'var(--gold-light)' : 'var(--ivory-dim)',
+              }}
+              onClick={(e) => { e.stopPropagation(); copy(webinarUrl); }}
+              aria-label='Copy link'
+            >
+              {copied ? <Check size={15} /> : <Copy size={15} />}
+            </button>
+
+            {/* Download (completed only) */}
+            {isCompleted && (
+              <button
+                type='button'
+                className='flex items-center justify-center w-10 h-10 transition-colors duration-150'
+                style={{
+                  background: 'var(--obsidian-3)',
+                  border: '1px solid var(--border-mid)',
+                  color: 'var(--ivory-dim)',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                aria-label='Download recording'
+              >
+                <Download size={15} />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </motion.article>
   );
