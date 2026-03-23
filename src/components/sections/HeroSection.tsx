@@ -307,12 +307,13 @@ export function HeroSection() {
             }}
           >
             Expert Knowledge
-            <em className='block italic' style={{ color: 'var(--)' }}>
+            <em
+              className='block italic font-semibold'
+              style={{ color: 'var(--green)' }}
+            >
               Across Every
             </em>
-            <strong className='block font-semibold'>
-              Geospatial Frontier.
-            </strong>
+            <strong className='block'>Geospatial Frontier.</strong>
           </h1>
         </motion.div>
 
