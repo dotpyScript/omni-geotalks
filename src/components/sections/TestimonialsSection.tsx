@@ -1,7 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  type Variants,
+} from 'framer-motion';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 // ─── Placeholder testimonials ─────────────────────────────────────────────────
@@ -70,11 +74,11 @@ const TESTIMONIALS = [
 
 // ─── Discipline colour map ────────────────────────────────────────────────────
 const DISC_COLOR: Record<string, string> = {
-  'GIS & Spatial Mapping':  'var(--navy-light)',
-  'UAV & Drone Surveys':    'var(--teal-light)',
-  'Precision Agriculture':  '#8fc97e',
-  'Oil & Gas Geospatial':   '#c9a850',
-  'Remote Sensing & SAR':   'var(--navy-pale)',
+  'GIS & Spatial Mapping': 'var(--navy-light)',
+  'UAV & Drone Surveys': 'var(--teal-light)',
+  'Precision Agriculture': '#8fc97e',
+  'Oil & Gas Geospatial': '#c9a850',
+  'Remote Sensing & SAR': 'var(--navy-pale)',
 };
 
 // ─── Small star rating ────────────────────────────────────────────────────────
@@ -82,7 +86,10 @@ function Stars() {
   return (
     <div className='flex gap-0.5'>
       {Array.from({ length: 5 }).map((_, i) => (
-        <span key={i} style={{ color: 'var(--navy-light)', fontSize: '0.55rem' }}>
+        <span
+          key={i}
+          style={{ color: 'var(--navy-light)', fontSize: '0.55rem' }}
+        >
           ★
         </span>
       ))}
@@ -100,10 +107,12 @@ export function TestimonialsSection() {
 
   const go = (dir: 1 | -1) => {
     setDirection(dir);
-    setActive((prev) => (prev + dir + TESTIMONIALS.length) % TESTIMONIALS.length);
+    setActive(
+      (prev) => (prev + dir + TESTIMONIALS.length) % TESTIMONIALS.length,
+    );
   };
 
-  const variants = {
+  const variants: Variants = {
     enter: (d: number) => ({
       opacity: 0,
       x: d > 0 ? 40 : -40,
@@ -129,7 +138,10 @@ export function TestimonialsSection() {
       style={{ background: 'var(--obsidian-2)' }}
     >
       {/* Background effects */}
-      <div className='absolute inset-0 bg-grid opacity-40 pointer-events-none' aria-hidden />
+      <div
+        className='absolute inset-0 bg-grid opacity-40 pointer-events-none'
+        aria-hidden
+      />
 
       {/* Ghost watermark */}
       <div
@@ -153,16 +165,31 @@ export function TestimonialsSection() {
 
       <div
         className='absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full blur-[100px] pointer-events-none z-0'
-        style={{ background: 'radial-gradient(ellipse, var(--navy-glow) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'radial-gradient(ellipse, var(--navy-glow) 0%, transparent 70%)',
+        }}
         aria-hidden
       />
 
       {/* Top/bottom fade */}
-      <div className='absolute inset-x-0 top-0 h-20 pointer-events-none z-2' style={{ background: 'linear-gradient(to bottom, var(--obsidian-2), transparent)' }} aria-hidden />
-      <div className='absolute inset-x-0 bottom-0 h-20 pointer-events-none z-2' style={{ background: 'linear-gradient(to top, var(--obsidian-2), transparent)' }} aria-hidden />
+      <div
+        className='absolute inset-x-0 top-0 h-20 pointer-events-none z-2'
+        style={{
+          background:
+            'linear-gradient(to bottom, var(--obsidian-2), transparent)',
+        }}
+        aria-hidden
+      />
+      <div
+        className='absolute inset-x-0 bottom-0 h-20 pointer-events-none z-2'
+        style={{
+          background: 'linear-gradient(to top, var(--obsidian-2), transparent)',
+        }}
+        aria-hidden
+      />
 
       <div className='relative z-10 max-w-6xl mx-auto px-6 lg:px-16'>
-
         {/* Header */}
         <motion.div
           className='flex flex-col items-center text-center mb-16'
@@ -194,7 +221,6 @@ export function TestimonialsSection() {
 
         {/* ── Main testimonial card ─────────────────────────────────── */}
         <div className='grid lg:grid-cols-[1fr_300px] gap-8 items-start'>
-
           {/* Left — quote card */}
           <div
             className='relative'
@@ -206,7 +232,9 @@ export function TestimonialsSection() {
             {/* Accent top border */}
             <div
               className='absolute top-0 left-0 right-0 h-px'
-              style={{ background: `linear-gradient(to right, ${accentColor}, transparent)` }}
+              style={{
+                background: `linear-gradient(to right, ${accentColor}, transparent)`,
+              }}
             />
 
             {/* Corner reticles */}
@@ -219,17 +247,18 @@ export function TestimonialsSection() {
               <span
                 key={i}
                 className={`absolute w-4 h-4 pointer-events-none ${cls}`}
-                style={{ borderColor: accentColor, opacity: 0.5, transition: 'border-color 0.4s ease' }}
+                style={{
+                  borderColor: accentColor,
+                  opacity: 0.5,
+                  transition: 'border-color 0.4s ease',
+                }}
               />
             ))}
 
             <div className='p-8 lg:p-10'>
               {/* Quote icon */}
               <div className='mb-6'>
-                <Quote
-                  size={28}
-                  style={{ color: accentColor, opacity: 0.5 }}
-                />
+                <Quote size={28} style={{ color: accentColor, opacity: 0.5 }} />
               </div>
 
               {/* Animated quote text */}
@@ -312,7 +341,10 @@ export function TestimonialsSection() {
                     <div>
                       <p
                         className='text-[0.78rem] font-medium leading-tight'
-                        style={{ color: 'var(--ivory)', fontFamily: 'var(--font-dm)' }}
+                        style={{
+                          color: 'var(--ivory)',
+                          fontFamily: 'var(--font-dm)',
+                        }}
                       >
                         {current.name}
                       </p>
@@ -344,7 +376,8 @@ export function TestimonialsSection() {
                 className='text-[0.55rem] tracking-[0.25em] uppercase tabular'
                 style={{ color: 'var(--ivory-muted)' }}
               >
-                {String(active + 1).padStart(2, '0')} / {String(TESTIMONIALS.length).padStart(2, '0')}
+                {String(active + 1).padStart(2, '0')} /{' '}
+                {String(TESTIMONIALS.length).padStart(2, '0')}
               </span>
               <div className='flex items-center gap-2'>
                 <button
@@ -385,18 +418,25 @@ export function TestimonialsSection() {
               return (
                 <button
                   key={t.id}
-                  onClick={() => { setDirection(i > active ? 1 : -1); setActive(i); }}
+                  onClick={() => {
+                    setDirection(i > active ? 1 : -1);
+                    setActive(i);
+                  }}
                   className='text-left flex items-start gap-3 p-3 transition-all duration-200'
                   style={{
                     border: `1px solid ${isActive ? color + '55' : 'var(--border)'}`,
-                    background: isActive ? 'var(--obsidian-3)' : 'var(--obsidian-2)',
+                    background: isActive
+                      ? 'var(--obsidian-3)'
+                      : 'var(--obsidian-2)',
                     cursor: 'pointer',
                   }}
                 >
                   {/* Active indicator */}
                   <span
                     className='mt-1.5 shrink-0 w-1 h-1 rounded-full transition-all duration-300'
-                    style={{ background: isActive ? color : 'var(--border-mid)' }}
+                    style={{
+                      background: isActive ? color : 'var(--border-mid)',
+                    }}
                   />
                   <div>
                     <p
@@ -410,7 +450,10 @@ export function TestimonialsSection() {
                     </p>
                     <p
                       className='text-[0.55rem] tracking-[0.1em] uppercase mt-0.5'
-                      style={{ color: isActive ? color : 'var(--ivory-muted)', opacity: isActive ? 0.9 : 0.5 }}
+                      style={{
+                        color: isActive ? color : 'var(--ivory-muted)',
+                        opacity: isActive ? 0.9 : 0.5,
+                      }}
                     >
                       {t.discipline}
                     </p>
@@ -434,12 +477,16 @@ export function TestimonialsSection() {
           {TESTIMONIALS.map((_, i) => (
             <button
               key={i}
-              onClick={() => { setDirection(i > active ? 1 : -1); setActive(i); }}
+              onClick={() => {
+                setDirection(i > active ? 1 : -1);
+                setActive(i);
+              }}
               className='transition-all duration-300'
               style={{
                 width: i === active ? 20 : 6,
                 height: 4,
-                background: i === active ? 'var(--navy-light)' : 'var(--border-mid)',
+                background:
+                  i === active ? 'var(--navy-light)' : 'var(--border-mid)',
                 border: 'none',
                 cursor: 'pointer',
               }}

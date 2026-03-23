@@ -96,38 +96,49 @@ type T = (typeof TESTIMONIALS)[number];
 
 const DISC_COLOR: Record<string, string> = {
   'GIS & Spatial Mapping': 'var(--navy-light)',
-  'UAV & Drone Surveys':   'var(--teal-light)',
+  'UAV & Drone Surveys': 'var(--teal-light)',
   'Precision Agriculture': '#8fc97e',
-  'Oil & Gas Geospatial':  '#c9a850',
-  'Remote Sensing & SAR':  'var(--navy-pale)',
-  'Land Administration':   '#b89fd4',
+  'Oil & Gas Geospatial': '#c9a850',
+  'Remote Sensing & SAR': 'var(--navy-pale)',
+  'Land Administration': '#b89fd4',
 };
 
 // ─── Stars ────────────────────────────────────────────────────────────────────
 function Stars({ color }: { color: string }) {
   return (
     <div className='flex gap-0.5'>
-      {[0,1,2,3,4].map((i) => (
-        <span key={i} style={{ color, fontSize: '0.55rem' }}>★</span>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <span key={i} style={{ color, fontSize: '0.55rem' }}>
+          ★
+        </span>
       ))}
     </div>
   );
 }
 
 // ─── Right-panel scroll card ──────────────────────────────────────────────────
-function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick: () => void }) {
+function ScrollCard({
+  t,
+  isActive,
+  onClick,
+}: {
+  t: T;
+  isActive: boolean;
+  onClick: () => void;
+}) {
   const color = DISC_COLOR[t.discipline] ?? 'var(--navy-light)';
   return (
     <button
       onClick={onClick}
       className='w-full text-left flex items-start gap-3 p-4 outline-none'
       style={{
-        border:     `1px solid ${isActive ? color + '66' : 'var(--border)'}`,
+        border: `1px solid ${isActive ? color + '66' : 'var(--border)'}`,
         background: isActive ? 'var(--obsidian-3)' : 'var(--obsidian-2)',
-        boxShadow:  isActive ? `0 0 20px ${color}1a` : 'none',
-        cursor:     'pointer',
+        boxShadow: isActive ? `0 0 20px ${color}1a` : 'none',
+        cursor: 'pointer',
         flexShrink: 0,
-        transition: 'border-color 0.45s ease, background 0.45s ease, box-shadow 0.45s ease',
+        transition:
+          'border-color 0.45s ease, background 0.45s ease, box-shadow 0.45s ease',
       }}
     >
       {/* Active bar */}
@@ -147,10 +158,10 @@ function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick
             style={{
               fontFamily: 'var(--font-bebas)',
               letterSpacing: '0.06em',
-              background:   isActive ? `${color}18` : 'var(--obsidian-4)',
-              border:       `1px solid ${isActive ? color + '55' : 'var(--border)'}`,
-              color:        isActive ? color : 'var(--ivory-muted)',
-              transition:   'all 0.45s ease',
+              background: isActive ? `${color}18` : 'var(--obsidian-4)',
+              border: `1px solid ${isActive ? color + '55' : 'var(--border)'}`,
+              color: isActive ? color : 'var(--ivory-muted)',
+              transition: 'all 0.45s ease',
             }}
           >
             {t.initials}
@@ -159,7 +170,7 @@ function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick
             className='text-[0.68rem] font-medium truncate leading-tight'
             style={{
               fontFamily: 'var(--font-dm)',
-              color:      isActive ? 'var(--ivory)' : 'var(--ivory-dim)',
+              color: isActive ? 'var(--ivory)' : 'var(--ivory-dim)',
               transition: 'color 0.45s ease',
             }}
           >
@@ -170,8 +181,8 @@ function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick
         <span
           className='text-[0.47rem] tracking-[0.22em] uppercase px-1.5 py-0.5 self-start'
           style={{
-            border:     `1px solid ${isActive ? color + '44' : 'var(--border)'}`,
-            color:      isActive ? color : 'var(--ivory-muted)',
+            border: `1px solid ${isActive ? color + '44' : 'var(--border)'}`,
+            color: isActive ? color : 'var(--ivory-muted)',
             background: isActive ? `${color}0d` : 'transparent',
             transition: 'all 0.45s ease',
           }}
@@ -183,9 +194,9 @@ function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick
           className='text-[0.57rem] leading-[1.5] line-clamp-2'
           style={{
             fontStyle: 'italic',
-            color:     'var(--ivory-muted)',
-            opacity:   isActive ? 0.75 : 0.38,
-            transition:'opacity 0.45s ease',
+            color: 'var(--ivory-muted)',
+            opacity: isActive ? 0.75 : 0.38,
+            transition: 'opacity 0.45s ease',
           }}
         >
           &ldquo;{t.quote.slice(0, 70)}…&rdquo;
@@ -199,27 +210,29 @@ function ScrollCard({ t, isActive, onClick }: { t: T; isActive: boolean; onClick
 export function TestimonialsSection() {
   const COUNT = TESTIMONIALS.length;
   const CARD_H = 116; // px — approximate rendered card height
-  const GAP    = 8;
-  const UNIT   = CARD_H + GAP;
+  const GAP = 8;
+  const UNIT = CARD_H + GAP;
 
   // ── "cursor" is an ever-increasing integer — never wraps, never jumps ──────
   // realIndex = cursor % COUNT  gives the actual testimonial index.
   // The tripled list spans cursor values 0 .. 3*COUNT-1 mapped to indices 0..COUNT-1.
   // We initialise cursor at COUNT so the middle copy is shown on mount.
-  const [cursor, setCursor]   = useState(COUNT);        // starts in middle copy
+  const [cursor, setCursor] = useState<number>(COUNT); // starts in middle copy
   const [isPaused, setIsPaused] = useState(false);
 
-  const scrollRef  = useRef<HTMLDivElement>(null);
-  const cursorRef  = useRef(cursor);
-  cursorRef.current = cursor;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef(cursor);
+  useEffect(() => {
+    cursorRef.current = cursor;
+  }, [cursor]);
 
-  const isManual   = useRef(false);
-  const isJumping  = useRef(false); // true during a silent scroll-top reset
+  const isManual = useRef(false);
+  const isJumping = useRef(false); // true during a silent scroll-top reset
 
   // ── Derived real index ──────────────────────────────────────────────────────
   const realIndex = ((cursor % COUNT) + COUNT) % COUNT;
-  const current   = TESTIMONIALS[realIndex]!;
-  const accent    = DISC_COLOR[current.discipline] ?? 'var(--navy-light)';
+  const current = TESTIMONIALS[realIndex]!;
+  const accent = DISC_COLOR[current.discipline] ?? 'var(--navy-light)';
 
   // ── Scroll the list so the card at `cur` (absolute cursor) is centred ──────
   const syncScroll = useCallback(
@@ -252,10 +265,14 @@ export function TestimonialsSection() {
     if (cursor < COUNT / 2) {
       // Too close to top — jump forward by one full set (no visual change)
       isJumping.current = true;
+
       const newCursor = cursor + COUNT;
       setCursor(newCursor);
+
       syncScroll(newCursor, false);
-      setTimeout(() => { isJumping.current = false; }, 50);
+      setTimeout(() => {
+        isJumping.current = false;
+      }, 50);
       return;
     }
     if (cursor > COUNT * 2.5) {
@@ -263,8 +280,11 @@ export function TestimonialsSection() {
       isJumping.current = true;
       const newCursor = cursor - COUNT;
       setCursor(newCursor);
+
       syncScroll(newCursor, false);
-      setTimeout(() => { isJumping.current = false; }, 50);
+      setTimeout(() => {
+        isJumping.current = false;
+      }, 50);
       return;
     }
 
@@ -279,7 +299,7 @@ export function TestimonialsSection() {
     if (isPaused) return;
     const id = setInterval(() => {
       if (isManual.current || isJumping.current) return;
-      setCursor((c) => c + 1);  // always +1, serial, no skips
+      setCursor((c) => c + 1); // always +1, serial, no skips
     }, 3800);
     return () => clearInterval(id);
   }, [isPaused]);
@@ -296,7 +316,9 @@ export function TestimonialsSection() {
       if (steps === 0) steps = COUNT; // full loop if same card clicked
       return c + steps;
     });
-    setTimeout(() => { isManual.current = false; }, 6000);
+    setTimeout(() => {
+      isManual.current = false;
+    }, 6000);
   };
 
   // ── Tripled list for the scroll panel ────────────────────────────────────
@@ -306,9 +328,19 @@ export function TestimonialsSection() {
   const TRIPLED = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
 
   const quoteVariants = {
-    enter:  { opacity: 0, y: 20, filter: 'blur(6px)' },
-    center: { opacity: 1, y: 0,  filter: 'blur(0px)', transition: { duration: 0.52, ease: [0.25, 0.46, 0.45, 0.94] as const } },
-    exit:   { opacity: 0, y: -14, filter: 'blur(3px)', transition: { duration: 0.28, ease: 'easeIn' as const } },
+    enter: { opacity: 0, y: 20, filter: 'blur(6px)' },
+    center: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: { duration: 0.52, ease: [0.25, 0.46, 0.45, 0.94] as const },
+    },
+    exit: {
+      opacity: 0,
+      y: -14,
+      filter: 'blur(3px)',
+      transition: { duration: 0.28, ease: 'easeIn' as const },
+    },
   };
 
   return (
@@ -317,33 +349,53 @@ export function TestimonialsSection() {
       style={{ background: 'var(--obsidian-2)' }}
     >
       {/* Backgrounds */}
-      <div className='absolute inset-0 bg-grid opacity-40 pointer-events-none' aria-hidden />
+      <div
+        className='absolute inset-0 bg-grid opacity-40 pointer-events-none'
+        aria-hidden
+      />
       <div
         className='absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0'
         aria-hidden
       >
-        <span style={{
-          fontFamily: 'var(--font-bebas)',
-          fontSize: 'clamp(5rem, 16vw, 13rem)',
-          letterSpacing: '0.06em',
-          color: 'color-mix(in srgb, var(--navy) 3.5%, transparent)',
-          userSelect: 'none',
-          lineHeight: 1,
-          whiteSpace: 'nowrap',
-        }}>
+        <span
+          style={{
+            fontFamily: 'var(--font-bebas)',
+            fontSize: 'clamp(5rem, 16vw, 13rem)',
+            letterSpacing: '0.06em',
+            color: 'color-mix(in srgb, var(--navy) 3.5%, transparent)',
+            userSelect: 'none',
+            lineHeight: 1,
+            whiteSpace: 'nowrap',
+          }}
+        >
           TESTIMONIALS
         </span>
       </div>
       <div
         className='absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[280px] rounded-full blur-[100px] pointer-events-none z-0'
-        style={{ background: 'radial-gradient(ellipse, var(--navy-glow) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'radial-gradient(ellipse, var(--navy-glow) 0%, transparent 70%)',
+        }}
         aria-hidden
       />
-      <div className='absolute inset-x-0 top-0 h-20 z-2 pointer-events-none' style={{ background: 'linear-gradient(to bottom, var(--obsidian-2), transparent)' }} aria-hidden />
-      <div className='absolute inset-x-0 bottom-0 h-20 z-2 pointer-events-none' style={{ background: 'linear-gradient(to top, var(--obsidian-2), transparent)' }} aria-hidden />
+      <div
+        className='absolute inset-x-0 top-0 h-20 z-2 pointer-events-none'
+        style={{
+          background:
+            'linear-gradient(to bottom, var(--obsidian-2), transparent)',
+        }}
+        aria-hidden
+      />
+      <div
+        className='absolute inset-x-0 bottom-0 h-20 z-2 pointer-events-none'
+        style={{
+          background: 'linear-gradient(to top, var(--obsidian-2), transparent)',
+        }}
+        aria-hidden
+      />
 
       <div className='relative z-10 max-w-6xl mx-auto px-6 lg:px-16'>
-
         {/* Header */}
         <motion.div
           className='flex flex-col items-center text-center mb-16'
@@ -355,23 +407,25 @@ export function TestimonialsSection() {
           <div className='eyebrow mb-4'>
             <span className='eyebrow-text'>From The Community</span>
           </div>
-          <h2 style={{
-            fontFamily: 'var(--font-cormorant)',
-            fontSize: 'clamp(2.4rem, 5vw, 4rem)',
-            fontWeight: 300,
-            color: 'var(--ivory)',
-            lineHeight: 1.05,
-          }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-cormorant)',
+              fontSize: 'clamp(2.4rem, 5vw, 4rem)',
+              fontWeight: 300,
+              color: 'var(--ivory)',
+              lineHeight: 1.05,
+            }}
+          >
             Professionals Who{' '}
-            <em className='italic' style={{ color: 'var(--teal-light)' }}>Showed Up</em>
-            <br className='hidden sm:block' />
-            {' '}&amp; Walked Away Transformed.
+            <em className='italic' style={{ color: 'var(--teal-light)' }}>
+              Showed Up
+            </em>
+            <br className='hidden sm:block' /> &amp; Walked Away Transformed.
           </h2>
         </motion.div>
 
         {/* Two-column layout */}
         <div className='grid lg:grid-cols-[1fr_300px] gap-6 items-stretch'>
-
           {/* LEFT — quote card */}
           <div
             className='relative flex flex-col'
@@ -384,12 +438,21 @@ export function TestimonialsSection() {
             {/* Animated top accent line */}
             <motion.div
               className='absolute top-0 left-0 right-0 h-px pointer-events-none'
-              animate={{ background: `linear-gradient(to right, ${accent}, transparent)` }}
+              animate={{
+                background: `linear-gradient(to right, ${accent}, transparent)`,
+              }}
               transition={{ duration: 0.6 }}
             />
 
             {/* Corner reticles */}
-            {(['top-0 left-0 border-t border-l','top-0 right-0 border-t border-r','bottom-0 left-0 border-b border-l','bottom-0 right-0 border-b border-r'] as const).map((cls, i) => (
+            {(
+              [
+                'top-0 left-0 border-t border-l',
+                'top-0 right-0 border-t border-r',
+                'bottom-0 left-0 border-b border-l',
+                'bottom-0 right-0 border-b border-r',
+              ] as const
+            ).map((cls, i) => (
               <motion.span
                 key={i}
                 className={`absolute w-4 h-4 pointer-events-none ${cls}`}
@@ -401,7 +464,12 @@ export function TestimonialsSection() {
 
             <div className='flex flex-col flex-1 p-8 lg:p-10'>
               {/* Quote icon */}
-              <motion.div animate={{ color: accent }} transition={{ duration: 0.5 }} className='mb-6' style={{ opacity: 0.5 }}>
+              <motion.div
+                animate={{ color: accent }}
+                transition={{ duration: 0.5 }}
+                className='mb-6'
+                style={{ opacity: 0.5 }}
+              >
                 <Quote size={28} />
               </motion.div>
 
@@ -441,14 +509,17 @@ export function TestimonialsSection() {
                   <span
                     className='text-[0.5rem] tracking-[0.28em] uppercase px-2.5 py-1'
                     style={{
-                      border:     `1px solid ${accent}44`,
-                      color:       accent,
+                      border: `1px solid ${accent}44`,
+                      color: accent,
                       background: `${accent}0d`,
                     }}
                   >
                     {current.discipline}
                   </span>
-                  <span className='text-[0.58rem]' style={{ color: 'var(--ivory-muted)' }}>
+                  <span
+                    className='text-[0.58rem]'
+                    style={{ color: 'var(--ivory-muted)' }}
+                  >
                     · {current.sessionAttended}
                   </span>
                 </motion.div>
@@ -469,23 +540,35 @@ export function TestimonialsSection() {
                       className='flex items-center justify-center w-10 h-10 shrink-0'
                       style={{
                         background: `${accent}18`,
-                        border:     `1px solid ${accent}44`,
-                        color:       accent,
+                        border: `1px solid ${accent}44`,
+                        color: accent,
                         fontFamily: 'var(--font-bebas)',
-                        fontSize:   '0.85rem',
+                        fontSize: '0.85rem',
                         letterSpacing: '0.08em',
                       }}
                     >
                       {current.initials}
                     </div>
                     <div>
-                      <p className='text-[0.78rem] font-medium leading-tight' style={{ color: 'var(--ivory)', fontFamily: 'var(--font-dm)' }}>
+                      <p
+                        className='text-[0.78rem] font-medium leading-tight'
+                        style={{
+                          color: 'var(--ivory)',
+                          fontFamily: 'var(--font-dm)',
+                        }}
+                      >
                         {current.name}
                       </p>
-                      <p className='text-[0.6rem] leading-tight mt-0.5' style={{ color: 'var(--ivory-muted)' }}>
+                      <p
+                        className='text-[0.6rem] leading-tight mt-0.5'
+                        style={{ color: 'var(--ivory-muted)' }}
+                      >
                         {current.role} · {current.organisation}
                       </p>
-                      <p className='text-[0.55rem] tracking-[0.15em] uppercase mt-0.5' style={{ color: 'var(--ivory-muted)', opacity: 0.6 }}>
+                      <p
+                        className='text-[0.55rem] tracking-[0.15em] uppercase mt-0.5'
+                        style={{ color: 'var(--ivory-muted)', opacity: 0.6 }}
+                      >
                         {current.country}
                       </p>
                     </div>
@@ -496,15 +579,30 @@ export function TestimonialsSection() {
             </div>
 
             {/* Progress bar */}
-            <div style={{ borderTop: '1px solid var(--border)', padding: '12px 2.5rem' }}>
+            <div
+              style={{
+                borderTop: '1px solid var(--border)',
+                padding: '12px 2.5rem',
+              }}
+            >
               <div className='flex items-center gap-3'>
-                <span className='text-[0.5rem] tracking-[0.28em] uppercase tabular shrink-0' style={{ color: 'var(--ivory-muted)' }}>
-                  {String(realIndex + 1).padStart(2, '0')} / {String(COUNT).padStart(2, '0')}
+                <span
+                  className='text-[0.5rem] tracking-[0.28em] uppercase tabular shrink-0'
+                  style={{ color: 'var(--ivory-muted)' }}
+                >
+                  {String(realIndex + 1).padStart(2, '0')} /{' '}
+                  {String(COUNT).padStart(2, '0')}
                 </span>
-                <div className='flex-1 h-px relative' style={{ background: 'var(--border)' }}>
+                <div
+                  className='flex-1 h-px relative'
+                  style={{ background: 'var(--border)' }}
+                >
                   <motion.div
                     className='absolute left-0 top-0 h-full'
-                    animate={{ width: `${((realIndex + 1) / COUNT) * 100}%`, background: accent }}
+                    animate={{
+                      width: `${((realIndex + 1) / COUNT) * 100}%`,
+                      background: accent,
+                    }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
                   />
                 </div>
@@ -522,11 +620,17 @@ export function TestimonialsSection() {
             {/* Top & bottom fade masks */}
             <div
               className='absolute inset-x-0 top-0 h-14 pointer-events-none z-10'
-              style={{ background: 'linear-gradient(to bottom, var(--obsidian-2) 10%, transparent)' }}
+              style={{
+                background:
+                  'linear-gradient(to bottom, var(--obsidian-2) 10%, transparent)',
+              }}
             />
             <div
               className='absolute inset-x-0 bottom-0 h-14 pointer-events-none z-10'
-              style={{ background: 'linear-gradient(to top, var(--obsidian-2) 10%, transparent)' }}
+              style={{
+                background:
+                  'linear-gradient(to top, var(--obsidian-2) 10%, transparent)',
+              }}
             />
 
             {/* Scroll container — no scrollbar, no onScroll handler */}
@@ -535,7 +639,10 @@ export function TestimonialsSection() {
               className='h-full overflow-y-scroll no-scrollbar'
               style={{ scrollBehavior: 'auto' }}
             >
-              <div className='flex flex-col' style={{ gap: GAP, padding: `${GAP}px 0` }}>
+              <div
+                className='flex flex-col'
+                style={{ gap: GAP, padding: `${GAP}px 0` }}
+              >
                 {TRIPLED.map((t, i) => {
                   // i is the absolute position in the tripled list (0..3*COUNT-1)
                   // We map this to a "virtual cursor" value to check if it matches current cursor
@@ -548,8 +655,11 @@ export function TestimonialsSection() {
                   // AND it is the copy nearest to the current cursor position
                   const nearestCursorForThisCard =
                     Math.round(cursor / COUNT) * COUNT + realIdx;
-                  const distanceFromCurrent = Math.abs(i - nearestCursorForThisCard);
-                  const isActive = realIdx === realIndex && distanceFromCurrent < COUNT;
+                  const distanceFromCurrent = Math.abs(
+                    i - nearestCursorForThisCard,
+                  );
+                  const isActive =
+                    realIdx === realIndex && distanceFromCurrent < COUNT;
 
                   return (
                     <ScrollCard
@@ -572,11 +682,12 @@ export function TestimonialsSection() {
               key={i}
               onClick={() => handleCardClick(i)}
               style={{
-                width:      i === realIndex ? 20 : 6,
-                height:     4,
-                background: i === realIndex ? 'var(--navy-light)' : 'var(--border-mid)',
-                border:     'none',
-                cursor:     'pointer',
+                width: i === realIndex ? 20 : 6,
+                height: 4,
+                background:
+                  i === realIndex ? 'var(--navy-light)' : 'var(--border-mid)',
+                border: 'none',
+                cursor: 'pointer',
                 transition: 'width 0.3s ease, background 0.3s ease',
               }}
               aria-label={`Testimonial ${i + 1}`}
