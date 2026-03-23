@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Share2, Copy, Check, Download } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Share2, Copy, Check, Download, Mail, X, ArrowRight, Loader2 } from 'lucide-react';
 import type { Webinar } from './types';
 import { CATEGORIES } from './data';
 import { BannerPlaceholder } from './BannerPlaceholder';
@@ -66,6 +66,223 @@ function SmartBanner({ index }: { index: number }) {
   );
 }
 
+// ─── RegisterOverlay ──────────────────────────────────────────────────────────
+// Absolutely positioned inside the card (inset-0) so it never shifts
+// neighbouring cards' heights.
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+interface RegisterOverlayProps {
+  title: string;
+  onClose: () => void;
+}
+
+function RegisterOverlay({ title, onClose }: RegisterOverlayProps) {
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.');
+      inputRef.current?.focus();
+      return;
+    }
+    setError('');
+    setSubmitting(true);
+    // Simulate async registration (replace with real API call)
+    await new Promise((r) => setTimeout(r, 900));
+    setSubmitting(false);
+    setDone(true);
+  };
+
+  return (
+    <motion.div
+      key='register-overlay'
+      initial={{ opacity: 0, y: '100%' }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: '100%' }}
+      transition={{ duration: 0.32, ease: EASE_OUT }}
+      className='absolute inset-0 z-20 flex flex-col'
+      style={{
+        background:
+          'linear-gradient(180deg, rgba(6,13,24,0.92) 0%, var(--obsidian-2) 100%)',
+        backdropFilter: 'blur(12px)',
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close button */}
+      <button
+        type='button'
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className='absolute top-3 right-3 flex items-center justify-center w-7 h-7 transition-colors duration-150 hover:text-(--ivory)'
+        style={{ color: 'var(--ivory-muted)' }}
+        aria-label='Cancel registration'
+      >
+        <X size={14} />
+      </button>
+
+      <div className='flex flex-col flex-1 justify-center px-6 py-8'>
+        <AnimatePresence mode='wait'>
+          {done ? (
+            /* ── Success state ── */
+            <motion.div
+              key='success'
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: EASE_OUT }}
+              className='flex flex-col items-center text-center gap-3'
+            >
+              <div
+                className='w-10 h-10 flex items-center justify-center mb-1'
+                style={{
+                  background: 'var(--teal-dim)',
+                  border: '1px solid var(--teal-glow)',
+                  clipPath:
+                    'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                }}
+              >
+                <Check size={18} style={{ color: 'var(--teal-light)' }} />
+              </div>
+              <p
+                className='text-[0.7rem] tracking-[0.28em] uppercase'
+                style={{ color: 'var(--teal-light)', fontFamily: 'var(--font-body)' }}
+              >
+                You&apos;re Registered
+              </p>
+              <p
+                className='text-[0.62rem] leading-[1.6] max-w-[200px]'
+                style={{ color: 'var(--ivory-muted)', fontFamily: 'var(--font-body)' }}
+              >
+                Check your inbox — we&apos;ll send the session link before it starts.
+              </p>
+              <button
+                type='button'
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                className='mt-2 text-[0.6rem] tracking-[0.16em] uppercase transition-colors duration-150'
+                style={{ color: 'var(--ivory-muted)', fontFamily: 'var(--font-body)' }}
+              >
+                Close
+              </button>
+            </motion.div>
+          ) : (
+            /* ── Form state ── */
+            <motion.form
+              key='form'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onSubmit={handleSubmit}
+              className='flex flex-col gap-4'
+              noValidate
+            >
+              {/* Heading */}
+              <div>
+                <p
+                  className='text-[0.56rem] tracking-[0.28em] uppercase mb-1'
+                  style={{ color: 'var(--gold)', fontFamily: 'var(--font-body)' }}
+                >
+                  Register Free
+                </p>
+                <p
+                  className='text-[0.7rem] font-light leading-[1.4] line-clamp-2'
+                  style={{
+                    color: 'var(--ivory-dim)',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  {title}
+                </p>
+              </div>
+
+              {/* Email input */}
+              <div className='relative'>
+                <Mail
+                  size={12}
+                  className='absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none'
+                  style={{ color: 'var(--ivory-muted)' }}
+                />
+                <input
+                  ref={inputRef}
+                  type='email'
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                  placeholder='your@email.com'
+                  autoComplete='email'
+                  className='w-full pl-8 pr-3 py-2.5 text-[0.72rem] outline-none transition-all duration-200'
+                  style={{
+                    background: 'var(--obsidian-3)',
+                    border: `1px solid ${error ? '#f87171' : 'var(--border-mid)'}`,
+                    color: 'var(--ivory-dim)',
+                    fontFamily: 'var(--font-body)',
+                    clipPath:
+                      'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px))',
+                  }}
+                  disabled={submitting}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                {error && (
+                  <p
+                    className='mt-1 text-[0.58rem]'
+                    style={{ color: '#f87171', fontFamily: 'var(--font-body)' }}
+                  >
+                    {error}
+                  </p>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className='flex items-center gap-2'>
+                {/* Submit */}
+                <button
+                  type='submit'
+                  disabled={submitting}
+                  className='flex-1 flex items-center justify-center gap-2 py-2.5 text-[0.62rem] tracking-[0.16em] uppercase font-medium transition-all duration-200 disabled:opacity-60'
+                  style={{
+                    background: 'linear-gradient(135deg, var(--gold), var(--gold-light))',
+                    color: 'var(--obsidian)',
+                    clipPath:
+                      'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                    fontFamily: 'var(--font-body)',
+                  }}
+                >
+                  {submitting ? (
+                    <Loader2 size={13} className='animate-spin' />
+                  ) : (
+                    <>
+                      Confirm
+                      <ArrowRight size={12} />
+                    </>
+                  )}
+                </button>
+
+                {/* Cancel */}
+                <button
+                  type='button'
+                  onClick={(e) => { e.stopPropagation(); onClose(); }}
+                  disabled={submitting}
+                  className='px-4 py-2.5 text-[0.62rem] tracking-[0.16em] uppercase transition-all duration-150 hover:text-(--ivory) disabled:opacity-40'
+                  style={{
+                    border: '1px solid var(--border-mid)',
+                    color: 'var(--ivory-muted)',
+                    fontFamily: 'var(--font-body)',
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── WebinarCard ───────────────────────────────────────────────────────────────
 
 interface WebinarCardProps {
@@ -84,6 +301,7 @@ export function WebinarCard({
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
   const { copied, copy } = useCopy();
   const shareButtonRef = useRef<HTMLButtonElement>(null);
   const webinarUrl = typeof window !== 'undefined'
@@ -138,13 +356,13 @@ export function WebinarCard({
         delay: index * 0.07,
         ease: [0.22, 1, 0.36, 1],
       }}
-      onClick={() => { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
-      onHoverStart={() => setHovered(true)}
+      onClick={() => { if (registerOpen) return; router.push('/webinars/' + webinar.id); onClick?.(webinar.id); }}
+      onHoverStart={() => { if (!registerOpen) setHovered(true); }}
       onHoverEnd={() => setHovered(false)}
       role='button'
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter') { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
-      whileHover={{ y: -4 }}
+      onKeyDown={(e) => { if (e.key === 'Enter' && !registerOpen) { router.push('/webinars/' + webinar.id); onClick?.(webinar.id); } }}
+      whileHover={{ y: registerOpen ? 0 : -4 }}
     >
       {/* ── Thumbnail ──────────────────────────────────────────────────── */}
       <div className='relative w-full overflow-hidden shrink-0 h-48'>
@@ -309,17 +527,8 @@ export function WebinarCard({
         </div>
       </div>
 
-      {/* ── CTA — slides in on hover ────────────────────────────────────── */}
-      <motion.div
-        className='px-5 overflow-hidden'
-        animate={{
-          opacity: hovered ? 1 : 0,
-          height: hovered ? 'auto' : 0,
-          paddingBottom: hovered ? 20 : 0,
-        }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        style={{ pointerEvents: hovered ? 'auto' : 'none' }}
-      >
+      {/* ── CTA — always visible ─────────────────────────────────────────── */}
+      <div className='px-5 pb-5'>
         <div className='flex items-center gap-2'>
           <button
             type='button'
@@ -333,7 +542,14 @@ export function WebinarCard({
                 : '1px solid var(--border-mid)',
               color: isLive ? 'var(--green)' : 'var(--gold-light)',
             }}
-            onClick={(e) => { e.stopPropagation(); router.push('/webinars/' + webinar.id); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isLive && !isCompleted) {
+                setRegisterOpen(true);
+              } else {
+                router.push('/webinars/' + webinar.id);
+              }
+            }}
           >
             <span>
               {isLive ? 'Join Live Session' : isCompleted ? 'Watch Recording' : 'Register Free'}
@@ -394,7 +610,7 @@ export function WebinarCard({
             </button>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Corner reticle */}
       <span
@@ -405,6 +621,16 @@ export function WebinarCard({
           borderRight: '1px solid var(--border-mid)',
         }}
       />
+
+      {/* ── Registration overlay — absolute inset-0, never affects card height ── */}
+      <AnimatePresence>
+        {registerOpen && (
+          <RegisterOverlay
+            title={webinar.title}
+            onClose={() => { setRegisterOpen(false); setHovered(false); }}
+          />
+        )}
+      </AnimatePresence>
     </motion.article>
   );
 }

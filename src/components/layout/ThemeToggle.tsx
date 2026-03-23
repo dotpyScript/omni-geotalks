@@ -47,7 +47,7 @@ export function ThemeToggleButton({
       {/* Mode label */}
       <span
         className='font-bebas text-[0.7rem] tracking-[0.24em] uppercase min-w-9 text-center select-none transition-colors duration-300'
-        style={{ color: isLight ? '#a8751e' : '#c9a84c' }}
+        style={{ color: 'var(--gold-light)' }}
       >
         {isLight ? 'Light' : 'Dark'}
       </span>
@@ -58,23 +58,20 @@ export function ThemeToggleButton({
         aria-checked={isLight}
         aria-label={`Switch to ${isLight ? 'dark' : 'light'} mode`}
         onClick={onToggle}
-        className='relative w-14 h-7 rounded-full cursor-pointer outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-1'
+        className='relative w-14 h-7 rounded-full cursor-pointer outline-none transition-all duration-300'
         style={{
           background: isLight
-            ? 'linear-gradient(135deg, #e4dfd3, #ede9df)'
-            : 'linear-gradient(135deg, #0d1118, #12161f)',
-          border: `1px solid ${isLight ? 'rgba(168,117,30,0.38)' : 'rgba(201,168,76,0.35)'}`,
-          boxShadow: isLight
-            ? 'inset 0 1px 3px rgba(168,117,30,0.12)'
-            : 'inset 0 1px 4px rgba(0,0,0,0.6)',
+            ? 'linear-gradient(135deg, var(--obsidian-3), var(--obsidian-4))'
+            : 'linear-gradient(135deg, var(--obsidian-2), var(--obsidian-3))',
+          border: '1px solid var(--border-mid)',
+          boxShadow: 'inset 0 1px 4px rgba(0,0,0,0.35)',
         }}
       >
         {/* Top sheen */}
         <span
           className='absolute inset-0 rounded-full pointer-events-none'
           style={{
-            background:
-              'linear-gradient(180deg, rgba(201,168,76,0.07) 0%, transparent 55%)',
+            background: 'linear-gradient(180deg, var(--navy-glow) 0%, transparent 55%)',
             zIndex: 3,
           }}
         />
@@ -86,8 +83,8 @@ export function ThemeToggleButton({
             transform: `translateY(-50%) translateX(${isLight ? '28px' : '0px'})`,
             transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)',
             background: isLight
-              ? 'radial-gradient(circle, rgba(168,117,30,0.2) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%)',
+              ? 'radial-gradient(circle, var(--teal-glow) 0%, transparent 70%)'
+              : 'radial-gradient(circle, var(--navy-glow) 0%, transparent 70%)',
             zIndex: 1,
           }}
         />
@@ -99,9 +96,7 @@ export function ThemeToggleButton({
             className='absolute top-1/2 -translate-y-1/2 w-px h-1.25 rounded-sm pointer-events-none transition-colors duration-300'
             style={{
               left: `${x}%`,
-              background: isLight
-                ? 'rgba(168,117,30,0.2)'
-                : 'rgba(201,168,76,0.18)',
+              background: 'var(--border-mid)',
               zIndex: 1,
             }}
           />
@@ -113,14 +108,14 @@ export function ThemeToggleButton({
           style={{
             transform: `translateX(${isLight ? '28px' : '0px'})`,
             transition:
-              'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+              'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s ease, box-shadow 0.3s ease',
             background: isLight
-              ? 'linear-gradient(145deg, #f5f2eb, #e4dfd3)'
-              : 'linear-gradient(145deg, #1a2030, #0d1118)',
-            border: `1px solid ${isLight ? 'rgba(168,117,30,0.48)' : 'rgba(201,168,76,0.42)'}`,
+              ? 'linear-gradient(145deg, var(--teal), var(--teal-mid))'
+              : 'linear-gradient(145deg, var(--navy-mid), var(--navy))',
+            border: '1px solid var(--border-hi)',
             boxShadow: isLight
-              ? '0 2px 7px rgba(168,117,30,0.18), 0 0 9px rgba(168,117,30,0.1)'
-              : '0 2px 7px rgba(0,0,0,0.55), 0 0 9px rgba(201,168,76,0.14)',
+              ? '0 2px 8px var(--teal-glow), 0 0 10px var(--teal-glow)'
+              : '0 2px 8px var(--navy-glow), 0 0 10px var(--navy-glow)',
             zIndex: 2,
           }}
         >
@@ -131,15 +126,14 @@ export function ThemeToggleButton({
             className='absolute w-3 h-3 transition-all duration-300'
             style={{
               opacity: isLight ? 0 : 1,
-              transform: isLight
-                ? 'rotate(50deg) scale(0.65)'
-                : 'rotate(0deg) scale(1)',
+              transform: isLight ? 'rotate(50deg) scale(0.65)' : 'rotate(0deg) scale(1)',
+              color: 'var(--navy-pale)',
             }}
           >
             <path
               d='M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z'
-              fill='#c9a84c'
-              stroke='#c9a84c'
+              fill='currentColor'
+              stroke='currentColor'
               strokeWidth='1.5'
               strokeLinecap='round'
               strokeLinejoin='round'
@@ -153,12 +147,11 @@ export function ThemeToggleButton({
             className='absolute w-3 h-3 transition-all duration-300'
             style={{
               opacity: isLight ? 1 : 0,
-              transform: isLight
-                ? 'rotate(0deg) scale(1)'
-                : 'rotate(-50deg) scale(0.65)',
+              transform: isLight ? 'rotate(0deg) scale(1)' : 'rotate(-50deg) scale(0.65)',
+              color: 'var(--teal-pale)',
             }}
           >
-            <circle cx='12' cy='12' r='4' fill='#a8751e' />
+            <circle cx='12' cy='12' r='4' fill='currentColor' />
             {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
               const rad = (a * Math.PI) / 180;
               return (
@@ -168,7 +161,7 @@ export function ThemeToggleButton({
                   y1={12 + 5.5 * Math.sin(rad)}
                   x2={12 + 8.5 * Math.cos(rad)}
                   y2={12 + 8.5 * Math.sin(rad)}
-                  stroke='#a8751e'
+                  stroke='currentColor'
                   strokeWidth='1.5'
                   strokeLinecap='round'
                 />
